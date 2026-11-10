@@ -1,0 +1,48 @@
+﻿# Master default configuration for the APSA experiment system.
+# All experiment-specific overrides deep-merge on top of these defaults.
+
+experiment:
+  name: "adversarial_prompt_sensitivity"
+  description: ""
+  seed: 42
+  max_workers: 4
+
+generation:
+  temperature_deterministic: 0.0
+  temperature_stochastic: 0.7
+  top_p: 0.95
+  max_tokens: 1024
+  n_stochastic_repeats: 5
+
+epsilon_budget:
+  lexical_char_normalized: 0.10
+  lexical_word_normalized: 0.15
+  semantic_cosine: 0.05
+  syntactic_ted_normalized: 0.20
+
+metric_weights:
+  w1_textual: 0.33
+  w2_semantic: 0.34
+  w3_functional: 0.33
+  eta: 0.0001
+
+composite_input_weights:
+  alpha_lexical: 0.50
+  beta_semantic: 0.50
+  gamma_syntactic: 0.00
+
+datasets: []    # Overridden per experiment
+
+models: []      # Overridden per experiment
+
+perturbations: []  # Overridden per experiment
+
+system_prompt: "You are a precise academic assistant. Follow instructions exactly."
+
+storage:
+  results_dir: "results"
+  log_level: "INFO"
+
+judge_model:
+  provider: huggingface
+  model_id: "mistralai/Mistral-7B-Instruct-v0.3"

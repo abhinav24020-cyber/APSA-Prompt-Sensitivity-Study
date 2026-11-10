@@ -1,0 +1,58 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "apsa"
+version = "0.1.0"
+description = "Adversarial Prompt Sensitivity Analysis"
+requires-python = ">=3.11"
+dependencies = [
+    "pydantic>=2.0",
+    "pyyaml>=6.0",
+    "datasets>=2.14",
+    "click>=8.1",
+    "tenacity>=8.2",
+    "python-Levenshtein>=0.21",
+    "nltk>=3.8",
+    "spacy>=3.7",
+    "sentence-transformers>=2.2",
+    "bert-score>=0.3",
+    "rouge-score>=0.1.2",
+    "scipy>=1.11",
+    "statsmodels>=0.14",
+    "matplotlib>=3.7",
+    "seaborn>=0.12",
+    "plotly>=5.15",
+    "jinja2>=3.1",
+    "rich>=13.0",
+]
+
+[project.optional-dependencies]
+huggingface = [
+    "transformers>=4.40",
+    "accelerate>=0.27",
+    "torch>=2.1",
+]
+vllm = ["vllm>=0.4"]
+gemini = ["google-generativeai>=0.5"]
+openai = ["openai>=1.14"]
+dev = [
+    "pytest>=7.4",
+    "pytest-cov>=4.1",
+    "ruff>=0.4",
+    "mypy>=1.8",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"

@@ -1,0 +1,11 @@
+﻿model_id: "Qwen/Qwen2.5-Coder-32B-Instruct"
+display_name: "Qwen 2.5 Coder 32B"
+provider: huggingface
+api_key_env_var: "HF_TOKEN"
+device: "auto"
+dtype: "bfloat16"
+context_window: 131072
+parameter_scale: "32B"
+type: code_specialized
+tokenizer_id: "Qwen/Qwen2.5-Coder-32B-Instruct"
+vllm: true

@@ -1,0 +1,29 @@
+# Mock pilot experiment: runs offline in seconds without API credentials.
+experiment:
+  name: "apsa_mock_pilot"
+  description: "Offline pilot validation for demo."
+  seed: 42
+  max_workers: 1
+
+datasets:
+  - name: gsm8k
+    split: test
+    sample_size: 2
+  - name: humaneval
+    split: test
+    sample_size: 2
+
+models:
+  - config_file: config/models/mock_model.yaml
+
+perturbations:
+  - type: capitalization
+    config_file: config/perturbations/surface.yaml
+  - type: synonym
+    config_file: config/perturbations/lexical.yaml
+  - type: random_edit
+
+storage:
+  results_dir: "results"
+  log_level: "INFO"
+

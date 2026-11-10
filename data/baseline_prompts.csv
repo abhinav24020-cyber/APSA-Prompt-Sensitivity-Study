@@ -1,0 +1,247 @@
+prompt_id,task_category,task_description,original_prompt,expected_answer,difficulty_level,metadata
+MATH-001,mathematical_reasoning,Multi-step arithmetic ratio and percentage calculation,"A store sells apples in bags of 5 for $3.00. On Tuesday, they offer a 20% discount on all apple bags. If a customer buys 15 apples on Tuesday, how much do they pay in total?",$7.20,easy,"{""is_deterministic"": true, ""domain"": ""arithmetic"", ""eval_metric"": ""exact_match""}"
+MATH-002,mathematical_reasoning,Solving a system of two linear equations,"Solve the following system of linear equations for x and y: 3x + 2y = 16 and 5x - y = 9. Provide the values as an ordered pair (x, y).","(34/13, 53/13)",easy,"{""is_deterministic"": true, ""domain"": ""algebra"", ""eval_metric"": ""exact_match""}"
+MATH-003,mathematical_reasoning,Right circular cylinder volume calculation,Calculate the volume of a right circular cylinder with radius r = 4 cm and height h = 10 cm. Express the exact answer in terms of pi.,160*pi cm^3,easy,"{""is_deterministic"": true, ""domain"": ""geometry"", ""eval_metric"": ""exact_match""}"
+MATH-004,mathematical_reasoning,Combinatorial selection probability,A committee of 3 members is to be randomly chosen from a group of 5 men and 4 women. What is the probability that the committee consists of exactly 2 men and 1 woman? Express your answer as a simplified fraction.,10/21,medium,"{""is_deterministic"": true, ""domain"": ""combinatorics"", ""eval_metric"": ""exact_match""}"
+MATH-005,mathematical_reasoning,Compound interest semi-annual accumulation,"An investment of $1,000 earns interest at a nominal annual rate of 6% compounded semi-annually. What is the total value of the investment after 2 years? Round to two decimal places.",$1125.51,medium,"{""is_deterministic"": true, ""domain"": ""financial_math"", ""eval_metric"": ""exact_match""}"
+MATH-006,mathematical_reasoning,Modular arithmetic remainder calculation,Find the remainder when 7^100 is divided by 5.,1,medium,"{""is_deterministic"": true, ""domain"": ""number_theory"", ""eval_metric"": ""exact_match""}"
+MATH-007,mathematical_reasoning,Three-person cooperative work rate calculation,"Alice can complete a job in 6 hours, while Bob can complete the same job in 12 hours. If they work together with Charlie, all three complete the job in 3 hours. How many hours would it take Charlie to complete the job alone?",12 hours,medium,"{""is_deterministic"": true, ""domain"": ""algebra"", ""eval_metric"": ""exact_match""}"
+MATH-008,mathematical_reasoning,Recursive numerical sequence term evaluation,Consider the sequence defined by a_1 = 2 and a_(n+1) = 2*a_n + 1 for n >= 1. Find the 6th term (a_6) of this sequence.,95,easy,"{""is_deterministic"": true, ""domain"": ""sequences"", ""eval_metric"": ""exact_match""}"
+MATH-009,mathematical_reasoning,Relative velocity and meeting time problem,Two trains start from stations 300 miles apart and travel towards each other on parallel tracks. Train A travels at 60 mph and Train B travels at 90 mph. How many hours will it take for the two trains to meet?,2 hours,easy,"{""is_deterministic"": true, ""domain"": ""physics_math"", ""eval_metric"": ""exact_match""}"
+MATH-010,mathematical_reasoning,Determinant calculation of a 3x3 matrix,"Compute the determinant of the 3x3 matrix: [[2, 0, 1], [3, 4, -2], [1, 5, 0]].",31,medium,"{""is_deterministic"": true, ""domain"": ""linear_algebra"", ""eval_metric"": ""exact_match""}"
+MATH-011,mathematical_reasoning,Line intersection coordinate calculation,"Find the intersection point (x, y) of the lines y = (1/2)x + 3 and y = -x + 9.","(4, 5)",easy,"{""is_deterministic"": true, ""domain"": ""algebra"", ""eval_metric"": ""exact_match""}"
+MATH-012,mathematical_reasoning,Quadratic root sum of squares evaluation using Vieta's formulas,"If r1 and r2 are the roots of the quadratic equation 2x^2 - 8x + 5 = 0, find the value of (r1^2 + r2^2).",11,hard,"{""is_deterministic"": true, ""domain"": ""algebra"", ""eval_metric"": ""exact_match""}"
+MATH-013,mathematical_reasoning,Bayes' Theorem medical test posterior probability,"In a population, 1% of people have a disease. A test for the disease is 95% accurate (sensitivity = 0.95, specificity = 0.95). If a randomly chosen person tests positive, what is the probability they actually have the disease? Round to four decimal places.",0.1610,hard,"{""is_deterministic"": true, ""domain"": ""probability"", ""eval_metric"": ""exact_match""}"
+MATH-014,mathematical_reasoning,Exponential growth population prediction,A bacterial culture starts with 500 cells and doubles in size every 3 hours. How many cells will be present after 12 hours?,8000,easy,"{""is_deterministic"": true, ""domain"": ""exponential_growth"", ""eval_metric"": ""exact_match""}"
+MATH-015,mathematical_reasoning,Proof step explanation for the infinitude of prime numbers,Explain Euclid's proof of the infinitude of prime numbers in 3 clear logical steps.,"1. Assume finitely many primes p1..pn. 2. Construct N = p1*...*pn + 1. 3. Show N has a prime factor not in the list, contradicting the assumption.",medium,"{""is_deterministic"": false, ""domain"": ""proof_reasoning"", ""eval_metric"": ""semantic_similarity""}"
+MATH-016,mathematical_reasoning,Constrained rectangular area optimization,A perimeter of 40 meters of fencing is used to enclose a rectangular garden. What dimensions (length and width) maximize the enclosed area?,"Length 10 m, Width 10 m",medium,"{""is_deterministic"": true, ""domain"": ""optimization"", ""eval_metric"": ""exact_match""}"
+MATH-017,mathematical_reasoning,Set theory union and complement operations,"Let U = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, A = {2, 4, 6, 8, 10}, and B = {3, 6, 9}. Find the elements of the set (A union B) complement.","{1, 5, 7}",easy,"{""is_deterministic"": true, ""domain"": ""set_theory"", ""eval_metric"": ""exact_match""}"
+MATH-018,mathematical_reasoning,Sample mean and sample variance computation,"For the dataset [4, 8, 6, 5, 12], calculate the sample mean and the sample variance.","Mean = 7, Sample Variance = 10",medium,"{""is_deterministic"": true, ""domain"": ""statistics"", ""eval_metric"": ""exact_match""}"
+MATH-019,mathematical_reasoning,Perpendicular line equation in slope-intercept form,"Find the equation of the line passing through (2, 3) that is perpendicular to the line 2x - 4y = 7. Write your answer in slope-intercept form (y = mx + b).",y = -2x + 7,easy,"{""is_deterministic"": true, ""domain"": ""coordinate_geometry"", ""eval_metric"": ""exact_match""}"
+MATH-020,mathematical_reasoning,Pigeonhole principle card draw guarantee,What is the minimum number of cards you must draw from a standard 52-card deck to guarantee drawing at least 3 cards of the same suit?,9,medium,"{""is_deterministic"": true, ""domain"": ""discrete_math"", ""eval_metric"": ""exact_match""}"
+LOGIC-001,logical_reasoning,Categorical syllogism validity assessment,Evaluate the validity of this argument: Premise 1: All birds have feathers. Premise 2: All penguins are birds. Conclusion: All penguins have feathers. Is the conclusion logically valid? Answer Valid or Invalid and state the conclusion.,Valid. All penguins have feathers.,easy,"{""is_deterministic"": true, ""domain"": ""formal_logic"", ""eval_metric"": ""exact_match""}"
+LOGIC-002,logical_reasoning,Knights and Knaves truth puzzle deduction,"On an island, Knights always tell the truth and Knaves always lie. You meet Person A and Person B. Person A says: 'At least one of us is a Knave.' What are Person A and Person B?","Person A is a Knight, Person B is a Knave.",medium,"{""is_deterministic"": true, ""domain"": ""logic_puzzles"", ""eval_metric"": ""exact_match""}"
+LOGIC-003,logical_reasoning,Spatial seating arrangement deduction,"Four friends (Alice, Bob, Carol, Dave) sit in a row of 4 chairs numbered 1 to 4 from left to right. Alice sits in seat 1. Bob sits next to Carol. Dave does not sit next to Alice. Who sits in seat 4?",Dave,medium,"{""is_deterministic"": true, ""domain"": ""spatial_logic"", ""eval_metric"": ""exact_match""}"
+LOGIC-004,logical_reasoning,De Morgan's Laws logical proposition negation,State the logical negation of the proposition: 'It is raining AND it is cold.' Express the negated proposition in natural English using De Morgan's laws.,It is not raining OR it is not cold.,easy,"{""is_deterministic"": true, ""domain"": ""propositional_logic"", ""eval_metric"": ""exact_match""}"
+LOGIC-005,logical_reasoning,Multi-condition eligibility rule deduction,"An applicant qualifies for a loan if they earn over $50,000 OR (they earn over $35,000 AND have a credit score above 700). John earns $40,000 and has a credit score of 720. Does John qualify? Answer Yes or No and state the rule satisfied.","Yes. He earns over $35,000 and has a credit score above 700.",easy,"{""is_deterministic"": true, ""domain"": ""rule_based_logic"", ""eval_metric"": ""exact_match""}"
+LOGIC-006,logical_reasoning,Temporal task dependency ordering,Task A must be completed before Task B. Task C can only start after Task B is completed. Task D must happen before Task C but after Task A. List all valid execution orders for these 4 tasks.","A -> B -> D -> C; A -> D -> B -> C",medium,"{""is_deterministic"": true, ""domain"": ""scheduling_logic"", ""eval_metric"": ""exact_match""}"
+LOGIC-007,logical_reasoning,Identifying the fallacy of denying the antecedent,"Given: If the alarm rings, then there is an intruder. The alarm did not ring. Can we conclude that there is no intruder? Explain why or why not using logical inference rules.",No. Concluding there is no intruder is the fallacy of denying the antecedent.,medium,"{""is_deterministic"": true, ""domain"": ""formal_logic"", ""eval_metric"": ""exact_match""}"
+LOGIC-008,logical_reasoning,Multi-attribute logic grid deduction,"Three people (Anna, Brian, Clara) own three different pets (Dog, Cat, Fish). Anna is allergic to fur. Brian does not own a fish. Clara does not own the dog. Who owns which pet?","Anna owns Fish, Brian owns Dog, Clara owns Cat.",medium,"{""is_deterministic"": true, ""domain"": ""deductive_grid"", ""eval_metric"": ""exact_match""}"
+LOGIC-009,logical_reasoning,Slippery slope informal fallacy identification,"Identify the logical fallacy in the following statement: 'We must not lower taxes because if we do, nobody will work, society will collapse, and we will end up in complete anarchy.'",Slippery Slope fallacy,easy,"{""is_deterministic"": true, ""domain"": ""informal_fallacies"", ""eval_metric"": ""exact_match""}"
+LOGIC-010,logical_reasoning,Material implication truth value evaluation,Determine the truth value of (P implies Q) when P is False and Q is False.,True,easy,"{""is_deterministic"": true, ""domain"": ""symbolic_logic"", ""eval_metric"": ""exact_match""}"
+LOGIC-011,logical_reasoning,Causal chain disruption deduction,"If Event X directly causes Event Y, and Event Y directly causes Event Z, what happens to Z if X is prevented, assuming X is the sole cause of Y and Y is the sole cause of Z?",Event Z will not occur.,easy,"{""is_deterministic"": true, ""domain"": ""causal_reasoning"", ""eval_metric"": ""exact_match""}"
+LOGIC-012,logical_reasoning,Transitive relation tournament ranking deduction,"In a tournament, Player A defeated Player B, Player B defeated Player C, and Player C defeated Player D. If skill levels are strictly transitive, who is guaranteed to be ranked higher than Player D?","Players A, B, and C",easy,"{""is_deterministic"": true, ""domain"": ""transitive_relations"", ""eval_metric"": ""exact_match""}"
+LOGIC-013,logical_reasoning,Necessary vs sufficient condition analysis,"Is having a driver's license a necessary condition, a sufficient condition, or both for operating a motor vehicle legally? Explain briefly.","Necessary condition (you must have a license to drive legally, but having one alone is not sufficient if e.g. intoxicated or driving an uninsured vehicle).",medium,"{""is_deterministic"": false, ""domain"": ""analytical_logic"", ""eval_metric"": ""semantic_similarity""}"
+LOGIC-014,logical_reasoning,Nested category inclusion deduction,All squares are rectangles. All rectangles are quadrilaterals. No quadrilaterals are triangles. Are any squares triangles?,"No, no squares are triangles.",easy,"{""is_deterministic"": true, ""domain"": ""categorical_logic"", ""eval_metric"": ""exact_match""}"
+LOGIC-015,logical_reasoning,Classic river crossing puzzle trip minimization,"A farmer needs to cross a river with a wolf, a goat, and a cabbage. The boat holds only the farmer and one item. If left alone, the wolf eats the goat, and the goat eats the cabbage. What is the minimum number of river trips required to get all three across safely?",7 trips,hard,"{""is_deterministic"": true, ""domain"": ""algorithmic_puzzle"", ""eval_metric"": ""exact_match""}"
+LOGIC-016,logical_reasoning,Boolean expression simplification,Simplify the boolean expression (A AND B) OR (A AND NOT B).,A,easy,"{""is_deterministic"": true, ""domain"": ""boolean_algebra"", ""eval_metric"": ""exact_match""}"
+LOGIC-017,logical_reasoning,Wason selection task rule verification,"Four cards are placed on a table. Each card has a letter on one side and a number on the other: [E, K, 4, 7]. The rule is: 'If a card has a vowel on one side, it must have an even number on the other side.' Which card(s) MUST you turn over to test if the rule is true?",E and 7,hard,"{""is_deterministic"": true, ""domain"": ""conditional_reasoning"", ""eval_metric"": ""exact_match""}"
+LOGIC-018,logical_reasoning,Grid row constraint completion,"In a 4x4 grid row containing numbers {1, 2, 3, 4}, three positions have values 3, 1, and 4. What is the missing number in the row?",2,easy,"{""is_deterministic"": true, ""domain"": ""constraint_satisfaction"", ""eval_metric"": ""exact_match""}"
+LOGIC-019,logical_reasoning,Quantifier scope fallacy explanation,"Analyze the claim: 'Every person loves some song, therefore there is one song that every person loves.' Explain why this deduction is invalid.",Confuses universal-existential quantifier scope (for-all exists vs exists for-all). Different people can love different songs.,medium,"{""is_deterministic"": false, ""domain"": ""predicate_logic"", ""eval_metric"": ""semantic_similarity""}"
+LOGIC-020,logical_reasoning,Barber paradox contradiction analysis,"The barber of a town shaves all men in town who do not shave themselves, and only those men. Does the barber shave himself? Explain the logical contradiction.","If he shaves himself, by definition he does not; if he does not shave himself, by definition he must. It is a self-referential contradiction.",hard,"{""is_deterministic"": false, ""domain"": ""philosophical_logic"", ""eval_metric"": ""semantic_similarity""}"
+QA-001,question_answering,Physics Nobel prize discovery query,Which physicist received the Nobel Prize in Physics in 1921 for his discovery of the law of the photoelectric effect?,Albert Einstein,easy,"{""is_deterministic"": true, ""domain"": ""physics_history"", ""eval_metric"": ""exact_match""}"
+QA-002,question_answering,Reading comprehension passage span extraction,"Passage: 'The James Webb Space Telescope (JWST) was launched on December 25, 2021. It operates primarily in the infrared spectrum and is located near the Sun-Earth L2 Lagrange point.' Question: On what date was JWST launched and at what Lagrange point is it stationed?","Launched on December 25, 2021 at the Sun-Earth L2 Lagrange point.",easy,"{""is_deterministic"": true, ""domain"": ""reading_comprehension"", ""eval_metric"": ""exact_match""}"
+QA-003,question_answering,World history date factual retrieval,In what year did the French Revolution begin with the storming of the Bastille?,1789,easy,"{""is_deterministic"": true, ""domain"": ""world_history"", ""eval_metric"": ""exact_match""}"
+QA-004,question_answering,Physical geography river identification,What is the longest river in South America and into which ocean does it empty?,"Amazon River, Atlantic Ocean",easy,"{""is_deterministic"": true, ""domain"": ""geography"", ""eval_metric"": ""exact_match""}"
+QA-005,question_answering,Cellular respiration enzyme mechanism explanation,Explain the primary functional role of ATP synthase in cellular respiration.,ATP synthase uses the proton gradient across the inner mitochondrial membrane to synthesize ATP from ADP and inorganic phosphate.,medium,"{""is_deterministic"": false, ""domain"": ""biology"", ""eval_metric"": ""semantic_similarity""}"
+QA-006,question_answering,Computer architecture RISC vs CISC comparison,What is the key structural distinction between RISC and CISC processor instruction set architectures?,"RISC designs generally favor simpler instructions and often fixed-length encoding with load/store operations; CISC designs typically provide more complex instructions and often variable-length encoding. These are design tendencies, not a guarantee that every RISC instruction executes in one clock cycle.",medium,"{""is_deterministic"": false, ""domain"": ""computer_science"", ""eval_metric"": ""semantic_similarity""}"
+QA-007,question_answering,Planetary atmosphere surface temperature query,"Which planet in the Solar System has the highest average surface temperature, and why is it hotter than Mercury?","Venus, due to its dense atmosphere rich in carbon dioxide creating a runaway greenhouse effect.",medium,"{""is_deterministic"": true, ""domain"": ""astronomy"", ""eval_metric"": ""exact_match""}"
+QA-008,question_answering,Financial document context multi-value extraction,"Passage: 'Company X reported revenue of $4.2 billion in Q3 2024, representing an 8% increase year-over-year. Operating costs rose to $2.9 billion due to expansion in R&D.' Question: What was the Q3 2024 revenue, the year-over-year growth rate, and the operating cost?","Revenue: $4.2 billion, YoY Growth: 8%, Operating Costs: $2.9 billion",easy,"{""is_deterministic"": true, ""domain"": ""financial_qa"", ""eval_metric"": ""exact_match""}"
+QA-009,question_answering,Monetary policy definition and central bank role,Define monetary policy and identify which institution is responsible for implementing it in the United States.,"Monetary policy is the management of money supply and interest rates, implemented in the US by the Federal Reserve.",easy,"{""is_deterministic"": false, ""domain"": ""economics"", ""eval_metric"": ""semantic_similarity""}"
+QA-010,question_answering,Periodic table element symbol and atomic number,"What is the chemical symbol for Gold, and what is its atomic number?","Au, 79",easy,"{""is_deterministic"": true, ""domain"": ""chemistry"", ""eval_metric"": ""exact_match""}"
+QA-011,question_answering,Narrative narrative perspective contrast,Contrast first-person limited narrator perspective with third-person omniscient narrator perspective.,First-person limited uses 'I' and knows only one character's thoughts; third-person omniscient uses 'he/she/they' and knows all characters' internal thoughts and feelings.,medium,"{""is_deterministic"": false, ""domain"": ""literature"", ""eval_metric"": ""semantic_similarity""}"
+QA-012,question_answering,Atmospheric greenhouse effect thermal mechanism,Describe how atmospheric greenhouse gases trap thermal energy in Earth's climate system.,"Greenhouse gases absorb infrared radiation emitted by Earth's surface and re-radiate it in all directions, trapping heat in the atmosphere.",medium,"{""is_deterministic"": false, ""domain"": ""environmental_science"", ""eval_metric"": ""semantic_similarity""}"
+QA-013,question_answering,Constitutional law judicial review case origin,"In US constitutional law, which landmark 1803 Supreme Court case established the principle of judicial review?",Marbury v. Madison,medium,"{""is_deterministic"": true, ""domain"": ""law"", ""eval_metric"": ""exact_match""}"
+QA-014,question_answering,Renal nephron glomerulus filtration role,What is the primary function of the glomerulus in the human nephron?,To filter water and small solutes from the blood plasma into Bowman's capsule while retaining proteins and blood cells.,medium,"{""is_deterministic"": false, ""domain"": ""physiology"", ""eval_metric"": ""semantic_similarity""}"
+QA-015,question_answering,Context-bound named entity extraction,Extract all personal names and location names from this text: 'Dr. Sophia Martinez presented her oncology findings in Zurich after consulting with Dr. Liam Chen in Tokyo.',"Names: Dr. Sophia Martinez, Dr. Liam Chen. Locations: Zurich, Tokyo.",easy,"{""is_deterministic"": true, ""domain"": ""information_extraction"", ""eval_metric"": ""exact_match""}"
+QA-016,question_answering,TCP three-way handshake packet sequence,List the three TCP packets exchanged in sequence during a standard TCP three-way handshake.,"1. SYN, 2. SYN-ACK, 3. ACK",easy,"{""is_deterministic"": true, ""domain"": ""networking"", ""eval_metric"": ""exact_match""}"
+QA-017,question_answering,Phoneme vs morpheme linguistic definition,Define the difference between a phoneme and a morpheme in linguistics.,"A phoneme is the smallest unit of sound that distinguishes meaning, while a morpheme is the smallest unit of language that carries grammatical or semantic meaning.",medium,"{""is_deterministic"": false, ""domain"": ""linguistics"", ""eval_metric"": ""semantic_similarity""}"
+QA-018,question_answering,Multi-hop literary author birthplace capital search,What is the capital city of the country where the author of 'One Hundred Years of Solitude' was born?,Bogota,medium,"{""is_deterministic"": true, ""domain"": ""multi_hop_qa"", ""eval_metric"": ""exact_match""}"
+QA-019,question_answering,Superconductivity Meissner effect phenomenon,What is the Meissner effect in superconductivity?,The complete expulsion of magnetic flux fields from the interior of a superconductor when it transitions below its critical temperature.,hard,"{""is_deterministic"": false, ""domain"": ""physics"", ""eval_metric"": ""semantic_similarity""}"
+QA-020,question_answering,Tabular data highest value query,Given the table: | Product | Q1 Sales | Q2 Sales | | Model A | 150 | 200 | | Model B | 300 | 250 | | Model C | 120 | 180 | Question: Which product had the highest total sales across Q1 and Q2?,Model B,easy,"{""is_deterministic"": true, ""domain"": ""table_qa"", ""eval_metric"": ""exact_match""}"
+CLASS-001,classification,Product review sentiment classification,"Classify the sentiment of the following product review as Positive, Negative, or Neutral: 'The battery life is acceptable, but the screen scratches easily and customer support was unhelpful.'",Negative,easy,"{""is_deterministic"": true, ""domain"": ""sentiment_analysis"", ""eval_metric"": ""exact_match""}"
+CLASS-002,classification,News headline domain categorization,"Classify the topic of this news headline into one of [Sports, Technology, Politics, Business]: 'Central bank raises interest rates by 50 basis points to curb inflation.'",Business,easy,"{""is_deterministic"": true, ""domain"": ""topic_classification"", ""eval_metric"": ""exact_match""}"
+CLASS-003,classification,Customer service message intent classification,"Classify the user intent of the message 'I was charged twice on my invoice this month' into one of [Billing_Issue, Account_Cancellation, Product_Inquiry, General_Feedback].",Billing_Issue,easy,"{""is_deterministic"": true, ""domain"": ""intent_classification"", ""eval_metric"": ""exact_match""}"
+CLASS-004,classification,Email spam vs ham detection,Classify the following email snippet as Spam or Ham (Not Spam): 'CONGRATULATIONS! You have won a $1000 gift card. Click this link immediately to claim your prize before it expires.',Spam,easy,"{""is_deterministic"": true, ""domain"": ""spam_detection"", ""eval_metric"": ""exact_match""}"
+CLASS-005,classification,Dialogue primary emotion categorization,"Identify the primary emotion expressed in the statement: 'I cannot believe they cancelled the concert after I waited six hours in the rain!' Options: [Joy, Anger, Fear, Sadness, Surprise].",Anger,easy,"{""is_deterministic"": true, ""domain"": ""emotion_classification"", ""eval_metric"": ""exact_match""}"
+CLASS-006,classification,Natural language text language identification,Identify the language of the text: 'El desarrollo de la inteligencia artificial avanza a un ritmo acelerado en todo el mundo.',Spanish,easy,"{""is_deterministic"": true, ""domain"": ""language_id"", ""eval_metric"": ""exact_match""}"
+CLASS-007,classification,Natural language inference relation classification,"Given Premise: 'A dog is running in the park chasing a red ball.' and Hypothesis: 'An animal is outside.' Classify the relation as Entailment, Contradiction, or Neutral.",Entailment,easy,"{""is_deterministic"": true, ""domain"": ""nli"", ""eval_metric"": ""exact_match""}"
+CLASS-008,classification,Software bug report severity triage,"Classify the severity of this software issue report as Critical, High, Medium, or Low: 'The application crashes immediately on launch for all Windows 11 users with an unhandled memory exception.'",Critical,easy,"{""is_deterministic"": true, ""domain"": ""software_triage"", ""eval_metric"": ""exact_match""}"
+CLASS-009,classification,Literary passage genre classification,"Classify the literary genre of this passage into [Science Fiction, Fantasy, Historical Fiction, Mystery]: 'The starship hyperdrive hummed as Captain Vance prepared to warp into sector 9 beyond the outer rim.'",Science Fiction,easy,"{""is_deterministic"": true, ""domain"": ""genre_classification"", ""eval_metric"": ""exact_match""}"
+CLASS-010,classification,Financial market analyst stance classification,"Classify the market stance of the comment as Bullish, Bearish, or Neutral: 'Strong quarterly earnings and expanding margins signal robust growth potential for the semiconductor sector.'",Bullish,easy,"{""is_deterministic"": true, ""domain"": ""financial_sentiment"", ""eval_metric"": ""exact_match""}"
+CLASS-011,classification,Workplace email urgency classification,Classify the urgency of this message as Urgent or Non-Urgent: 'Reminder: The team monthly newsletter submissions are open until next Friday.',Non-Urgent,easy,"{""is_deterministic"": true, ""domain"": ""urgency_classification"", ""eval_metric"": ""exact_match""}"
+CLASS-012,classification,Grammatical correctness judgment,Classify the sentence as Grammatical or Ungrammatical: 'She have went to the store yesterday morning before sunrise.',Ungrammatical,easy,"{""is_deterministic"": true, ""domain"": ""grammar_judgment"", ""eval_metric"": ""exact_match""}"
+CLASS-013,classification,Academic paper abstract discipline classification,"Classify the academic discipline of the abstract sentence into [Physics, Biology, Computer Science, Chemistry]: 'We propose a novel convolutional neural network architecture with residual connections for real-time object detection.'",Computer Science,easy,"{""is_deterministic"": true, ""domain"": ""academic_classification"", ""eval_metric"": ""exact_match""}"
+CLASS-014,classification,Scientific claim verification status classification,"Claim: 'Water boils at 100 degrees Celsius at standard atmospheric pressure.' Classify the claim as Supported, Refuted, or Insufficient Information based on established physical science.",Supported,easy,"{""is_deterministic"": true, ""domain"": ""fact_checking"", ""eval_metric"": ""exact_match""}"
+CLASS-015,classification,Source code smell category classification,"Classify the primary code smell present in this snippet: 'def calc(x): return x * 3.14159265359 * 8.314 * 2.71828' Options: [Magic Numbers, Duplicate Code, Long Parameter List, Deep Nesting].",Magic Numbers,easy,"{""is_deterministic"": true, ""domain"": ""code_analysis"", ""eval_metric"": ""exact_match""}"
+CLASS-016,classification,Public policy stance detection,"Classify the stance of the statement regarding renewable energy subsidies as In-Favor, Against, or Neutral: 'Tax credits for solar installation reduce carbon emissions and accelerate grid modernization.'",In-Favor,easy,"{""is_deterministic"": true, ""domain"": ""stance_detection"", ""eval_metric"": ""exact_match""}"
+CLASS-017,classification,User feedback taxonomy categorization,"Classify this user comment into [Feature Request, Bug Report, Praise, Usability Issue]: 'It would be extremely helpful if we could export reports directly to PDF format.'",Feature Request,easy,"{""is_deterministic"": true, ""domain"": ""feedback_classification"", ""eval_metric"": ""exact_match""}"
+CLASS-018,classification,Medical symptom emergency priority triage,"Classify the medical priority level of a patient presenting with sudden acute chest pain radiating to the left arm as High, Medium, or Low.",High,easy,"{""is_deterministic"": true, ""domain"": ""medical_triage"", ""eval_metric"": ""exact_match""}"
+CLASS-019,classification,Cyber security threat vector classification,"Classify the attack type of an email containing a fake login page link attempting to capture user passwords: [Phishing, Ransomware, DDoS, SQL Injection].",Phishing,easy,"{""is_deterministic"": true, ""domain"": ""cybersecurity"", ""eval_metric"": ""exact_match""}"
+CLASS-020,classification,Linguistic text formality register classification,"Classify the formality of the sentence as Formal or Informal: 'Hey mate, got a sec to check out this PR when u get a chance?'",Informal,easy,"{""is_deterministic"": true, ""domain"": ""formality_classification"", ""eval_metric"": ""exact_match""}"
+CODE-001,code_generation,Python string reversal without slice step,Write a Python function reverse_string(s: str) -> str that returns the reversed string without using Python's built-in slice step [::-1] or reversed().,"def reverse_string(s: str) -> str:
+    return ''.join(s[i] for i in range(len(s) - 1, -1, -1))",easy,"{""is_deterministic"": true, ""domain"": ""string_manipulation"", ""eval_metric"": ""code_execution""}"
+CODE-002,code_generation,Python primality test in square root time complexity,"Write a Python function is_prime(n: int) -> bool that returns True if n is a prime number and False otherwise, operating in O(sqrt(n)) time.","def is_prime(n: int) -> bool:
+    if n < 2:
+        return False
+    for i in range(2, int(n**0.5) + 1):
+        if n % i == 0:
+            return False
+    return True",easy,"{""is_deterministic"": true, ""domain"": ""algorithms"", ""eval_metric"": ""code_execution""}"
+CODE-003,code_generation,Python recursive arbitrary nested list flattening,Write a Python function flatten_list(nested: list) -> list that recursively flattens an arbitrarily nested list of integers into a single flat list.,"def flatten_list(nested: list) -> list:
+    result = []
+    for item in nested:
+        if isinstance(item, list):
+            result.extend(flatten_list(item))
+        else:
+            result.append(item)
+    return result",medium,"{""is_deterministic"": true, ""domain"": ""recursion"", ""eval_metric"": ""code_execution""}"
+CODE-004,code_generation,Python Fibonacci sequence list generator,"Write a Python function fibonacci(n: int) -> list[int] that returns a list of the first n Fibonacci numbers starting with 0, 1.","def fibonacci(n: int) -> list[int]:
+    if n <= 0:
+        return []
+    if n == 1:
+        return [0]
+    fib = [0, 1]
+    while len(fib) < n:
+        fib.append(fib[-1] + fib[-2])
+    return fib",easy,"{""is_deterministic"": true, ""domain"": ""algorithms"", ""eval_metric"": ""code_execution""}"
+CODE-005,code_generation,Python word frequency counting with punctuation removal,"Write a Python function word_frequencies(text: str) -> dict[str, int] that converts text to lowercase, strips punctuation, and returns a dictionary of word counts.","import string
+def word_frequencies(text: str) -> dict[str, int]:
+    text_clean = text.lower().translate(str.maketrans('', '', string.punctuation))
+    words = text_clean.split()
+    counts = {}
+    for w in words:
+        counts[w] = counts.get(w, 0) + 1
+    return counts",medium,"{""is_deterministic"": true, ""domain"": ""text_processing"", ""eval_metric"": ""code_execution""}"
+CODE-006,code_generation,Python linear time merging of two sorted lists,"Write a Python function merge_sorted(arr1: list[int], arr2: list[int]) -> list[int] that merges two sorted lists into one sorted list in O(n + m) time.","def merge_sorted(arr1: list[int], arr2: list[int]) -> list[int]:
+    i = j = 0
+    res = []
+    while i < len(arr1) and j < len(arr2):
+        if arr1[i] <= arr2[j]:
+            res.append(arr1[i])
+            i += 1
+        else:
+            res.append(arr2[j])
+            j += 1
+    res.extend(arr1[i:])
+    res.extend(arr2[j:])
+    return res",medium,"{""is_deterministic"": true, ""domain"": ""algorithms"", ""eval_metric"": ""code_execution""}"
+CODE-007,code_generation,Python case-insensitive anagram checker,"Write a Python function is_anagram(str1: str, str2: str) -> bool that checks if two strings are anagrams of each other (ignoring case and spaces).","def is_anagram(str1: str, str2: str) -> bool:
+    clean1 = sorted(str1.lower().replace(' ', ''))
+    clean2 = sorted(str2.lower().replace(' ', ''))
+    return clean1 == clean2",easy,"{""is_deterministic"": true, ""domain"": ""strings"", ""eval_metric"": ""code_execution""}"
+CODE-008,code_generation,Python thread-safe Singleton pattern implementation,Write a Python class Singleton using the __new__ method to ensure that only one instance of the class can ever be created.,"class Singleton:
+    _instance = None
+    def __new__(cls, *args, **kwargs):
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+        return cls._instance",medium,"{""is_deterministic"": true, ""domain"": ""design_patterns"", ""eval_metric"": ""code_execution""}"
+CODE-009,code_generation,Python iterative binary search algorithm,"Write a Python function binary_search(arr: list[int], target: int) -> int that returns the index of target in a sorted list arr, or -1 if target is not present.","def binary_search(arr: list[int], target: int) -> int:
+    left, right = 0, len(arr) - 1
+    while left <= right:
+        mid = (left + right) // 2
+        if arr[mid] == target:
+            return mid
+        elif arr[mid] < target:
+            left = mid + 1
+        else:
+            right = mid - 1
+    return -1",easy,"{""is_deterministic"": true, ""domain"": ""search_algorithms"", ""eval_metric"": ""code_execution""}"
+CODE-010,code_generation,Python Kadane's algorithm for maximum subarray sum,Write a Python function max_subarray_sum(nums: list[int]) -> int that finds the maximum sum of a contiguous subarray using Kadane's algorithm.,"def max_subarray_sum(nums: list[int]) -> int:
+    if not nums:
+        return 0
+    max_so_far = max_ending_here = nums[0]
+    for x in nums[1:]:
+        max_ending_here = max(x, max_ending_here + x)
+        max_so_far = max(max_so_far, max_ending_here)
+    return max_so_far",medium,"{""is_deterministic"": true, ""domain"": ""dynamic_programming"", ""eval_metric"": ""code_execution""}"
+CODE-011,code_generation,Python regex email validation function,Write a Python function is_valid_email(email: str) -> bool that uses regex to validate if a string matches a standard email format (user@domain.tld).,"import re
+def is_valid_email(email: str) -> bool:
+    pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+    return bool(re.match(pattern, email))",easy,"{""is_deterministic"": true, ""domain"": ""regex"", ""eval_metric"": ""code_execution""}"
+CODE-012,code_generation,Python Roman numeral to integer conversion,"Write a Python function roman_to_int(s: str) -> int that converts a Roman numeral string (e.g., 'MCMXCIV') into its integer value.","def roman_to_int(s: str) -> int:
+    vals = {'I': 1, 'V': 5, 'X': 10, 'L': 50, 'C': 100, 'D': 500, 'M': 1000}
+    total = 0
+    for i in range(len(s)):
+        if i + 1 < len(s) and vals[s[i]] < vals[s[i+1]]:
+            total -= vals[s[i]]
+        else:
+            total += vals[s[i]]
+    return total",medium,"{""is_deterministic"": true, ""domain"": ""parsing"", ""eval_metric"": ""code_execution""}"
+CODE-013,code_generation,Python safe JSON parsing with error handling fallback,"Write a Python function safe_parse_json(json_str: str, default: dict | None = None) -> dict that returns the parsed JSON dict, or default if parsing fails.","import json
+def safe_parse_json(json_str: str, default: dict | None = None) -> dict:
+    try:
+        res = json.loads(json_str)
+        return res if isinstance(res, dict) else (default or {})
+    except (json.JSONDecodeError, TypeError):
+        return default if default is not None else {}",easy,"{""is_deterministic"": true, ""domain"": ""error_handling"", ""eval_metric"": ""code_execution""}"
+CODE-014,code_generation,Python infinite prime number generator,Write a Python generator function generate_primes() that yields prime numbers infinitely starting from 2.,"def generate_primes():
+    n = 2
+    primes = []
+    while True:
+        if not any(n % p == 0 for p in primes):
+            primes.append(n)
+            yield n
+        n += 1",medium,"{""is_deterministic"": true, ""domain"": ""generators"", ""eval_metric"": ""code_execution""}"
+CODE-015,code_generation,Python Two Sum algorithm returning indices,"Write a Python function two_sum(nums: list[int], target: int) -> list[int] that returns the 0-based indices of two numbers that add up to target in O(n) time.","def two_sum(nums: list[int], target: int) -> list[int]:
+    seen = {}
+    for i, num in enumerate(nums):
+        diff = target - num
+        if diff in seen:
+            return [seen[diff], i]
+        seen[num] = i
+    return []",easy,"{""is_deterministic"": true, ""domain"": ""hash_tables"", ""eval_metric"": ""code_execution""}"
+CODE-016,code_generation,Python 2D matrix multiplication function,"Write a Python function multiply_matrices(A: list[list[float]], B: list[list[float]]) -> list[list[float]] that returns the matrix product A x B.","def multiply_matrices(A: list[list[float]], B: list[list[float]]) -> list[list[float]]:
+    rows_A, cols_A = len(A), len(A[0])
+    rows_B, cols_B = len(B), len(B[0])
+    if cols_A != rows_B:
+        raise ValueError('Incompatible dimensions')
+    C = [[0.0] * cols_B for _ in range(rows_A)]
+    for i in range(rows_A):
+        for j in range(cols_B):
+            C[i][j] = sum(A[i][k] * B[k][j] for k in range(cols_A))
+    return C",medium,"{""is_deterministic"": true, ""domain"": ""linear_algebra"", ""eval_metric"": ""code_execution""}"
+CODE-017,code_generation,Python execution timer decorator,Write a Python decorator time_it(func) that measures and prints the elapsed execution time of func in seconds before returning its result.,"import time
+from functools import wraps
+def time_it(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        start = time.perf_counter()
+        res = func(*args, **kwargs)
+        elapsed = time.perf_counter() - start
+        print(f'{func.__name__} took {elapsed:.6f}s')
+        return res
+    return wrapper",medium,"{""is_deterministic"": false, ""domain"": ""decorators"", ""eval_metric"": ""code_execution""}"
+CODE-018,code_generation,Python longest common prefix among array of strings,Write a Python function longest_common_prefix(strs: list[str]) -> str that finds the longest common prefix string amongst an array of strings.,"def longest_common_prefix(strs: list[str]) -> str:
+    if not strs:
+        return ''
+    prefix = strs[0]
+    for s in strs[1:]:
+        while not s.startswith(prefix):
+            prefix = prefix[:-1]
+            if not prefix:
+                return ''
+    return prefix",easy,"{""is_deterministic"": true, ""domain"": ""strings"", ""eval_metric"": ""code_execution""}"
+CODE-019,code_generation,Python Stack data structure implementation,"Write a Python class Stack with methods push(val), pop(), peek(), and is_empty() using an internal list.","class Stack:
+    def __init__(self):
+        self._items = []
+    def push(self, val):
+        self._items.append(val)
+    def pop(self):
+        return self._items.pop() if self._items else None
+    def peek(self):
+        return self._items[-1] if self._items else None
+    def is_empty(self) -> bool:
+        return len(self._items) == 0",easy,"{""is_deterministic"": true, ""domain"": ""data_structures"", ""eval_metric"": ""code_execution""}"
+CODE-020,code_generation,Python Reverse Polish Notation stack evaluator,"Write a Python function eval_rpn(tokens: list[str]) -> int that evaluates the value of an arithmetic expression in Reverse Polish Notation supporting +, -, *, /.","def eval_rpn(tokens: list[str]) -> int:
+    stack = []
+    for t in tokens:
+        if t in '+-*/':
+            b, a = stack.pop(), stack.pop()
+            if t == '+': stack.append(a + b)
+            elif t == '-': stack.append(a - b)
+            elif t == '*': stack.append(a * b)
+            elif t == '/': stack.append(int(a / b))
+        else:
+            stack.append(int(t))
+    return stack[0]",hard,"{""is_deterministic"": true, ""domain"": ""stack_parsing"", ""eval_metric"": ""code_execution""}"

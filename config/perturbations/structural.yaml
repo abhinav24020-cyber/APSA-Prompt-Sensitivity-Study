@@ -1,0 +1,4 @@
+﻿# Configuration for structural perturbation operators.
+reordering:
+  mode: "swap_context_instruction"  # "swap_context_instruction" | "shuffle_sentences"
+  delimiter: "\n"

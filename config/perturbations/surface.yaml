@@ -1,0 +1,11 @@
+﻿# Configuration for surface-level perturbation operators.
+capitalization:
+  mode: "uppercase"    # "lowercase" | "uppercase" | "titlecase" | "spongecob"
+  target: "keywords"   # "all" | "keywords" | "first_word"
+
+whitespace:
+  mode: "double_space" # "double_space" | "trailing_space" | "tab_insert" | "newline_double"
+  positions: "random"  # "all" | "random"
+
+punctuation:
+  mode: "add_period"   # "add_period" | "remove_period" | "swap_quote" | "oxford_comma"

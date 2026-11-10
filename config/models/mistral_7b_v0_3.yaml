@@ -1,0 +1,11 @@
+﻿model_id: "mistralai/Mistral-7B-Instruct-v0.3"
+display_name: "Mistral 7B Instruct v0.3"
+provider: huggingface
+api_key_env_var: "HF_TOKEN"
+device: "auto"
+dtype: "bfloat16"
+context_window: 32768
+parameter_scale: "7B"
+type: dense_instruct
+tokenizer_id: "mistralai/Mistral-7B-Instruct-v0.3"
+vllm: false

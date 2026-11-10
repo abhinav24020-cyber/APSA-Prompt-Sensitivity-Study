@@ -1,0 +1,64 @@
+{
+  "dataset_path": "data\\baseline_prompts.csv",
+  "dataset_sha256": "0467eae5acdcd6e8148bf3de7d87086b3dd7e8f3265c50772c670a19c8cff579",
+  "row_count": 100,
+  "columns": [
+    "difficulty_level",
+    "expected_answer",
+    "metadata",
+    "original_prompt",
+    "prompt_id",
+    "task_category",
+    "task_description"
+  ],
+  "missing_columns": [],
+  "duplicate_prompt_ids": [],
+  "duplicate_prompt_texts": [],
+  "blank_required_fields": {
+    "difficulty_level": [],
+    "expected_answer": [],
+    "metadata": [],
+    "original_prompt": [],
+    "prompt_id": [],
+    "task_category": [],
+    "task_description": []
+  },
+  "metadata_errors": [],
+  "category_counts": {
+    "classification": 20,
+    "code_generation": 20,
+    "logical_reasoning": 20,
+    "mathematical_reasoning": 20,
+    "question_answering": 20
+  },
+  "difficulty_counts": {
+    "easy": 59,
+    "hard": 7,
+    "medium": 34
+  },
+  "expected_answer_coverage": {
+    "present": 100
+  },
+  "code_reference_syntax": {
+    "parseable_python_references": 20,
+    "syntax_errors": [],
+    "functional_correctness": "not tested"
+  },
+  "pilot_sampling_eligibility": {
+    "categories_with_at_least_10_rows": {
+      "classification": 20,
+      "code_generation": 20,
+      "logical_reasoning": 20,
+      "mathematical_reasoning": 20,
+      "question_answering": 20
+    },
+    "pilot_selects_first_10_rows_per_category_in_csv_order": true,
+    "randomized_sampling": false
+  },
+  "rows_excluded_by_audit": [],
+  "reference_answer_correctness": {
+    "status": "not established by structural audit",
+    "review_required": true
+  },
+  "structural_checks_passed": true
+}

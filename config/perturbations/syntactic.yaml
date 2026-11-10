@@ -1,0 +1,4 @@
+﻿# Configuration for syntactic perturbation operators.
+rephrasing:
+  mode: "active_to_passive"  # "active_to_passive" | "passive_to_active" | "clause_swap"
+  max_sentences: 2

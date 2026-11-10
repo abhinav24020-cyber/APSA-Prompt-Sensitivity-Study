@@ -1,0 +1,28 @@
+﻿# Pilot experiment: small sample for sanity-checking the full pipeline.
+experiment:
+  name: "apsa_pilot"
+  description: "Small pilot run to validate pipeline before full experiment."
+  seed: 42
+  max_workers: 2
+
+datasets:
+  - name: gsm8k
+    split: test
+    sample_size: 10
+  - name: humaneval
+    split: test
+    sample_size: 5
+
+models:
+  - config_file: config/models/gemini_1_5_flash.yaml
+
+perturbations:
+  - type: capitalization
+    config_file: config/perturbations/surface.yaml
+  - type: synonym
+    config_file: config/perturbations/lexical.yaml
+  - type: random_edit
+
+storage:
+  results_dir: "results"
+  log_level: "DEBUG"

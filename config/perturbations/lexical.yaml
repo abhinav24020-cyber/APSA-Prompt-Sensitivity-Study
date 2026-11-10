@@ -1,0 +1,18 @@
+﻿# Configuration for lexical perturbation operators.
+synonym:
+  min_cosine_similarity: 0.90   # Minimum cosine similarity for synonym candidates
+  max_replacements: 3
+  pos_filter: ["NOUN", "VERB"]  # POS tags eligible for replacement
+
+substitution:
+  max_substitutions: 2
+  strategy: "embedding_nearest" # "embedding_nearest" | "wordnet"
+
+addition:
+  words: ["please", "carefully", "simply", "basically", "gently"]
+  max_additions: 2
+  position: "random"            # "start" | "end" | "random"
+
+deletion:
+  targets: ["articles", "politeness"] # "articles" | "politeness" | "stopwords"
+  max_deletions: 3

@@ -1,0 +1,50 @@
+﻿# Full production experiment covering all 7 models, all 4 datasets, all 9 perturbation types.
+experiment:
+  name: "apsa_full"
+  description: "Full adversarial prompt sensitivity analysis across all conditions."
+  seed: 42
+  max_workers: 8
+
+datasets:
+  - name: gsm8k
+    split: test
+    sample_size: 100
+  - name: humaneval
+    split: test
+    sample_size: 50
+  - name: squad_v2
+    split: validation
+    sample_size: 100
+  - name: cnn_dailymail
+    split: test
+    sample_size: 50
+
+models:
+  - config_file: config/models/llama_3_1_8b.yaml
+  - config_file: config/models/llama_3_1_70b.yaml
+  - config_file: config/models/qwen_2_5_7b.yaml
+  - config_file: config/models/qwen_2_5_coder_32b.yaml
+  - config_file: config/models/mistral_7b_v0_3.yaml
+  - config_file: config/models/gemini_1_5_flash.yaml
+  - config_file: config/models/gemini_1_5_pro.yaml
+
+perturbations:
+  - type: capitalization
+    config_file: config/perturbations/surface.yaml
+  - type: whitespace
+    config_file: config/perturbations/surface.yaml
+  - type: punctuation
+    config_file: config/perturbations/surface.yaml
+  - type: synonym
+    config_file: config/perturbations/lexical.yaml
+  - type: substitution
+    config_file: config/perturbations/lexical.yaml
+  - type: addition
+    config_file: config/perturbations/lexical.yaml
+  - type: deletion
+    config_file: config/perturbations/lexical.yaml
+  - type: rephrasing
+    config_file: config/perturbations/syntactic.yaml
+  - type: reordering
+    config_file: config/perturbations/structural.yaml
+  - type: random_edit

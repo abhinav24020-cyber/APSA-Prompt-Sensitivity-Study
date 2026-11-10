@@ -1,0 +1,9 @@
+model_id: "mock-model"
+display_name: "Mock Model (Offline/Test)"
+provider: mock
+api_key_env_var: "NONE"
+context_window: 4096
+parameter_scale: "0B"
+type: mock
+tokenizer_id: null
+

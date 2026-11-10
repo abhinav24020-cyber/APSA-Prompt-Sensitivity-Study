@@ -1,0 +1,21 @@
+﻿# Temperature ablation study: compare T=0.0 vs T=0.7 sensitivity.
+experiment:
+  name: "apsa_ablation_temperature"
+  description: "Ablation: effect of generation temperature on sensitivity measurements."
+  seed: 42
+  max_workers: 4
+
+datasets:
+  - name: gsm8k
+    split: test
+    sample_size: 50
+
+models:
+  - config_file: config/models/llama_3_1_8b.yaml
+  - config_file: config/models/gemini_1_5_flash.yaml
+
+perturbations:
+  - type: capitalization
+    config_file: config/perturbations/surface.yaml
+  - type: synonym
+    config_file: config/perturbations/lexical.yaml

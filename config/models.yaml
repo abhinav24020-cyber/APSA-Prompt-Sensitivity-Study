@@ -1,0 +1,83 @@
+# LLM Provider Configuration
+# 
+# This file defines the models available for the adversarial prompt sensitivity experiments.
+#
+# Available fields per model:
+# - name: The unique identifier for the model.
+# - provider: The provider to use. Supported: 'groq', 'gemini', 'openai', 'mock'.
+# - is_free_tier: Boolean flag indicating if the model has a free API key tier.
+# - temperature: Controls randomness. Set to 0.0 for deterministic/reproducible results.
+# - max_tokens: Maximum number of tokens to generate in the output.
+# - top_p: Optional. Nucleus sampling probability.
+# - seed: Optional. Seed for deterministic generation.
+# - description: A brief description of the model for logging and reporting purposes.
+
+models:
+  # ============================================================================
+  # 1. Groq Cloud Models (Active Free Tier on User Account - Verified Working)
+  # Free Key: https://console.groq.com/keys (set in .env as GROQ_API_KEY)
+  # ============================================================================
+  - name: "qwen/qwen3.8-27b"
+    provider: "groq"
+    is_free_tier: true
+    temperature: 0.0
+    max_tokens: 256
+    description: "Qwen 3.8 27B via Groq. High capability reasoning and coding."
+
+  - name: "openai/gpt-oss-120b"
+    provider: "groq"
+    is_free_tier: true
+    temperature: 0.0
+    max_tokens: 256
+    description: "OpenAI GPT-OSS 120B via Groq. Frontier open-weight reasoning model."
+
+  - name: "openai/gpt-oss-20b"
+    provider: "groq"
+    is_free_tier: true
+    temperature: 0.0
+    max_tokens: 256
+    description: "OpenAI GPT-OSS 20B via Groq. Fast efficient open-weight model."
+
+  - name: "allam-2-7b"
+    provider: "groq"
+    is_free_tier: true
+    temperature: 0.0
+    max_tokens: 256
+    description: "Allam 2 7B via Groq. Lightweight open instruction model."
+
+  # ============================================================================
+  # 2. Google Gemini Models (Google AI Studio)
+  # Free Key: https://aistudio.google.com/app/apikey (set in .env as GEMINI_API_KEY)
+  # ============================================================================
+  - name: "gemini-1.5-flash"
+    provider: "gemini"
+    is_free_tier: true
+    temperature: 0.0
+    max_tokens: 1024
+    description: "Gemini 1.5 Flash from Google AI Studio."
+
+  - name: "gemini-2.5-flash"
+    provider: "gemini"
+    is_free_tier: true
+    temperature: 0.0
+    max_tokens: 1024
+    description: "Gemini 2.5 Flash from Google AI Studio."
+
+  # ============================================================================
+  # 3. OpenAI Models (Requires Paid API Credits)
+  # ============================================================================
+  - name: "gpt-3.5-turbo"
+    provider: "openai"
+    is_free_tier: false
+    temperature: 0.0
+    max_tokens: 1024
+    seed: 42
+    description: "OpenAI GPT-3.5 Turbo model (Paid)."
+
+  - name: "gpt-4o"
+    provider: "openai"
+    is_free_tier: false
+    temperature: 0.0
+    max_tokens: 1024
+    seed: 42
+    description: "OpenAI GPT-4o model (Paid)."
