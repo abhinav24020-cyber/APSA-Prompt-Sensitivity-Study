@@ -1,0 +1,56 @@
+# Semantic-preservation audit of main_study perturbation candidates (Phase 12, CP12.4).
+#
+# Procedure (2026-11-20): every accepted candidate of word_substitution (23), word_deletion
+# (49), char_substitution (50), instruction_reordering (19) and synonym (34) was inspected as
+# a word-level diff against the original prompt. A stratified random sample of 5 candidates
+# per remaining operator (seed 12) was inspected too: capitalization, punctuation,
+# whitespace, word_insertion and random_edit. Those four non-random operators are mechanical
+# (case, trailing punctuation, spacing, a leading filler word). This audit has not been validated by independent human
+# annotators; a human second review is recommended before publication.
+#
+# A candidate is listed here when the edit changes the task, the specification or the
+# reference answer. Such a candidate is a meaning-changing input, not a "minimal,
+# meaning-preserving" perturbation. random_edit is a high-risk noise control by design
+# and is handled as an operator-level exclusion instead of being listed item by item.
+#
+# Sample verdicts for the unlisted operators: capitalization 5/5, punctuation 5/5,
+# whitespace 5/5, word_insertion 5/5 ("Carefully" prefix, ungrammatical capitalisation
+# kept) and synonym 5/5 preserved meaning; random_edit 2/5 preserved, 3/5 altered an
+# identifier (CODE-005), a number ("20%"->"2h%", MATH-001) or a name ("Carol"->"Caol", LOGIC-003).
+
+meaning_altering:
+  - {prompt_id: CODE-002, operator: word_substitution, kind: specification_changed,
+     note: "'False otherwise' -> 'True otherwise' changes the required function behaviour"}
+  - {prompt_id: LOGIC-006, operator: word_substitution, kind: question_changed,
+     note: "'valid execution orders' -> 'invalid execution orders'"}
+  - {prompt_id: LOGIC-010, operator: word_substitution, kind: question_changed,
+     note: "'Q is False' -> 'Q is True' (reference answer happens to stay True)"}
+  - {prompt_id: LOGIC-006, operator: word_deletion, kind: entity_removed,
+     note: "deletes the task name 'A' ('Task A must ...' -> 'Task must ...')"}
+  - {prompt_id: CODE-001, operator: char_substitution, kind: specification_changed,
+     note: "required function name reverse_string -> reverse_5tring"}
+  - {prompt_id: CODE-004, operator: char_substitution, kind: specification_changed,
+     note: "required function name fibonacci -> f1bonacci"}
+  - {prompt_id: CODE-008, operator: char_substitution, kind: specification_changed,
+     note: "required class name Singleton -> 5ingleton"}
+  - {prompt_id: LOGIC-003, operator: char_substitution, kind: answer_entity_changed,
+     note: "the answer entity Dave -> D@ve"}
+  - {prompt_id: CLASS-005, operator: char_substitution, kind: answer_option_changed,
+     note: "the correct option Anger -> @nger"}
+  - {prompt_id: QA-015, operator: char_substitution, kind: answer_entity_changed,
+     note: "entity to extract Chen -> Ch3n; a faithful extraction no longer matches the reference"}
+  - {prompt_id: QA-010, operator: synonym, kind: question_changed,
+     note: "'atomic number' -> 'atomic value' asks for a different quantity (found in the full synonym audit)"}
+  - {prompt_id: QA-002, operator: instruction_reordering, kind: quotation_broken,
+     note: "sentence split inside the quoted passage; passage fragment moved outside quotes"}
+  - {prompt_id: QA-008, operator: instruction_reordering, kind: quotation_broken,
+     note: "sentence split inside the quoted passage"}
+  - {prompt_id: QA-015, operator: instruction_reordering, kind: quotation_broken,
+     note: "split inside the quoted text, separating 'Dr.' from 'Liam Chen'"}
+  - {prompt_id: CLASS-004, operator: instruction_reordering, kind: quotation_broken,
+     note: "part of the quoted email moved before the instruction"}
+
+# Minor, not listed: parameter-name typos in code prompts (n3sted, +ext, 5tr1, @rr, num5,
+# 1ist[int]) leave the required entry point unchanged; 'Find'->'Locate' is stilted but
+# preserves the task.
+operator_level_exclusions: [random_edit]

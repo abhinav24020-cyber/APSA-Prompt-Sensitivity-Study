@@ -13,7 +13,13 @@ from tenacity import (
 )
 
 from .base import BaseLLMProvider, GenerationResult
-from .exceptions import ConfigurationError, GenerationError, RateLimitError
+from .exceptions import (
+    ConfigurationError,
+    GenerationError,
+    RateLimitError,
+    classify_rate_limit_scope,
+    parse_retry_after_text,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -53,9 +59,13 @@ class GroqProvider(BaseLLMProvider):
             "Content-Type": "application/json"
         }
         max_tokens = configuration.get("max_tokens", 256)
+        messages = []
+        if configuration.get("system_prompt"):
+            messages.append({"role": "system", "content": configuration["system_prompt"]})
+        messages.append({"role": "user", "content": prompt})
         payload = {
             "model": self.model_name,
-            "messages": [{"role": "user", "content": prompt}],
+            "messages": messages,
             "temperature": configuration.get("temperature", 0.0),
             "max_tokens": max_tokens,
         }
@@ -63,6 +73,8 @@ class GroqProvider(BaseLLMProvider):
             payload["top_p"] = configuration["top_p"]
         if "seed" in configuration:
             payload["seed"] = configuration["seed"]
+        if configuration.get("reasoning_effort"):
+            payload["reasoning_effort"] = configuration["reasoning_effort"]
 
         response = requests.post(self.API_URL, headers=headers, json=payload, timeout=60)
         if response.status_code == 429:
@@ -70,20 +82,22 @@ class GroqProvider(BaseLLMProvider):
             try:
                 retry_after = float(response.headers["retry-after"])
             except (KeyError, TypeError, ValueError):
-                pass
+                retry_after = parse_retry_after_text(response.text)
+            scope = classify_rate_limit_scope(response.text)
             wait_message = (
                 f" Retry after {retry_after:g} seconds."
                 if retry_after is not None
                 else ""
             )
             logger.warning(
-                "Groq rate limit (429); stopping this provider run instead of "
-                "repeating requests.%s",
+                "Groq rate limit (429); raising RateLimitError without provider-level "
+                "retry (the caller decides whether to wait).%s",
                 wait_message,
             )
             raise RateLimitError(
                 f"Groq rate limit (429): {response.text}{wait_message}",
                 retry_after=retry_after,
+                scope=scope,
             )
 
         if response.status_code != 200:

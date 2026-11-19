@@ -13,8 +13,13 @@ venv/
 # Environment / secrets
 .env
 
-# Results (large data; store externally or in DVC)
-results/
+# Results: only the completed main study (the paper's evidence) is versioned;
+# mock runs and other experiment output stay local.
+results/*
+!results/study/
+results/study/*
+!results/study/main_v1/
+logs/
 
 # IDE
 .vscode/

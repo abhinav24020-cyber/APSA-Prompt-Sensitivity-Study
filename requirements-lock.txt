@@ -1,0 +1,22 @@
+# Verified working environment for the APSA main study (Python 3.12.10, Windows 10, CPU only), 2026-11-19.
+google-genai==2.28.0
+huggingface_hub==0.36.2
+Levenshtein==0.27.5
+matplotlib==3.11.2
+numpy==2.5.4
+pandas==3.0.6
+pydantic==2.13.5
+pytest==9.2.0
+python-docx==1.2.0
+python-Levenshtein==0.27.5
+PyYAML==6.0.3
+requests==2.34.2
+rouge_score==0.1.2
+scikit-learn==1.9.1
+scipy==1.18.1
+sentence-transformers==3.3.1
+statsmodels==0.15.0
+tenacity==9.1.4
+tokenizers==0.20.3
+torch==2.5.1  # CPU build; installed metadata reported 2.15.0 but runtime torch.__version__ is 2.5.1
+transformers==4.46.3

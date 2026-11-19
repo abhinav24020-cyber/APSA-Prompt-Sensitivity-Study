@@ -1,0 +1,60 @@
+# APSA main live study (Phases 11-15 evidence run).
+#
+# Design: for every (model, prompt) the ORIGINAL prompt is generated once as the
+# "anchor", then re-generated `control_repetitions` times unchanged (control pairs:
+# anchor vs repeat), and each applicable perturbed prompt is generated once
+# (treatment pairs: anchor vs perturbed). Every pair therefore shares the same anchor
+# output, so treatment-vs-control comparisons are paired within prompt and model.
+#
+# The system prompt below is a FIXED experimental condition applied identically to
+# original, control and perturbed requests. It standardises the answer format so that
+# correctness can be scored, and keeps outputs short to fit free-tier quotas.
+
+study_name: apsa_main_study
+dataset: data/baseline_prompts.csv
+prompts_per_category: 10
+# Selection rule (fixed before any output was observed): within each category, take
+# prompts in file order whose metadata eval_metric is objectively scorable
+# (exact_match or code_execution). Categories are interleaved round-robin so that a
+# run stopped by a quota still has balanced category coverage.
+selection_rule: scorable_first_file_order
+control_repetitions: 2
+perturbation_seed: 42
+semantic_model: sentence-transformers/all-MiniLM-L6-v2
+
+operators:
+  - char_substitution       # surface: one character typo
+  - capitalization          # surface: first word lower-cased
+  - punctuation             # surface: trailing punctuation removed/added
+  - whitespace              # surface: doubled spaces
+  - word_insertion          # lexical: filler word inserted
+  - word_deletion           # lexical: function word deleted
+  - synonym                 # lexical: dictionary synonym swap
+  - word_substitution       # lexical: function-word substitution
+  - instruction_reordering  # structural: sentence order changed
+  - random_edit             # noise control: random character edits (high semantic risk)
+
+system_prompt: >-
+  You are a helpful assistant. Answer the user's request accurately and concisely.
+  If the request has a definite answer (a number, label, name, choice, or short result),
+  finish with a separate last line of the form 'Final answer: <answer>'.
+  If the request asks for code, reply with a single Python code block and no other text.
+
+generation:
+  temperature: 0.0
+  max_tokens: 768
+
+models:
+  - name: qwen/qwen3.8-27b
+    provider: groq
+  - name: openai/gpt-oss-120b
+    provider: groq
+    reasoning_effort: low
+  - name: openai/gpt-oss-20b
+    provider: groq
+    reasoning_effort: low
+  - name: allam-2-7b
+    provider: groq
+  - name: gemini-3.1-flash-lite
+    provider: gemini
+    min_request_interval: 4.5

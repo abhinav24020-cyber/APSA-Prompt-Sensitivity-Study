@@ -1,0 +1,175 @@
+{
+  "study_id": "main_v1",
+  "config_path": "config/experiments/main_study.yaml",
+  "config_sha256": "0e9748d99505ebd269b380bf790fc5256e1d2ad354bb81e2610cc37f612cf1c3",
+  "config": {
+    "study_name": "apsa_main_study",
+    "dataset": "data/baseline_prompts.csv",
+    "prompts_per_category": 10,
+    "selection_rule": "scorable_first_file_order",
+    "control_repetitions": 2,
+    "perturbation_seed": 42,
+    "semantic_model": "sentence-transformers/all-MiniLM-L6-v2",
+    "operators": [
+      "char_substitution",
+      "capitalization",
+      "punctuation",
+      "whitespace",
+      "word_insertion",
+      "word_deletion",
+      "synonym",
+      "word_substitution",
+      "instruction_reordering",
+      "random_edit"
+    ],
+    "system_prompt": "You are a helpful assistant. Answer the user's request accurately and concisely. If the request has a definite answer (a number, label, name, choice, or short result), finish with a separate last line of the form 'Final answer: <answer>'. If the request asks for code, reply with a single Python code block and no other text.",
+    "generation": {
+      "temperature": 0.0,
+      "max_tokens": 768
+    },
+    "models": [
+      {
+        "name": "qwen/qwen3.8-27b",
+        "provider": "groq"
+      },
+      {
+        "name": "openai/gpt-oss-120b",
+        "provider": "groq",
+        "reasoning_effort": "low"
+      },
+      {
+        "name": "openai/gpt-oss-20b",
+        "provider": "groq",
+        "reasoning_effort": "low"
+      },
+      {
+        "name": "allam-2-7b",
+        "provider": "groq"
+      },
+      {
+        "name": "gemini-3.1-flash-lite",
+        "provider": "gemini",
+        "min_request_interval": 4.5
+      }
+    ]
+  },
+  "dataset_path": "data/baseline_prompts.csv",
+  "dataset_sha256": "0467eae5acdcd6e8148bf3de7d87086b3dd7e8f3265c50772c670a19c8cff579",
+  "selected_prompt_ids": [
+    "CLASS-001",
+    "CODE-001",
+    "LOGIC-001",
+    "MATH-001",
+    "QA-001",
+    "CLASS-002",
+    "CODE-002",
+    "LOGIC-002",
+    "MATH-002",
+    "QA-002",
+    "CLASS-003",
+    "CODE-003",
+    "LOGIC-003",
+    "MATH-003",
+    "QA-003",
+    "CLASS-004",
+    "CODE-004",
+    "LOGIC-004",
+    "MATH-004",
+    "QA-004",
+    "CLASS-005",
+    "CODE-005",
+    "LOGIC-005",
+    "MATH-005",
+    "QA-007",
+    "CLASS-006",
+    "CODE-006",
+    "LOGIC-006",
+    "MATH-006",
+    "QA-008",
+    "CLASS-007",
+    "CODE-007",
+    "LOGIC-007",
+    "MATH-007",
+    "QA-010",
+    "CLASS-008",
+    "CODE-008",
+    "LOGIC-008",
+    "MATH-008",
+    "QA-013",
+    "CLASS-009",
+    "CODE-009",
+    "LOGIC-009",
+    "MATH-009",
+    "QA-015",
+    "CLASS-010",
+    "CODE-010",
+    "LOGIC-010",
+    "MATH-010",
+    "QA-016"
+  ],
+  "candidate_counts": {
+    "total": 500,
+    "accepted": 425
+  },
+  "runs": [
+    {
+      "run_started_at": "2026-11-19T18:02:31.223940+00:00",
+      "execution_mode": "live",
+      "models": [
+        "qwen/qwen3.8-27b",
+        "openai/gpt-oss-120b",
+        "openai/gpt-oss-20b",
+        "allam-2-7b",
+        "gemini-3.1-flash-lite"
+      ],
+      "python_version": "3.12.10",
+      "platform": "Windows-10-10.0.21996-SP0"
+    },
+    {
+      "run_started_at": "2026-11-19T18:06:11.305611+00:00",
+      "execution_mode": "live",
+      "models": [
+        "qwen/qwen3.8-27b",
+        "openai/gpt-oss-120b",
+        "openai/gpt-oss-20b",
+        "allam-2-7b",
+        "gemini-3.1-flash-lite"
+      ],
+      "python_version": "3.12.10",
+      "platform": "Windows-10-10.0.21996-SP0",
+      "run_finished_at": "2026-11-19T20:12:30.524769+00:00",
+      "per_model": {
+        "qwen/qwen3.8-27b": {
+          "status": "completed",
+          "new_generations": 537,
+          "failures": 0,
+          "calls_started": 1004
+        },
+        "openai/gpt-oss-120b": {
+          "status": "completed",
+          "new_generations": 496,
+          "failures": 0,
+          "calls_started": 730
+        },
+        "openai/gpt-oss-20b": {
+          "status": "completed",
+          "new_generations": 492,
+          "failures": 5,
+          "calls_started": 714
+        },
+        "allam-2-7b": {
+          "status": "completed",
+          "new_generations": 488,
+          "failures": 0,
+          "calls_started": 729
+        },
+        "gemini-3.1-flash-lite": {
+          "status": "stopped_quota",
+          "new_generations": 410,
+          "failures": 2,
+          "calls_started": 412
+        }
+      }
+    }
+  ]
+}
