@@ -236,7 +236,7 @@ A large share of the apparent "fragility" in naïve perturbation studies can the
 
 - **Removing a "?"** made ALLaM name *Werner Heisenberg* instead of Albert Einstein as the 1921 Nobel laureate (QA-001).
 - **Appending a "."** after a quoted Spanish sentence made Qwen classify it as *Portuguese* (CLASS-006).
-- **Replacing "Classify" with "Categorize"** made GPT-OSS-120B label a central-bank interest-rate headline *Politics* instead of *Business* (CLASS-002).
+- **Replacing "Classify" with "Categorize"** made GPT-OSS-20B label a central-bank interest-rate headline *Politics* instead of *Business* (CLASS-002).
 - **A single typo** ("1" for "i") changed Qwen's severity label for an application-crash report from *Critical* to *High* (CLASS-008).
 - **Lower-casing the first letter** of a word problem made ALLaM answer $9.60 instead of $7.20 (MATH-001). Four other one-character edits to the same prompt produced four further, different wrong answers.
 
