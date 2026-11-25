@@ -149,6 +149,10 @@ Add `--mock` to `run_study.py` and `--include-mock` to `analyze_study.py` to che
 offline. Mock outputs are not evidence: `analyze_study.py` analyses only live generations unless told
 otherwise, and records the execution modes in `results.json`.
 
+## Research extension
+
+Prepare blinded input and output judgments, compare them with independent human reviews, and lock a category versus global policy comparison on fresh prompts. The [APSA research protocol](docs/paper/APSA_research_extension.md) includes the evidence audit, rubrics, commands, and paper draft.
+
 ## Output layout (`results/study/<study_id>/`)
 
 | Path | Content |
