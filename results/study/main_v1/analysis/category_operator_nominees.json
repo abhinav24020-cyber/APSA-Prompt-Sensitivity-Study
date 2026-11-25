@@ -1,0 +1,39 @@
+{
+  "locked_at": "2026-11-24T15:06:11.728681+00:00",
+  "discovery_study_id": "main_v1",
+  "budget": "0.10",
+  "nominees": {
+    "classification": "synonym",
+    "code_generation": "word_insertion",
+    "logical_reasoning": "punctuation",
+    "mathematical_reasoning": "char_substitution",
+    "question_answering": "punctuation"
+  },
+  "unresolved_ties": {},
+  "operators": [
+    "char_substitution",
+    "capitalization",
+    "punctuation",
+    "whitespace",
+    "word_insertion",
+    "word_deletion",
+    "synonym",
+    "word_substitution",
+    "instruction_reordering"
+  ],
+  "models": [
+    "qwen/qwen3.8-27b",
+    "openai/gpt-oss-120b",
+    "openai/gpt-oss-20b",
+    "allam-2-7b",
+    "gemini-3.1-flash-lite"
+  ],
+  "control_repetitions": 2,
+  "discovery_source_sha256": {
+    "study_manifest.json": "f8c43f481bb12c4c6a8f3e544da2ace770e06b2b6219e604ea431006baf4b880",
+    "candidates.jsonl": "98d94aac07214533f21800767622a60afbe6d912604945b269b559751fcd4fcd",
+    "processed/analysis_pairs.csv": "4a4b16d6e3c88806d081ee72812917d7cefe2ba3cb2b57ee4b02ac95c17ae68e",
+    "config/experiments/main_study_semantic_audit.yaml": "c7ce0b018ec306f91d7ce6d06f293501e9558f501354047cea8c8bb225cc29ba"
+  },
+  "note": "Exploratory discovery leaders. A category winner is confirmed only by the held-out protocol (validate command) on new prompts."
+}

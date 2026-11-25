@@ -752,6 +752,8 @@ def md_table(rows: list[dict], cols: list[str], fmt: dict | None = None) -> str:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--study-dir", type=Path, required=True)
+    parser.add_argument("--include-mock", action="store_true",
+                        help="Pipeline check only: keep mock generations. The outputs are not evidence.")
     args = parser.parse_args()
     study_dir = args.study_dir if args.study_dir.is_absolute() else ROOT / args.study_dir
     raw_dir = study_dir / "raw"
@@ -774,7 +776,10 @@ def main() -> None:
     gens = pd.DataFrame(gen_rows)
     if gens.empty:
         raise SystemExit("No generations found")
-    gens = gens[gens["execution_mode"] == "live"] if "execution_mode" in gens else gens
+    if "execution_mode" in gens and not args.include_mock:
+        gens = gens[gens["execution_mode"] == "live"]
+    elif args.include_mock:
+        logger.warning("--include-mock: mock generations are analysed for a pipeline check; not evidence")
     key = ["model", "prompt_id", "condition", "operator", "repetition"]
     gens["operator"] = gens["operator"].astype(object).where(gens["operator"].notna(), None)
     dup_mask = gens.duplicated(subset=key, keep="first")
@@ -836,6 +841,8 @@ def main() -> None:
     results: dict = {
         "generated_at": datetime.now(UTC).isoformat(),
         "study_id": manifest["study_id"],
+        "execution_modes": sorted(gens["execution_mode"].dropna().unique().tolist())
+        if "execution_mode" in gens else ["unknown"],
         "primary_outcome": PRIMARY,
         "metric_definitions": METRICS,
         "data_integrity": {

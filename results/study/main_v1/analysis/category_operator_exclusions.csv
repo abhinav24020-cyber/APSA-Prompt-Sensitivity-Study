@@ -1,0 +1,15 @@
+category,budget,prompt_id,reason
+mathematical_reasoning,0.01,MATH-005,GPT-OSS-20B / char_substitution: treatment_missing; GPT-OSS-20B / punctuation: treatment_missing
+mathematical_reasoning,0.01,MATH-008,Qwen 3.8 27B / capitalization: treatment_truncated_output
+mathematical_reasoning,0.02,MATH-005,GPT-OSS-20B / char_substitution: treatment_missing; GPT-OSS-20B / punctuation: treatment_missing
+mathematical_reasoning,0.02,MATH-008,Qwen 3.8 27B / capitalization: treatment_truncated_output
+logical_reasoning,0.05,LOGIC-007,GPT-OSS-20B / synonym: treatment_truncated_output
+mathematical_reasoning,0.05,MATH-005,GPT-OSS-20B / char_substitution: treatment_missing; GPT-OSS-20B / punctuation: treatment_missing; GPT-OSS-20B / word_deletion: treatment_missing
+mathematical_reasoning,0.05,MATH-008,Qwen 3.8 27B / capitalization: treatment_truncated_output
+logical_reasoning,0.10,LOGIC-007,GPT-OSS-20B / synonym: treatment_truncated_output
+mathematical_reasoning,0.10,MATH-005,GPT-OSS-20B / char_substitution: treatment_missing; GPT-OSS-20B / punctuation: treatment_missing; GPT-OSS-20B / word_deletion: treatment_missing
+mathematical_reasoning,0.10,MATH-008,Qwen 3.8 27B / capitalization: treatment_truncated_output
+logical_reasoning,none,LOGIC-006,Qwen 3.8 27B / instruction_reordering: treatment_truncated_output
+logical_reasoning,none,LOGIC-007,GPT-OSS-20B / synonym: treatment_truncated_output
+mathematical_reasoning,none,MATH-005,GPT-OSS-20B / char_substitution: treatment_missing; GPT-OSS-20B / punctuation: treatment_missing; GPT-OSS-20B / whitespace: treatment_missing; GPT-OSS-20B / word_deletion: treatment_missing
+mathematical_reasoning,none,MATH-008,Qwen 3.8 27B / capitalization: treatment_truncated_output

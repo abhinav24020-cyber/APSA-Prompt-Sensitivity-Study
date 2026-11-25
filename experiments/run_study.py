@@ -26,6 +26,7 @@ import hashlib
 import json
 import logging
 import platform
+import random
 import re
 import sys
 import threading
@@ -152,8 +153,10 @@ class ModelWorker(threading.Thread):
                  provider, generation: dict[str, Any], system_prompt: str,
                  prompts: list[dict[str, str]], candidates: list[dict[str, Any]],
                  control_repetitions: int, max_wait: float, is_mock: bool,
-                 max_calls: int | None):
+                 max_calls: int | None, treatment_allowed=None, shuffle_seed: int | None = None):
         super().__init__(name=model_cfg["name"], daemon=True)
+        self.treatment_allowed = treatment_allowed
+        self.shuffle_seed = shuffle_seed
         self.study_dir = study_dir
         self.study_id = study_id
         self.cfg = model_cfg
@@ -194,14 +197,17 @@ class ModelWorker(threading.Thread):
     def _jobs(self):
         cands = defaultdict(list)
         for c in self.candidates:
-            if c["status"] == "accepted":
+            if c["status"] == "accepted" and (self.treatment_allowed is None or self.treatment_allowed(c)):
                 cands[c["prompt_id"]].append(c)
         for row in self.prompts:
             yield row, "anchor", None, 1, row["original_prompt"], None
-            for rep in range(1, self.control_repetitions + 1):
-                yield row, "control", None, rep, row["original_prompt"], None
-            for c in cands[row["prompt_id"]]:
-                yield row, "treatment", c["operator"], 1, c["perturbed_prompt"], c
+            block = [(row, "control", None, rep, row["original_prompt"], None)
+                     for rep in range(1, self.control_repetitions + 1)]
+            block += [(row, "treatment", c["operator"], 1, c["perturbed_prompt"], c) for c in cands[row["prompt_id"]]]
+            if self.shuffle_seed is not None:
+                # Recorded, per-model and per-prompt order of repeats and treatments (plan Section 4, step 3).
+                random.Random(f"{self.shuffle_seed}:{self.cfg['name']}:{row['prompt_id']}").shuffle(block)
+            yield from block
 
     def _generate(self, text: str):
         attempts = 0
@@ -310,17 +316,57 @@ def main() -> None:
     parser.add_argument("--mock", action="store_true", help="Offline mock provider (no API calls)")
     parser.add_argument("--max-wait-seconds", type=float, default=900.0)
     parser.add_argument("--max-calls-per-model", type=int, default=None)
+    parser.add_argument("--dataset", default=None, help="Override the config's dataset CSV")
+    parser.add_argument("--prompt-ids", nargs="+", default=None,
+                        help="Explicit prompt allowlist (IDs, or @file with one ID per line); bypasses the "
+                             "selection rule so validation runs cannot reselect discovery prompts")
+    parser.add_argument("--verdicts", default=None,
+                        help="CSV of final preservation verdicts; only 'preserved' candidates are generated")
+    parser.add_argument("--max-input-distance", type=float, default=None,
+                        help="Skip treatments whose normalised character distance exceeds this budget")
+    parser.add_argument("--shuffle-seed", type=int, default=None,
+                        help="Randomise the order of repeats and treatments within each prompt block")
     args = parser.parse_args()
 
     cfg = yaml.safe_load((ROOT / args.config).read_text(encoding="utf-8"))
+    if args.dataset:
+        cfg["dataset"] = args.dataset
     load_env_file()
     study_dir = ROOT / args.output_root / args.study_id
     (study_dir / "raw").mkdir(parents=True, exist_ok=True)
 
     dataset_path = ROOT / cfg["dataset"]
     rows = list(csv.DictReader(dataset_path.open(encoding="utf-8")))
-    per_cat = args.prompts_per_category or cfg["prompts_per_category"]
-    prompts = select_prompts(rows, per_cat, cfg["selection_rule"])
+    if args.prompt_ids:
+        wanted: list[str] = []
+        for item in args.prompt_ids:
+            if item.startswith("@"):
+                wanted += [l.strip() for l in (ROOT / item[1:]).read_text(encoding="utf-8").splitlines() if l.strip()]
+            else:
+                wanted += [p.strip() for p in item.split(",") if p.strip()]
+        by_id = {r["prompt_id"]: r for r in rows}
+        unknown = [p for p in wanted if p not in by_id]
+        if unknown:
+            raise SystemExit(f"Unknown prompt IDs in --prompt-ids: {unknown}")
+        prompts = [by_id[p] for p in wanted]
+        cfg["selection_rule"] = "explicit_allowlist"
+    else:
+        per_cat = args.prompts_per_category or cfg["prompts_per_category"]
+        prompts = select_prompts(rows, per_cat, cfg["selection_rule"])
+
+    preserved = None
+    if args.verdicts:
+        with (ROOT / args.verdicts).open(encoding="utf-8", newline="") as handle:
+            vrows = list(csv.DictReader(handle))
+        col = "final_verdict" if vrows and "final_verdict" in vrows[0] else "verdict"
+        preserved = {(r["prompt_id"], r["operator"]) for r in vrows if (r.get(col) or "").strip().lower() == "preserved"}
+
+    def treatment_allowed(c: dict[str, Any]) -> bool:
+        if preserved is not None and (c["prompt_id"], c["operator"]) not in preserved:
+            return False
+        if args.max_input_distance is not None:
+            return c["input_distances"]["char_levenshtein_normalized"] <= args.max_input_distance
+        return True
 
     candidates_path = study_dir / "candidates.jsonl"
     if candidates_path.exists():
@@ -351,6 +397,8 @@ def main() -> None:
             candidates=candidates, control_repetitions=cfg["control_repetitions"],
             max_wait=args.max_wait_seconds, is_mock=args.mock,
             max_calls=args.max_calls_per_model,
+            treatment_allowed=treatment_allowed if (preserved is not None or args.max_input_distance) else None,
+            shuffle_seed=args.shuffle_seed,
         ))
 
     manifest_path = study_dir / "study_manifest.json"
@@ -372,6 +420,8 @@ def main() -> None:
         "dataset_path": cfg["dataset"],
         "dataset_sha256": sha256_file(dataset_path),
         "selected_prompt_ids": [r["prompt_id"] for r in prompts],
+        "generation_filters": {"verdicts": args.verdicts, "max_input_distance": args.max_input_distance,
+                               "shuffle_seed": args.shuffle_seed, "prompt_allowlist": bool(args.prompt_ids)},
         "candidate_counts": {"total": len(candidates), "accepted": accepted},
         "runs": runs + [run_entry],
     }

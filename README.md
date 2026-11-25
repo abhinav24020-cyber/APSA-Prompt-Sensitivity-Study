@@ -23,7 +23,7 @@ with paired, prompt-clustered statistics.
 | Live main study `main_v1` | **Complete:** 2,870 / 2,875 live generations (5 models × 50 prompts × [1 anchor + 2 controls + ≤10 perturbations]) |
 | Phases 11–17 | Complete with accepted limitations ([verification report](docs/roadmap/phases_11_to_17_verification.md)) |
 | Research paper | [docs/paper/APSA_research_paper.md](docs/paper/APSA_research_paper.md) · [.docx](docs/paper/APSA_research_paper.docx) |
-| Tests | **231 passed** (`.\.venv\Scripts\python.exe -m pytest -q`) |
+| Tests | **263 passed** (`.\.venv\Scripts\python.exe -m pytest -q`) |
 
 ### Key results
 
@@ -86,6 +86,61 @@ The runner waits out per-minute HTTP 429 limits using the provider's suggested d
 model only when the wait would exceed `--max-wait-seconds` (a daily quota), and records that stop
 in `failures__<model>.jsonl`.
 
+## Category-based operator selection
+
+For a prompt and its task category, this workflow recommends a perturbation operator from category
+evidence, then reports which eligible operator actually produced the largest control-adjusted response
+change within an input edit budget. It follows the
+[implementation plan](docs/roadmap/category_operator_implementation_plan.md) and the
+[stage-by-stage guide](docs/roadmap/category_operator_stage_by_stage.md), runs offline on stored
+results, and never modifies the source artifacts of `main_v1`.
+
+```powershell
+# Everything for main_v1: rankings at budgets 0.01/0.02/0.05/0.10/none, exclusions, case maxima,
+# locked nominees, two figures, prompt_operator_maxima.csv and a report per prompt (about 30 s)
+.\.venv\Scripts\python.exe experiments\category_operators.py all
+
+# One stored prompt. Budget mode (default 0.10); --model takes 'panel' (default) or one model
+.\.venv\Scripts\python.exe experiments\category_operators.py prompt --prompt-id LOGIC-010 --model gpt-oss-120b
+.\.venv\Scripts\python.exe experiments\category_operators.py prompt --prompt-id MATH-010 --budget 0.05
+
+# Target mode: the smallest eligible edit whose control-adjusted change reaches 0.10
+.\.venv\Scripts\python.exe experiments\category_operators.py prompt --prompt-id CLASS-002 --target 0.10
+
+# A new prompt (unmeasured): recommendation, screened candidates, verdict template
+.\.venv\Scripts\python.exe experiments\category_operators.py prompt --category logical_reasoning --reference No --text "..."
+```
+
+Selection rules: the **excess** change is the anchor-to-treatment semantic distance minus the mean
+anchor-to-control distance of the two unchanged repeats; negative values are kept. **Budget mode** picks
+the largest mean excess among eligible edits (`0 < d_in_char <= budget`, not meaning-changing); exact
+ties go to fewer character edits, then smaller normalised input distance, and remaining ties are all
+kept. **Target mode** picks the eligible edit with the fewest character edits that reaches the target, or
+returns `target_not_met`. Missing, empty or truncated controls or treatments give `incomplete`, and no
+eligible candidate gives `no_eligible_edit`. No maximum is claimed in either case.
+
+Outputs in `results/study/main_v1/analysis/`: `category_operator_rankings.csv`,
+`prompt_operator_maxima.csv`, `category_operator_case_maxima.csv`, `category_operator_exclusions.csv`,
+`category_operator_settings.json` (budgets, seed, source hashes, cohorts),
+`category_operator_nominees.json`, `figures/category_operator_*.png` and `prompt_reports/`. The
+`main_v1` rankings are **exploratory**. A category winner is confirmed only by the held-out protocol on
+new prompts:
+
+```powershell
+# 1. Generate candidates for new prompts under a NEW study ID (no model calls yet)
+.\.venv\Scripts\python.exe experiments\run_study.py --study-id cat_val_v1 --dataset <new_prompts.csv> --prompt-ids @<ids.txt> --max-calls-per-model 0
+# 2. Two reviewers label each candidate preserved / changed / uncertain (reviewer_1, reviewer_2, final_verdict)
+# 3. Generate only preserved, within-budget treatments, in a recorded random order
+.\.venv\Scripts\python.exe experiments\run_study.py --study-id cat_val_v1 --dataset <new_prompts.csv> --prompt-ids @<ids.txt> --verdicts <verdicts.csv> --max-input-distance 0.10 --shuffle-seed 2026
+# 4. Score and pair, then apply the Bonferroni-adjusted claim rule against the locked nominees
+.\.venv\Scripts\python.exe experiments\analyze_study.py --study-dir results\study\cat_val_v1
+.\.venv\Scripts\python.exe experiments\category_operators.py validate --study-dir results\study\cat_val_v1 --verdicts <verdicts.csv> --nominees results\study\main_v1\analysis\category_operator_nominees.json
+```
+
+Add `--mock` to `run_study.py` and `--include-mock` to `analyze_study.py` to check the pipeline
+offline. Mock outputs are not evidence: `analyze_study.py` analyses only live generations unless told
+otherwise, and records the execution modes in `results.json`.
+
 ## Output layout (`results/study/<study_id>/`)
 
 | Path | Content |
@@ -107,6 +162,8 @@ Other `results/` content, such as mock runs, is git-ignored.
 
 - [Research methodology (RQ1–RQ5)](docs/research_methodology.md)
 - [Statistical analysis plan](docs/roadmap/analysis_plan.md)
+- [Category operator implementation plan](docs/roadmap/category_operator_implementation_plan.md) ·
+  [stage-by-stage guide](docs/roadmap/category_operator_stage_by_stage.md)
 - [Repository baseline audit (Phases 1–10)](docs/roadmap/repository_baseline_audit.md)
 - [Phases 11–17 verification report](docs/roadmap/phases_11_to_17_verification.md)
 - [Research paper](docs/paper/APSA_research_paper.md)
