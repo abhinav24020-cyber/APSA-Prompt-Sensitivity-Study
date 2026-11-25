@@ -355,8 +355,9 @@ def main() -> None:
         prompts = select_prompts(rows, per_cat, cfg["selection_rule"])
 
     preserved = None
+    vrows = []
     if args.verdicts:
-        with (ROOT / args.verdicts).open(encoding="utf-8", newline="") as handle:
+        with (ROOT / args.verdicts).open(encoding="utf-8-sig", newline="") as handle:
             vrows = list(csv.DictReader(handle))
         col = "final_verdict" if vrows and "final_verdict" in vrows[0] else "verdict"
         preserved = {(r["prompt_id"], r["operator"]) for r in vrows if (r.get(col) or "").strip().lower() == "preserved"}
@@ -383,6 +384,17 @@ def main() -> None:
             for c in candidates:
                 f.write(json.dumps(c) + "\n")
     accepted = sum(c["status"] == "accepted" for c in candidates)
+    if vrows:
+        by_candidate = {(c["prompt_id"], c["operator"]): c for c in candidates if c["status"] == "accepted"}
+        selected_ids = {p["prompt_id"] for p in prompts}
+        for verdict in vrows:
+            key = (verdict["prompt_id"], verdict["operator"])
+            if key not in preserved or key[0] not in selected_ids:
+                continue
+            candidate = by_candidate.get(key)
+            if candidate is None or any(verdict.get(field) and verdict[field] != candidate.get(field)
+                                        for field in ("perturbation_id", "perturbed_prompt")):
+                raise SystemExit(f"Preservation verdict does not match the generated candidate: {key[0]}/{key[1]}")
     logger.info("%d prompts, %d candidates (%d accepted)", len(prompts), len(candidates), accepted)
 
     models = cfg["models"]
@@ -397,7 +409,7 @@ def main() -> None:
             candidates=candidates, control_repetitions=cfg["control_repetitions"],
             max_wait=args.max_wait_seconds, is_mock=args.mock,
             max_calls=args.max_calls_per_model,
-            treatment_allowed=treatment_allowed if (preserved is not None or args.max_input_distance) else None,
+            treatment_allowed=treatment_allowed if (preserved is not None or args.max_input_distance is not None) else None,
             shuffle_seed=args.shuffle_seed,
         ))
 

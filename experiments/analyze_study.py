@@ -13,6 +13,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import csv
 import hashlib
 import json
 import logging
@@ -94,8 +95,10 @@ def normalized_final_answer(prompt_id: str, output: str) -> str | None:
     return re.sub(r"[^a-z0-9/.%-]+", "", region)[:200]
 
 
-def score_generations(gens: pd.DataFrame, cache_path: Path) -> pd.DataFrame:
+def score_generations(gens: pd.DataFrame, cache_path: Path,
+                      explicit_references: dict[str, str] | None = None) -> pd.DataFrame:
     cache = json.loads(cache_path.read_text(encoding="utf-8")) if cache_path.exists() else {}
+    explicit_references = explicit_references or {}
 
     def code_key(pid, out):
         return pid + ":" + hashlib.sha256((out or "").encode("utf-8")).hexdigest()
@@ -128,6 +131,15 @@ def score_generations(gens: pd.DataFrame, cache_path: Path) -> pd.DataFrame:
             errors.append(None)
             fallback.append(False)
             method.append("answer_key")
+        elif pid in explicit_references:
+            final_lines = re.findall(r"(?im)^[ \t]*final answer:[ \t]*(.+)$", out or "")
+            value = final_lines[-1] if final_lines else out or ""
+            actual = " ".join(value.casefold().split()).rstrip(".")
+            expected = " ".join(explicit_references[pid].casefold().split()).rstrip(".")
+            correct.append(actual == expected if actual and expected else None)
+            errors.append(None)
+            fallback.append(False)
+            method.append("explicit_reference_exact_match")
         else:
             correct.append(None)
             errors.append(None)
@@ -138,12 +150,13 @@ def score_generations(gens: pd.DataFrame, cache_path: Path) -> pd.DataFrame:
     gens["code_error"] = errors
     gens["code_name_fallback"] = fallback
     gens["scoring_method"] = method
+    categories = gens["task_category"]
     gens["has_final_marker"] = [
-        has_final_answer_marker(o) if not p.startswith("CODE") else None
-        for p, o in zip(gens["prompt_id"], gens["output"])
+        has_final_answer_marker(o) if c != "code_generation" else None
+        for c, o in zip(categories, gens["output"])
     ]
-    gens["final_answer_norm"] = [normalized_final_answer(p, o)
-                                 for p, o in zip(gens["prompt_id"], gens["output"])]
+    gens["final_answer_norm"] = [normalized_final_answer(p, o) if c != "code_generation" else None
+                                 for p, c, o in zip(gens["prompt_id"], categories, gens["output"])]
     gens["truncated"] = gens["finish_reason"].fillna("").str.casefold().isin(TRUNCATION_REASONS)
     gens["empty_output"] = gens["output"].fillna("").str.strip() == ""
     return gens
@@ -228,7 +241,7 @@ def add_output_metrics(pairs: pd.DataFrame) -> pd.DataFrame:
 
     def answer_changed(r):
         # pandas may store missing values as NaN, and NaN != NaN, so test explicitly.
-        if r.prompt_id.startswith("CODE"):
+        if r.task_category == "code_generation":
             if missing(r.anchor_correct) or missing(r.comparison_correct):
                 return np.nan
             return float(bool(r.anchor_correct) != bool(r.comparison_correct))
@@ -262,7 +275,7 @@ def taxonomy(r) -> str:
         return "correctness_flip_correct_to_incorrect"
     if r.flip_i2c:
         return "correctness_flip_incorrect_to_correct"
-    if (not r.prompt_id.startswith("CODE")) and r.anchor_has_marker == True             and r.comparison_has_marker == False:  # noqa: E712 - may be numpy/pandas bools
+    if r.task_category != "code_generation" and r.anchor_has_marker == True and r.comparison_has_marker == False:  # noqa: E712
         return "format_instruction_violation"
     if r.identical_output:
         return "identical"
@@ -754,6 +767,8 @@ def main() -> None:
     parser.add_argument("--study-dir", type=Path, required=True)
     parser.add_argument("--include-mock", action="store_true",
                         help="Pipeline check only: keep mock generations. The outputs are not evidence.")
+    parser.add_argument("--pairs-only", action="store_true",
+                        help="Score and pair responses without study-wide inference or figures")
     args = parser.parse_args()
     study_dir = args.study_dir if args.study_dir.is_absolute() else ROOT / args.study_dir
     raw_dir = study_dir / "raw"
@@ -808,7 +823,16 @@ def main() -> None:
         })
 
     # ---- scoring and pairing (CP11.3)
-    gens = score_generations(gens, proc_dir / "code_test_cache.json")
+    references = {}
+    dataset_path = ROOT / manifest.get("dataset_path", manifest["config"].get("dataset", ""))
+    if dataset_path.is_file():
+        with dataset_path.open(encoding="utf-8", newline="") as handle:
+            for item in csv.DictReader(handle):
+                metadata = json.loads(item.get("metadata") or "{}")
+                if (metadata.get("eval_metric") == "explicit_reference_exact_match"
+                        and item["task_category"] != "code_generation" and item["expected_answer"].strip()):
+                    references[item["prompt_id"]] = item["expected_answer"]
+    gens = score_generations(gens, proc_dir / "code_test_cache.json", references)
     pairs, exclusions = build_pairs(gens, candidates)
     pairs = add_output_metrics(pairs)
     pairs["taxonomy"] = [taxonomy(r) for r in pairs.itertuples()]
@@ -860,6 +884,9 @@ def main() -> None:
         },
     }
     logger.info("Pairs: %d (%d treatment)", len(pairs), results["data_integrity"]["n_treatment_pairs"])
+    if args.pairs_only:
+        (out_dir / "results.json").write_text(json.dumps(to_jsonable(results), indent=2), encoding="utf-8")
+        return
 
     # ---- descriptive (CP11.5)
     desc = []

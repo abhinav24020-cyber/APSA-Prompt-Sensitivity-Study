@@ -30,6 +30,8 @@ import argparse
 import csv
 import hashlib
 import json
+import math
+import re
 import sys
 from pathlib import Path
 
@@ -39,6 +41,7 @@ sys.path.insert(0, str(ROOT / "experiments"))
 
 from apsa.analysis import category_operator_reports as rep  # noqa: E402
 from apsa.analysis import category_operators as co  # noqa: E402
+from apsa.analysis.prompt_categories import suggest_category  # noqa: E402
 
 DEFAULT_STUDY = ROOT / "results" / "study" / "main_v1"
 
@@ -93,7 +96,7 @@ def cmd_rank(args) -> dict:
     return {"data": data, "rankings": rankings}
 
 
-def _recommendation_sources(data: co.StudyData, args):
+def _recommendation_sources(data: co.StudyData, args, budget: float | None):
     """Category recommendations always come from the locked discovery ranking, never from validation data.
 
     A recommendation is labelled 'validated' only when this study's held-out claim rule
@@ -104,25 +107,29 @@ def _recommendation_sources(data: co.StudyData, args):
     rankings = co.rank_all(discovery, co.STANDARD_BUDGETS, bootstrap_draws=args.draws)
     validated = None
     decisions = data.study_dir / "analysis" / "category_validation.json"
-    if decisions.exists() and data.study_dir != discovery.study_dir:
+    if decisions.exists() and data.study_dir != discovery.study_dir and data.evidence_mode != "mock":
         payload = json.loads(decisions.read_text(encoding="utf-8"))
-        validated = {c: d["nominee"] for c, d in payload["decisions"].items() if d["validated"]}
+        if payload.get("overlap_checked") and payload.get("budget") == co.budget_label(budget):
+            validated = {c: d["nominee"] for c, d in payload["decisions"].items() if d["validated"]}
     return rankings, validated
 
 
 def _print_selection(sel: co.PromptSelection) -> None:
     print(f"\n{sel.prompt_id} ({sel.category}) | {sel.mode} mode, budget {co.budget_label(sel.budget)}"
-          + (f", target {sel.target}" if sel.target is not None else "") + f" | scope: {sel.scope_label}")
+          + (f", target {sel.target}" if sel.target is not None else "")
+          + f" | scope: {sel.scope_label} | evidence: {sel.evidence_mode}")
     rec = sel.recommendation
     print(f"Category recommendation: {', '.join(rec.get('operators') or ['none'])} [{rec.get('evidence_status')}]")
     print(f"Status: {sel.status}" + (f"  selected: {', '.join(sel.winners)} ({sel.tie_status})" if sel.winners else ""))
     print(sel.explanation)
     print(f"{'operator':24} {'status':28} {'edits':>5} {'d_in':>7} {'raw':>7} {'ctrl':>7} {'excess':>8}")
-    for r in sorted(sel.operators, key=lambda r: (r.excess is None, -(r.excess or 0), r.operator)):
-        status = r.status if r.eligibility == co.ELIGIBLE else r.eligibility
+    for r in sel.operators:
+        status = f"benchmark/{r.status}" if r.operator in co.NOISE_OPERATORS else r.status.split(" (")[0]
         f = lambda v: "" if v is None else f"{v:.4f}"
         print(f"{r.operator:24} {status[:28]:28} {'' if r.char_edits is None else r.char_edits:>5} "
               f"{f(r.d_in_char):>7} {f(r.raw):>7} {f(r.control):>7} {'' if r.excess is None else f'{r.excess:+.4f}':>8}")
+        if r.status.startswith("incomplete ("):
+            print(f"  {r.status}")
     if sel.pareto:
         print("Trade-off frontier (fewest edits -> largest change):", ", ".join(sel.pareto))
 
@@ -131,96 +138,176 @@ def cmd_prompt(args) -> None:
     if args.text:
         return cmd_new_prompt(args)
     data = co.load_study(_study_dir(args.study_dir), verdicts_path=args.verdicts)
+    prompt_id = args.prompt_id
+    if args.search is not None:
+        needle = args.search.casefold().strip()
+        matches = [pid for pid in data.prompt_ids if needle in pid.casefold()
+                   or needle in (data.prompts[pid]["original_prompt"] or "").casefold()]
+        if not matches:
+            raise SystemExit(f"No stored prompts match {args.search!r}.")
+        for pid in matches:
+            info = data.prompts[pid]
+            print(f"{pid} [{info['category']}] {' '.join((info['original_prompt'] or '').split())[:110]}")
+        if len(matches) == 1:
+            prompt_id = matches[0]
+        elif sys.stdin.isatty():
+            prompt_id = input("Select a prompt ID from the results: ").strip().upper()
+            if prompt_id not in matches:
+                raise SystemExit("Select one of the displayed prompt IDs.")
+        else:
+            print("Select a result by running prompt --prompt-id ID.")
+            return
+    if prompt_id not in data.prompts:
+        raise SystemExit(f"No stored prompt {prompt_id!r} in {data.study_id}.")
+    cat = data.prompts[prompt_id]["category_identification"]
+    print(f"Category source: {cat['source']}. {cat['reason']}")
     budget = _budget(args.budget, default=None if args.target is not None else co.DEFAULT_BUDGET)
     models = co.resolve_model(data.models, args.model)
-    rankings, validated = _recommendation_sources(data, args)
-    sel = co.select_for_prompt(data, args.prompt_id, budget=budget, target=args.target, models=models,
+    rankings, validated = _recommendation_sources(data, args, budget)
+    sel = co.select_for_prompt(data, prompt_id, budget=budget, target=args.target, models=models,
                                rankings=rankings, validated=validated)
     ranking = co.rank_category(data, sel.category, budget, bootstrap_draws=args.draws)
     _print_selection(sel)
-    md, js = rep.write_prompt_report(data.study_dir / "analysis" / "prompt_reports", data, sel, ranking=ranking)
+    default_out = (ROOT / "results" / "category_operator_prompts" / "main_v1"
+                   if data.study_dir == DEFAULT_STUDY else data.study_dir / "analysis" / "prompt_reports")
+    md, js = rep.write_prompt_report(args.output_dir or default_out, data, sel, ranking=ranking)
     print(f"\nReport: {_show(md)}\nRecord: {_show(js)}")
 
 
 def cmd_new_prompt(args) -> None:
-    """Stages 1-3 for a prompt that is not in a stored study: recommendation and audited candidates."""
+    """Prepare a pasted prompt for review and a separate measurement run."""
     from run_study import build_candidates
 
     from apsa.metrics.input_distance.semantic import SemanticDistanceCalculator, SentenceTransformerEmbedder
 
-    if args.category not in co.CATEGORY_LABELS:
-        raise SystemExit(f"--category must be one of {list(co.CATEGORY_LABELS)}")
-    # Recommendations for a new prompt come from the locked discovery ranking.
+    identification = suggest_category(args.text)
+    proposed = identification["proposed_category"]
+    category = args.category or proposed
+    if category is None:
+        print(identification["reason"])
+        choices = ", ".join(co.CATEGORY_LABELS)
+        if sys.stdin.isatty():
+            category = input(f"Confirm a category ({choices}): ").strip()
+        if category not in co.CATEGORY_LABELS:
+            raise SystemExit(f"Confirm a category with --category. Choices: {choices}")
+    source = ("manual_override" if args.category and proposed and category != proposed
+              else "manual" if args.category or proposed is None else "inferred")
+    identification.update(category=category, source=source)
+    if source == "manual_override":
+        identification["reason"] += f" The user chose {category} instead of {proposed}."
+    print(f"{category} [{source}] {identification['reason']}")
+
     data = co.load_study(_study_dir(args.discovery_study_dir))
-    budget = _budget(args.budget)
+    budget = _budget(args.budget, default=None if args.target is not None else co.DEFAULT_BUDGET)
     pid = args.prompt_id or "NEW-" + hashlib.sha256(args.text.encode("utf-8")).hexdigest()[:8].upper()
+    if not re.fullmatch(r"[A-Za-z0-9_-]+", pid) or pid in data.prompts:
+        raise SystemExit("Use a new prompt ID containing only letters, digits, underscores, or hyphens.")
+    out = args.output_dir or ROOT / "results" / "category_operator_prompts" / pid
+    if (out / "record.json").exists():
+        raise SystemExit(f"A preparation already exists at {out}. Use --output-dir for a separate preparation.")
+    config = json.loads((data.study_dir / "study_manifest.json").read_text(encoding="utf-8"))["config"]
+    seed = config.get("perturbation_seed", 42)
+    models = co.resolve_model(data.models, args.model)
     rankings = co.rank_all(data, co.STANDARD_BUDGETS, bootstrap_draws=args.draws)
-    rec = co.category_recommendation(args.category, budget, rankings, measured_prompt=False)
-    semantic = SemanticDistanceCalculator(SentenceTransformerEmbedder(model_name="sentence-transformers/all-MiniLM-L6-v2"))
-    row = {"prompt_id": pid, "task_category": args.category, "original_prompt": args.text}
-    cands = build_candidates([row], data.operators, 42, semantic)
-    out = ROOT / "results" / "category_operator_prompts" / pid
+    rec = co.category_recommendation(category, budget, rankings, measured_prompt=False)
+    semantic = SemanticDistanceCalculator(SentenceTransformerEmbedder(model_name=config["semantic_model"]))
+    row = {"prompt_id": pid, "task_category": category, "original_prompt": args.text}
+    candidates = build_candidates([row], [*data.operators, *data.noise_operators], seed, semantic)
     out.mkdir(parents=True, exist_ok=True)
+
     table = []
-    for cand in cands:
-        op = cand["operator"]
-        if cand["status"] != "accepted":
-            status, detail = ("generator_error" if str(cand.get("reason", "")).startswith("error") else "inapplicable",
-                              cand.get("reason"))
+    for candidate in candidates:
+        operator = candidate["operator"]
+        distances = candidate.get("input_distances", {})
+        distance = distances.get("char_levenshtein_normalized")
+        edit = candidate.get("perturbed_prompt")
+        benchmark = operator in co.NOISE_OPERATORS
+        if candidate["status"] != "accepted":
+            detail = candidate["reason"]
+            status = "generator_error" if detail.startswith("error") else "inapplicable"
+        elif budget is not None and distance > budget:
+            status, detail = "over_budget", f"d_in_char {distance:.4f} exceeds budget {co.budget_label(budget)}."
         else:
-            d = cand["input_distances"]["char_levenshtein_normalized"]
-            protected = co.protected_content_changes(args.text, cand["perturbed_prompt"])
-            if not d > 0:
-                status, detail = "no_op", "the edit does not change the prompt"
-            elif budget is not None and d > budget:
-                status, detail = "over_budget", f"d_in_char {d:.4f} exceeds budget {co.budget_label(budget)}"
-            elif protected:
-                status, detail = "meaning_changing", "automatic screen: " + " | ".join(protected)
-            else:
-                status, detail = "uncertain", "passes the automatic screen; needs a final reviewer verdict"
-        table.append({"operator": op, "status": status, "detail": detail,
-                      "perturbed_prompt": cand.get("perturbed_prompt"),
-                      "char_edits": cand.get("input_distances", {}).get("char_levenshtein"),
-                      "d_in_char": cand.get("input_distances", {}).get("char_levenshtein_normalized"),
-                      "d_in_sem": cand.get("input_distances", {}).get("semantic_cosine_distance")})
-    record = {"prompt_id": pid, "category": args.category, "original_prompt": args.text,
-              "reference_answer": args.reference, "budget": co.budget_label(budget), "status": "unmeasured",
-              "recommendation": rec, "candidates": table, "candidate_seed": 42,
-              "next_steps": ["Two reviewers fill verdicts_template.csv with preserved / changed / uncertain.",
-                             "Add prompt_row.csv to a validation dataset and run run_study.py with --prompt-ids, "
-                             "--verdicts and --max-input-distance under a new study ID.",
-                             "Run analyze_study.py, then this command with --study-dir and --verdicts."]}
-    (out / "record.json").write_text(json.dumps(record, indent=2, ensure_ascii=False), encoding="utf-8")
+            flags = co.protected_content_changes(args.text, edit)
+            status = "screen_flagged" if flags else "uncertain"
+            detail = "Automatic screen: " + ", ".join(flags) if flags else "Awaiting a final preservation verdict."
+        if benchmark:
+            detail += " Noise benchmark only. Preservation unaudited."
+        table.append({"operator": operator, "status": status, "detail": detail, "measurement_status": "unmeasured",
+                      "role": "noise_benchmark" if benchmark else "candidate",
+                      "perturbation_id": candidate.get("perturbation_id"), "perturbed_prompt": edit,
+                      "exact_edit": rep.exact_edits(args.text, edit) if edit is not None else [],
+                      "char_edits": distances.get("char_levenshtein"), "d_in_char": distance,
+                      "d_in_sem": distances.get("semantic_cosine_distance")})
+
     with (out / "verdicts_template.csv").open("w", encoding="utf-8", newline="") as handle:
         writer = csv.writer(handle)
-        writer.writerow(["prompt_id", "operator", "perturbed_prompt", "reviewer_1", "reviewer_2", "final_verdict", "notes"])
-        for t in table:
-            if t["status"] in {"uncertain", "meaning_changing"}:
-                writer.writerow([pid, t["operator"], t["perturbed_prompt"], "", "",
-                                 "changed" if t["status"] == "meaning_changing" else "", t["detail"]])
+        writer.writerow(["prompt_id", "operator", "perturbation_id", "perturbed_prompt",
+                         "reviewer_1", "reviewer_2", "final_verdict", "notes"])
+        for candidate in table:
+            if candidate["status"] in {"uncertain", "screen_flagged"}:
+                writer.writerow([pid, candidate["operator"], candidate["perturbation_id"],
+                                 candidate["perturbed_prompt"], "", "", "uncertain", candidate["detail"]])
     with (out / "prompt_row.csv").open("w", encoding="utf-8", newline="") as handle:
         writer = csv.writer(handle)
         writer.writerow(["prompt_id", "task_category", "task_description", "original_prompt", "expected_answer",
                          "difficulty_level", "metadata"])
-        writer.writerow([pid, args.category, "", args.text, args.reference or "", "",
-                         json.dumps({"eval_metric": "exact_match" if args.reference else "unscored"})])
-    lines = [f"# New prompt {pid} · {co.CATEGORY_LABELS[args.category]} (unmeasured)", "",
-             f"**Original prompt:** {args.text}", "",
-             f"**Reference answer:** {args.reference or 'not given (correctness cannot be scored until a reference or tests exist)'}", "",
-             f"**Category recommendation:** {', '.join(rec['operators'])} ({rec['evidence_status']}; {rec['source']})",
-             f"- Why: {rec['rationale']}"] + ([f"- Note: {rec['note']}"] if rec.get("note") else []) + [
-             "- Unmeasured: no response has been generated for this prompt yet.", "",
-             "| Operator | Status | Char edits | d_in_char | Perturbed prompt / reason |", "|---|---|---:|---:|---|"]
-    for t in table:
-        edits = "" if t["char_edits"] is None else t["char_edits"]
-        distance = "" if t["d_in_char"] is None else f"{t['d_in_char']:.4f}"
-        detail = t["perturbed_prompt"] if t["status"] == "uncertain" else t["detail"]
-        lines.append(f"| `{t['operator']}` | {t['status']} | {edits} | {distance} | {detail} |")
-    lines += ["", "## Next steps", ""] + [f"{i}. {s}" for i, s in enumerate(record["next_steps"], 1)]
-    (out / "report.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
-    print(f"{pid}: recommendation {rec['operators']} [{rec['evidence_status']}], status unmeasured")
-    for t in table:
-        print(f"  {t['operator']:24} {t['status']:18} {t['detail'] if t['status'] != 'uncertain' else t['perturbed_prompt']}")
+        metric = "explicit_reference_exact_match" if args.reference and category != "code_generation" else "unscored"
+        writer.writerow([pid, category, "", args.text, args.reference or "", "",
+                         json.dumps({"eval_metric": metric, "category_identification": identification})])
+
+    lines = [f"# New prompt {pid} · {co.CATEGORY_LABELS[category]} (unmeasured)", "",
+             f"**Category source:** {source}. {rep.table_cell(identification['reason'])}", "",
+             f"**Original prompt:** {rep.table_cell(args.text)}", "",
+             f"**Category recommendation:** {', '.join(rec['operators'])} ({rec['evidence_status']})", "",
+             rec["rationale"], "", "Output effects are unmeasured.",
+             f"**Correctness evaluator** {metric}.", "",
+             "| Operator | Status | Char edits | d_in_char | Exact edit and review notes |",
+             "|---|---|---:|---:|---|"]
+    for candidate in table:
+        edits, distance = candidate["char_edits"], candidate["d_in_char"]
+        lines.append(f"| {candidate['operator']} | {candidate['status']}, unmeasured | "
+                     f"{'' if edits is None else edits} | {'' if distance is None else f'{distance:.4f}'} | "
+                     f"{rep.diff_text(candidate['exact_edit'])} {rep.table_cell(candidate['detail'])} |")
+
+    def quote(path: Path | str) -> str:
+        return "'" + str(path).replace("'", "''") + "'"
+
+    review = quote((out / "verdicts_template.csv").resolve())
+    dataset = quote((out / "prompt_row.csv").resolve())
+    run_key = hashlib.sha256(str(out.resolve()).encode("utf-8")).hexdigest()[:8]
+    study_id = f"prompt-{pid}-{run_key}"
+    study_path = quote(f"results/study/{study_id}")
+    budget_arg = f" --max-input-distance {budget}" if budget is not None else ""
+    scope_arg = f" --model {quote(models[0])}" if len(models) == 1 else ""
+    target_arg = f" --target {args.target}" if args.target is not None else ""
+    discovery_arg = f" --discovery-study-dir {quote(data.study_dir)}"
+    config_arg = f" --config {quote(data.config_path)}"
+    python = r".\.venv\Scripts\python.exe"
+    lines += ["", "## Measure after review", "",
+              "Have two reviewers inspect the edits in the verdict CSV. Enter final verdicts of "
+              "preserved, changed, or uncertain. The first command below explicitly calls the models.",
+              "", "```powershell",
+              f"{python} experiments/run_study.py --study-id {study_id}{config_arg} --dataset {dataset} --prompt-ids {pid} "
+              f"--verdicts {review} --models {' '.join(quote(m) for m in models)}{budget_arg}",
+              f"{python} experiments/analyze_study.py --study-dir {study_path} --pairs-only",
+              f"{python} experiments/category_operators.py prompt --study-dir {study_path} --prompt-id {pid} "
+              f"--verdicts {review} --budget {co.budget_label(budget)}{scope_arg}{target_arg}{discovery_arg}", "```", ""]
+    has_reviewable_edit = any(o["role"] == "candidate" and o["status"] in {"uncertain", "screen_flagged"}
+                              for o in table)
+    status = "unmeasured" if has_reviewable_edit else "no_eligible_edit"
+    if not has_reviewable_edit:
+        start = lines.index("## Measure after review")
+        lines[start:] = ["No candidate for the primary comparison fits the current input edit budget.", ""]
+    record = {"prompt_id": pid, "category": category, "category_identification": identification,
+              "original_prompt": args.text, "reference_answer": args.reference, "target": args.target,
+              "models": models, "budget": co.budget_label(budget), "status": status,
+              "recommendation": rec, "candidates": table, "candidate_seed": seed, "planned_study_id": study_id}
+    (out / "report.md").write_text("\n".join(lines), encoding="utf-8")
+    (out / "record.json").write_text(json.dumps(record, indent=2, ensure_ascii=False), encoding="utf-8")
+    print(f"{pid}: recommendation {rec['operators']} [{rec['evidence_status']}], status {status}")
+    for candidate in table:
+        print(f"  {candidate['operator']:24} {candidate['status']:18} {candidate['detail']}")
     print(f"Outputs: {_show(out)}")
 
 
@@ -295,7 +382,9 @@ def main(argv: list[str] | None = None) -> None:
     p = sub.add_parser("prompt", parents=[common], help="Select and report the operator for one prompt")
     p.add_argument("--prompt-id", help="Stored prompt ID (e.g. LOGIC-010); optional ID for --text")
     p.add_argument("--text", help="A new prompt that is not in the study (unmeasured workflow)")
-    p.add_argument("--category", help="Category for --text")
+    p.add_argument("--search", help="Search stored prompts by ID or text (empty string lists all)")
+    p.add_argument("--category", choices=co.CATEGORY_LABELS, help="Confirm or override category for --text")
+    p.add_argument("--output-dir", type=Path, help="Directory for the prompt report and data")
     p.add_argument("--reference", help="Reference answer for --text")
     p.add_argument("--budget", default=None, help="Max normalised character edit distance; 'none' for no cap")
     p.add_argument("--target", type=float, default=None, help="Minimum control-adjusted change (target mode)")
@@ -308,10 +397,17 @@ def main(argv: list[str] | None = None) -> None:
     p.set_defaults(func=cmd_validate)
 
     args = parser.parse_args(argv)
-    if args.command == "prompt" and not args.prompt_id and not args.text:
-        parser.error("prompt needs --prompt-id or --text")
-    if args.command == "prompt" and args.text and not args.category:
-        parser.error("--text needs --category")
+    if args.command == "prompt":
+        if args.text is not None and not args.text.strip():
+            parser.error("--text cannot be blank")
+        if not args.prompt_id and args.text is None and args.search is None:
+            parser.error("prompt needs --prompt-id, --search, or --text")
+        if args.search is not None and (args.text is not None or args.prompt_id):
+            parser.error("use --search by itself to find a stored prompt")
+        if args.category and args.text is None:
+            parser.error("--category applies to --text")
+        if args.target is not None and not math.isfinite(args.target):
+            parser.error("--target must be finite")
     if args.command == "validate" and not args.verdicts:
         parser.error("validate needs --verdicts (final preservation verdicts for the held-out candidates)")
     args.func(args)

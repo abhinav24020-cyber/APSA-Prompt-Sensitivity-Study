@@ -3,13 +3,15 @@
 from __future__ import annotations
 
 import csv
+import difflib
 import json
 from datetime import UTC, datetime
+from html import escape
 from pathlib import Path
 from typing import Any
 
 from .category_operators import (
-    BOOTSTRAP_DRAWS, BOOTSTRAP_SEED, CATEGORY_LABELS, MEASURED, CategoryRanking, Measurement,
+    BOOTSTRAP_DRAWS, BOOTSTRAP_SEED, CATEGORY_LABELS, MEASURED, NOISE_OPERATORS, CategoryRanking, Measurement,
     PromptSelection, StudyData, _float_or_none, _truthy, budget_label, model_label,
     protected_content_changes, select_for_prompt,
 )
@@ -89,14 +91,15 @@ def _correctness(value: Any) -> str:
 
 
 def selection_rows(data: StudyData, sel: PromptSelection) -> list[dict[str, Any]]:
-    measured = sorted((r for r in sel.operators if r.status == MEASURED), key=lambda r: -r.excess)
+    candidates = [r for r in sel.operators if r.operator not in NOISE_OPERATORS]
+    measured = sorted((r for r in candidates if r.status == MEASURED), key=lambda r: -r.excess)
     ranks: dict[str, int] = {}
     for position, r in enumerate(measured, start=1):
         prev = measured[position - 2] if position > 1 else None
         ranks[r.operator] = ranks[prev.operator] if prev is not None and prev.excess == r.excess else position
     scope = "panel" if len(sel.models) > 1 else sel.models[0]
     rows = []
-    for r in sel.operators:
+    for r in candidates:
         cand = r.candidate or {}
         protected = (protected_content_changes(sel.original_prompt, cand["perturbed_prompt"])
                      if sel.original_prompt and cand.get("perturbed_prompt") else [])
@@ -128,12 +131,18 @@ def write_prompt_maxima(path: Path, data: StudyData, selections: list[PromptSele
     _write_csv(path, MAXIMA_COLUMNS, rows)
 
 
-def _measurement_record(m: Measurement) -> dict[str, Any]:
+def _measurement_record(data: StudyData, m: Measurement) -> dict[str, Any]:
     row = m.row or {}
+    controls = data.controls.get((m.prompt_id, m.model), {})
     return {
         "model": m.model, "model_label": model_label(m.model), "status": m.status, "pair_id": m.pair_id,
         "anchor_record_id": row.get("anchor_record_id"), "comparison_record_id": row.get("comparison_record_id"),
         "raw_distance": m.raw, "control_values": m.control_values, "control_distance": m.control_mean,
+        "control_records": [{"repeat": rep, "pair_id": c.get("pair_id"),
+                             "anchor_record_id": c.get("anchor_record_id"),
+                             "comparison_record_id": c.get("comparison_record_id"),
+                             "distance": _float_or_none(c.get("d_out_sem"))}
+                            for rep, c in sorted(controls.items())],
         "excess_distance": m.excess, "d_out_char": _float_or_none(row.get("d_out_char")),
         "d_out_token": _float_or_none(row.get("d_out_token")), "answer_changed": _truthy(row.get("answer_changed")),
         "anchor_correct": _truthy(row.get("anchor_correct")), "comparison_correct": _truthy(row.get("comparison_correct")),
@@ -152,26 +161,38 @@ def selection_record(data: StudyData, sel: PromptSelection, *, ranking: Category
     operators = []
     for r in sel.operators:
         cand = r.candidate or {}
+        edited = cand.get("perturbed_prompt")
         operators.append({
             "operator": r.operator, "eligibility": r.eligibility, "eligibility_detail": r.eligibility_detail,
             "status": r.status, "perturbation_id": cand.get("perturbation_id"),
-            "perturbed_prompt": cand.get("perturbed_prompt"), "char_edits": r.char_edits, "d_in_char": r.d_in_char,
+            "role": "noise_benchmark" if r.operator in NOISE_OPERATORS else "candidate",
+            "perturbed_prompt": edited, "char_edits": r.char_edits, "d_in_char": r.d_in_char,
+            "exact_edit": exact_edits(sel.original_prompt, edited) if sel.original_prompt is not None and edited is not None else [],
+            "input_length_denominator": max(len(sel.original_prompt), len(edited))
+            if sel.original_prompt is not None and edited is not None else None,
             "d_in_sem": r.d_in_sem,
             "auto_protected_changes": (protected_content_changes(sel.original_prompt, cand["perturbed_prompt"])
                                        if sel.original_prompt and cand.get("perturbed_prompt") else []),
             "raw_distance": r.raw, "control_distance": r.control, "excess_distance": r.excess,
-            "per_model": [_measurement_record(m) for m in r.measurements],
+            "per_model": [_measurement_record(data, m) for m in r.measurements],
         })
     evidence = _evidence_notes(sel, ranking, panel)
+    chosen = sel.chosen
+    rivals = [{"operator": rival.operator, "char_edits": rival.char_edits, "d_in_char": rival.d_in_char,
+               "excess_distance": rival.excess, "excess_gap": chosen.excess - rival.excess,
+               "character_edits_saved": rival.char_edits - chosen.char_edits} for rival in sel.rivals]
+    budget_ties = ["largest excess", "fewest character edits", "smallest normalized input distance"]
+    target_ties = ["fewest character edits among candidates reaching target", "smallest normalized input distance",
+                   "largest excess"]
     return {
         "prompt_id": sel.prompt_id, "category": sel.category, "original_prompt": sel.original_prompt,
+        "category_identification": data.prompts[sel.prompt_id].get("category_identification"),
         "reference_answer": sel.expected_answer, "study_id": sel.study_id, "evidence_mode": sel.evidence_mode,
         "selection_rule": {"mode": sel.mode, "budget": budget_label(sel.budget), "target": sel.target,
-                           "tie_breaks": ["larger excess", "fewer character edits",
-                                          "smaller normalised input distance"]
-                           + (["larger excess among equal-size edits"] if sel.mode == "target" else [])},
+                           "tie_breaks": budget_ties if sel.mode == "budget" else target_ties},
         "model_scope": {"models": sel.models, "label": sel.scope_label},
         "status": sel.status, "selected": sel.winners, "tie_status": sel.tie_status,
+        "tied_on_objective": sel.tied_on_objective, "closest_rivals": rivals,
         "explanation": sel.explanation, "provisional_best": sel.provisional_best,
         "best_achieved_excess": sel.best_achieved, "tradeoff_frontier": sel.pareto,
         "recommendation": sel.recommendation, "evidence_notes": evidence, "operators": operators,
@@ -182,9 +203,10 @@ def selection_record(data: StudyData, sel: PromptSelection, *, ranking: Category
 def _evidence_notes(sel: PromptSelection, ranking: CategoryRanking | None,
                     panel: PromptSelection | None) -> list[str]:
     notes = []
+    if sel.evidence_mode == "mock":
+        notes.append("Mock outputs are for pipeline verification only.")
     if sel.evidence_mode == "retrospective":
-        notes.append(f"Measured retrospectively from stored {sel.study_id} outputs; this prompt belongs to the "
-                     "discovery set that produced the category ranking, so the result is exploratory.")
+        notes.append(f"Exploratory measurement from stored {sel.study_id} outputs.")
     chosen = sel.chosen
     if chosen and ranking is not None and len(sel.models) == 1:
         pair = next((m.pair_id for m in chosen.measurements), None)
@@ -201,17 +223,20 @@ def _evidence_notes(sel: PromptSelection, ranking: CategoryRanking | None,
     return notes
 
 
-def _diff_text(original: str, perturbed: str) -> str:
-    import difflib
-    a, b = original.split(" "), perturbed.split(" ")
-    parts = []
-    for tag, i1, i2, j1, j2 in difflib.SequenceMatcher(None, a, b, autojunk=False).get_opcodes():
-        if tag == "equal":
-            continue
-        parts.append(f"`{' '.join(a[i1:i2]) or '∅'}` → `{' '.join(b[j1:j2]) or '∅'}`")
-    if not parts and original != perturbed:
-        parts.append("whitespace or punctuation only")
-    return "; ".join(parts)
+def exact_edits(original: str, perturbed: str) -> list[dict[str, Any]]:
+    """Readable character diff, separate from the Levenshtein distance calculation."""
+    return [{"original_offset": i, "edited_offset": k, "removed": original[i:j], "added": perturbed[k:l]}
+            for tag, i, j, k, l in difflib.SequenceMatcher(None, original, perturbed, autojunk=False).get_opcodes()
+            if tag != "equal"]
+
+
+def table_cell(value: str) -> str:
+    return escape(value).replace("|", "&#124;").replace("\r\n", "\n").replace("\n", "<br>")
+
+
+def diff_text(edits: list[dict[str, Any]]) -> str:
+    return ", ".join(f"<del><code>{table_cell(repr(e['removed']))}</code></del> → "
+                     f"<ins><code>{table_cell(repr(e['added']))}</code></ins>" for e in edits)
 
 
 def _functional_summary(m: Measurement) -> str:
@@ -230,77 +255,95 @@ def _functional_summary(m: Measurement) -> str:
 
 def render_markdown(record: dict[str, Any], sel: PromptSelection) -> str:
     cat = CATEGORY_LABELS.get(sel.category, sel.category)
-    lines = [f"# Perturbation operator result: {sel.prompt_id} · {cat}", ""]
-    rule = (f"budget mode, d_in_char ≤ {budget_label(sel.budget)}" if sel.mode == "budget"
-            else f"target mode, excess ≥ {sel.target:.4f}, budget {budget_label(sel.budget)}")
-    lines += [f"**Status:** `{sel.status}` · **Rule:** {rule} · **Model scope:** {sel.scope_label} · "
-              f"**Evidence:** {sel.evidence_mode}", ""]
+    budget = "uncapped" if sel.budget is None else budget_label(sel.budget)
+    rule = (f"budget mode, maximum input distance {budget}" if sel.mode == "budget"
+            else f"target mode, excess ≥ {sel.target:.4f}, budget {budget}")
+    identity = record["category_identification"] or {}
+    lines = [f"# Perturbation operator result — {sel.prompt_id} · {cat}", "",
+             f"**Status** {sel.status} · **Rule** {rule} · **Model scope** {sel.scope_label} · "
+             f"**Evidence** {sel.evidence_mode}", "",
+             f"**Category source** {identity.get('source', 'unknown')}. {table_cell(identity.get('reason', ''))}",
+             "", f"**Original prompt** {table_cell(sel.original_prompt or '')}", "",
+             "## Category recommendation", ""]
     rec = sel.recommendation
-    lines += ["## 1. Category recommendation", "",
-              f"- Recommended: **{', '.join(rec.get('operators') or ['none'])}** "
-              f"({rec.get('evidence_status')}; source: {rec.get('source')})"]
+    lines += [f"**{', '.join(rec.get('operators') or ['none'])}** ({rec.get('evidence_status')}). "
+              f"Source: {rec.get('source')}.", ""]
     if rec.get("category_score") is not None:
-        lines.append(f"- Category score {rec['category_score']:.4f}, coverage {rec.get('coverage')}")
-    if rec.get("rationale"):
-        lines.append(f"- Why: {rec['rationale']}")
-    if rec.get("note"):
-        lines.append(f"- Note: {rec['note']}")
-    lines += ["- A category recommendation is not a measurement of this prompt; the measured result follows.", ""]
-
+        lines += [f"Category score {rec['category_score']:.4f}, coverage {rec.get('coverage')}.", ""]
+    lines += [text for text in (rec.get("rationale"), rec.get("note")) if text]
+    lines += ["", "## Measured result for this prompt", "", sel.explanation, ""]
+    operators = {row["operator"]: row for row in record["operators"]}
     chosen = sel.chosen
-    lines += ["## 2. Measured result for this prompt", "", sel.explanation, ""]
     if chosen is not None:
-        cand = chosen.candidate
+        winner = operators[chosen.operator]
+        lines += [f"**Exact edit** {diff_text(winner['exact_edit'])}", "",
+                  f"**Edited prompt** {table_cell(winner['perturbed_prompt'])}", ""]
+        denominator = winner["input_length_denominator"]
+        if denominator:
+            lines += [f"**Input distance** {chosen.char_edits} Levenshtein character edits / "
+                      f"{denominator} characters in the longer prompt = **{chosen.d_in_char:.4f}**.", ""]
+        for rival in record["closest_rivals"]:
+            gap = f"{chosen.excess:+.4f} − ({rival['excess_distance']:+.4f}) = {rival['excess_gap']:+.4f}"
+            lines += [f"**Comparison with {rival['operator']}** {gap} in excess distance. "
+                      f"The selected edit uses {chosen.char_edits} character edit(s) and the rival uses "
+                      f"{rival['char_edits']}.", ""]
+        lines += ["### Raw output distance and unchanged controls", "",
+                  "The raw output distance is the study’s clipped 1 − cosine between response embeddings. "
+                  "Excess is raw distance minus the mean of the unchanged repeats. "
+                  "Calculations use full-precision values.", "",
+                  "| Model | Raw distance | Mean of unchanged repeats | Excess |",
+                  "|---|---:|---:|---:|"]
+        for m in chosen.measurements:
+            values = " + ".join(f"{v:.4f}" for v in m.control_values.values())
+            lines.append(f"| {model_label(m.model)} | {m.raw:.4f} | ({values}) / "
+                         f"{len(m.control_values)} = {m.control_mean:.4f} | "
+                         f"{m.raw:.4f} − {m.control_mean:.4f} = **{m.excess:+.4f}** |")
+        lines.append("")
+        if len(chosen.measurements) > 1:
+            effects = " + ".join(f"({m.excess:+.4f})" for m in chosen.measurements)
+            lines += [f"**Equal-weight panel excess** [{effects}] / {len(chosen.measurements)} "
+                      f"= **{chosen.excess:+.4f}**.", ""]
         best = max(chosen.measurements, key=lambda m: m.excess)
-        lines += ["| Field | Result |", "|---|---|",
-                  f"| Prompt and category | `{sel.prompt_id}` · {cat} |",
-                  f"| Original prompt | {sel.original_prompt} |",
-                  f"| Perturbed prompt | {cand['perturbed_prompt']} |",
-                  f"| Operator | `{chosen.operator}`: {_diff_text(sel.original_prompt or '', cand['perturbed_prompt'])} |",
-                  f"| Input change | **{chosen.char_edits} character edit(s)**, normalised distance "
-                  f"**{chosen.d_in_char:.4f}**, semantic input distance {chosen.d_in_sem:.4f} |",
-                  f"| Model and comparison | {sel.scope_label}; {len(chosen.measurements)} matched model–prompt "
-                  f"pair(s) from `{sel.study_id}` |",
-                  f"| Output change | Semantic distance **{chosen.raw:.4f}**, mean unchanged control distance "
-                  f"**{chosen.control:.4f}**, excess distance **{chosen.excess:+.4f}** |",
-                  f"| Functional result | " + "; ".join(
-                      f"{model_label(m.model)}: {_functional_summary(m)}" for m in chosen.measurements) + " |",
-                  f"| Tie status | {sel.tie_status} |",
-                  f"| Evidence status | {' '.join(record['evidence_notes'])} |", ""]
-        label = "Response" if len(sel.models) == 1 else f"Responses of {model_label(best.model)} (largest effect in the panel)"
-        lines += [f"### {label}", "", "**Original prompt response**", "", "```text",
-                  (best.row.get("anchor_output") or "").strip(), "```", "",
-                  "**Perturbed prompt response**", "", "```text", (best.row.get("comparison_output") or "").strip(),
-                  "```", ""]
-    lines += ["## 3. All operators", "",
-              "| Operator | Status | Char edits | d_in_char | Raw | Control | Excess | Correctness (before → after) |",
-              "|---|---|---:|---:|---:|---:|---:|---|"]
-    for r in sorted(sel.operators, key=lambda r: (r.excess is None, -(r.excess or 0), r.operator)):
-        corr = "; ".join(f"{model_label(m.model)} {_correctness(m.row.get('anchor_correct'))}→"
+        final_before = best.row.get("anchor_final")
+        final_after = best.row.get("comparison_final")
+        lines += [f"### Responses for {model_label(best.model)}", "",
+                  f"{_functional_summary(best)}.",
+                  f"Normalized final answers (original → perturbed) "
+                  f"{table_cell(final_before or 'unavailable')} → {table_cell(final_after or 'unavailable')}.", "",
+                  "<table><thead><tr><th>Original response</th><th>Perturbed response</th></tr></thead><tbody>",
+                  f"<tr><td><pre>{escape(best.row.get('anchor_output') or '')}</pre></td>"
+                  f"<td><pre>{escape(best.row.get('comparison_output') or '')}</pre></td></tr>",
+                  "</tbody></table>", ""]
+    lines += [*record["evidence_notes"], "", "## All operators", "",
+              "| Operator | Eligibility and reason | Measurement | Exact edit | Edits | Input distance | Raw | Control | Excess | Correctness (before → after) |",
+              "|---|---|---|---|---:|---:|---:|---:|---:|---|"]
+    for r in sel.operators:
+        entry = operators[r.operator]
+        corr = ", ".join(f"{model_label(m.model)} {_correctness(m.row.get('anchor_correct'))} → "
                          f"{_correctness(m.row.get('comparison_correct'))}" for m in r.measurements if m.row)
-        status = r.status if r.eligibility == "eligible" else f"{r.eligibility}: {r.eligibility_detail}"
+        status = r.status if r.eligibility in {"eligible", "noise_benchmark"} else "excluded"
+        if r.status == "incomplete":
+            status += " (" + ", ".join(f"{model_label(m.model)} {m.status}" for m in r.measurements
+                                      if m.status != MEASURED) + ")"
         mark = " **(selected)**" if r.operator in sel.winners else ""
+        detail = table_cell(f"{r.eligibility}. {r.eligibility_detail}")
         fmt = lambda v: "" if v is None else f"{v:.4f}"
-        lines.append(f"| `{r.operator}`{mark} | {status} | {'' if r.char_edits is None else r.char_edits} | "
-                     f"{fmt(r.d_in_char)} | {fmt(r.raw)} | {fmt(r.control)} | "
-                     f"{'' if r.excess is None else f'{r.excess:+.4f}'} | {corr} |")
+        lines.append(f"| `{r.operator}`{mark} | {detail} | {table_cell(status)} | {diff_text(entry['exact_edit'])} | "
+                     f"{'' if r.char_edits is None else r.char_edits} | {fmt(r.d_in_char)} | {fmt(r.raw)} | "
+                     f"{fmt(r.control)} | {'' if r.excess is None else f'{r.excess:+.4f}'} | {corr} |")
     lines.append("")
     if sel.pareto:
-        lines += ["## 4. Input–output trade-off", "",
-                  "Eligible edits not dominated by another edit with no more character edits and at least as much "
-                  "excess change:", ""]
+        lines += ["## Input–output trade-off", "",
+                  "Each edit below is on the frontier of character edit count and excess distance.", ""]
         for op in sel.pareto:
             r = sel.result(op)
-            lines.append(f"- `{op}`: {r.char_edits} character edit(s) → excess {r.excess:+.4f}")
+            lines.append(f"- `{op}` · {r.char_edits} character edit(s) · excess {r.excess:+.4f}")
         lines.append("")
-    lines += ["## 5. Source records", "",
-              "Full responses, per-model scores and record IDs are in the JSON file next to this report.", ""]
-    for r in sel.operators:
-        for m in r.measurements:
-            if m.row and r.operator in sel.winners:
-                lines.append(f"- `{m.pair_id}`: anchor record `{m.row.get('anchor_record_id')}`, "
-                             f"comparison record `{m.row.get('comparison_record_id')}`")
-    lines.append("")
+    if sel.tied_on_objective:
+        lines += [f"**Tied before applying the tie-break rules** {', '.join(sel.tied_on_objective)}.", ""]
+    lines += ["## Source records", "",
+              "The JSON record next to this report contains full responses, per-model scores, candidate IDs, "
+              "and the treatment and control pair IDs with their generation IDs.", ""]
     return "\n".join(lines)
 
 

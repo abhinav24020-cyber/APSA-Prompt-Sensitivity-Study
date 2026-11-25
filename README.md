@@ -101,15 +101,23 @@ results, and never modifies the source artifacts of `main_v1`.
 .\.venv\Scripts\python.exe experiments\category_operators.py all
 
 # One stored prompt. Budget mode (default 0.10); --model takes 'panel' (default) or one model
+.\.venv\Scripts\python.exe experiments\category_operators.py prompt --search "truth value"
 .\.venv\Scripts\python.exe experiments\category_operators.py prompt --prompt-id LOGIC-010 --model gpt-oss-120b
 .\.venv\Scripts\python.exe experiments\category_operators.py prompt --prompt-id MATH-010 --budget 0.05
 
 # Target mode: the smallest eligible edit whose control-adjusted change reaches 0.10
 .\.venv\Scripts\python.exe experiments\category_operators.py prompt --prompt-id CLASS-002 --target 0.10
 
-# A new prompt (unmeasured): recommendation, screened candidates, verdict template
-.\.venv\Scripts\python.exe experiments\category_operators.py prompt --category logical_reasoning --reference No --text "..."
+# Paste a new prompt to infer its category and prepare candidate edits for review
+.\.venv\Scripts\python.exe experiments\category_operators.py prompt --text "Who wrote Pride and Prejudice?" --reference "Jane Austen"
 ```
+
+The prompt report shows ten operator rows, including `random_edit` as a noise benchmark, plus the
+matched control arithmetic and the gap to the closest eligible rival. Individual `main_v1` reports
+go to `results/category_operator_prompts/main_v1/` by default. Use `--output-dir` to change the destination.
+For pasted prompts, use `--category` to confirm an ambiguous category or override the suggestion.
+The generated report includes review instructions and commands for a separate measurement run.
+Providing `--reference` enables a literal, case-insensitive comparison for short non-code answers.
 
 Selection rules: the **excess** change is the anchor-to-treatment semantic distance minus the mean
 anchor-to-control distance of the two unchanged repeats; negative values are kept. **Budget mode** picks

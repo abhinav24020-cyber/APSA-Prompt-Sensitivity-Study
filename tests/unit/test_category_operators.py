@@ -170,7 +170,9 @@ def test_no_eligible_edit_when_everything_is_rejected_over_budget_or_flagged(tmp
     sel = co.select_for_prompt(data, "P1")
     assert sel.status == "no_eligible_edit" and sel.winners == []
     statuses = {r.operator: r.eligibility for r in sel.operators}
-    assert statuses == {"big": "over_budget", "flag": "meaning_changing", "rej": "inapplicable"}
+    assert statuses == {"big": "over_budget", "flag": "meaning_changing", "rej": "inapplicable",
+                        "random_edit": "noise_benchmark"}
+    assert sel.result("random_edit").status == "unmeasured"
 
 
 def test_missing_control_or_truncated_treatment_is_incomplete_and_excluded(tmp_path):
@@ -362,6 +364,108 @@ def test_cli_prompt_report_on_fixture(tmp_path):
     assert {p.suffix for p in reports} == {".md", ".json"}
     record = json.loads(next(p for p in reports if p.suffix == ".json").read_text(encoding="utf-8"))
     assert record["status"] == "selected" and record["selected"] == ["a"]
+
+
+@pytest.mark.parametrize(("text", "expected"), [
+    ("Classify this Python snippet as valid or invalid.", "classification"),
+    ("Write a Python function that returns the length of a string.", "code_generation"),
+    ("Determine the truth value of P implies Q.", "logical_reasoning"),
+    ("Calculate the determinant of this matrix.", "mathematical_reasoning"),
+    ("Who wrote Pride and Prejudice?", "question_answering"),
+    ("Write a function and calculate the determinant of this matrix.", None),
+    ("Write a poem about snow.", None),
+])
+def test_category_suggestion_is_grounded_in_requested_task(text, expected):
+    from apsa.analysis.prompt_categories import suggest_category
+
+    result = suggest_category(text)
+    assert result["proposed_category"] == expected and result["reason"]
+    assert "confidence" not in result
+
+
+def test_prepared_prompt_requires_ambiguous_confirmation_and_saves_override(tmp_path, monkeypatch):
+    import category_operators as cli
+    from run_study import build_candidates
+    from apsa.metrics.input_distance import semantic
+
+    class LocalEmbedder:
+        model_name = "fixture"
+
+        def __init__(self, model_name):
+            pass
+
+        def encode(self, texts):
+            return [[1.0, 0.0] for _ in texts]
+
+    monkeypatch.setattr(semantic, "SentenceTransformerEmbedder", LocalEmbedder)
+    monkeypatch.setattr(sys.stdin, "isatty", lambda: False)
+    base = ["prompt", "--draws", "20", "--output-dir", str(tmp_path)]
+    with pytest.raises(SystemExit, match="Confirm a category"):
+        cli.main([*base, "--text", "Write a function and calculate the determinant."])
+    assert not (tmp_path / "record.json").exists()
+    prompt = "Who wrote Pride and Prejudice?"
+    cli.main([*base, "--text", prompt, "--category", "logical_reasoning", "--reference", "Jane Austen"])
+    record = json.loads((tmp_path / "record.json").read_text(encoding="utf-8"))
+    assert record["category_identification"]["source"] == "manual_override"
+    assert record["category_identification"]["proposed_category"] == "question_answering"
+    assert record["status"] == "unmeasured" and len(record["candidates"]) == 10
+    assert record["candidates"][-1]["role"] == "noise_benchmark"
+    verdicts = list(csv.DictReader((tmp_path / "verdicts_template.csv").open(encoding="utf-8", newline="")))
+    source_row = next(csv.DictReader((tmp_path / "prompt_row.csv").open(encoding="utf-8", newline="")))
+    rebuilt = build_candidates([source_row], [o["operator"] for o in record["candidates"]],
+                               record["candidate_seed"], semantic.SemanticDistanceCalculator(LocalEmbedder("fixture")))
+    assert all(v["perturbation_id"] in {c.get("perturbation_id") for c in rebuilt} for v in verdicts)
+    assert "--pairs-only" in (tmp_path / "report.md").read_text(encoding="utf-8")
+    examples = {
+        "question_answering": "Who discovered penicillin?",
+        "mathematical_reasoning": "What is 12 + 17?",
+        "classification": "Classify the following review as positive or negative.",
+        "code_generation": "Write a Python function to count the characters in a string.",
+        "logical_reasoning": "If all dogs are mammals, and Rex is a dog, is Rex a mammal?",
+    }
+    for category, text in examples.items():
+        output = tmp_path / category
+        cli.main(["prompt", "--text", text, "--draws", "20", "--output-dir", str(output)])
+        generated = json.loads((output / "record.json").read_text(encoding="utf-8"))
+        assert generated["category"] == category and generated["category_identification"]["source"] == "inferred"
+
+
+def test_cli_search_reports_logic_gap_and_all_ten_operators(tmp_path):
+    import category_operators as cli
+
+    cli.main(["prompt", "--search", "truth value of (P implies Q)", "--draws", "20", "--output-dir", str(tmp_path)])
+    path = tmp_path / "LOGIC-010__panel__budget-0.10.json"
+    record = json.loads(path.read_text(encoding="utf-8"))
+    assert record["category_identification"]["source"] == "dataset"
+    assert record["selected"] == ["punctuation"]
+    assert record["closest_rivals"][0]["excess_gap"] == pytest.approx(0.1093, abs=0.00005)
+    assert len(record["operators"]) == 10
+    noise = record["operators"][-1]
+    assert noise["operator"] == "random_edit" and noise["status"] == "measured"
+    assert noise["role"] == "noise_benchmark" and "unaudited" in noise["eligibility_detail"]
+    punctuation = next(o for o in record["operators"] if o["operator"] == "punctuation")
+    assert punctuation["exact_edit"][0]["removed"] == "."
+    assert all(len(m["control_records"]) == 2 for m in punctuation["per_model"])
+    report = path.with_suffix(".md").read_text(encoding="utf-8")
+    assert "+0.1093" in report and "<th>Original response</th>" in report
+
+
+def test_explicit_reference_scores_only_configured_text_prompts(tmp_path):
+    import pandas as pd
+    from analyze_study import score_generations
+
+    frame = pd.DataFrame([
+        {"prompt_id": "NEW-A", "task_category": "question_answering",
+         "output": "A short explanation.\nFinal answer: Jane Austen.", "finish_reason": "stop"},
+        {"prompt_id": "NEW-A", "task_category": "question_answering",
+         "output": "Final answer: Jane Austen and another author", "finish_reason": "stop"},
+        {"prompt_id": "NEW-B", "task_category": "code_generation",
+         "output": "Final answer: example", "finish_reason": "stop"},
+    ])
+    scored = score_generations(frame, tmp_path / "cache.json", {"NEW-A": "Jane Austen"})
+    assert scored["correct"].tolist() == [True, False, None]
+    assert scored["scoring_method"].tolist() == ["explicit_reference_exact_match"] * 2 + ["unscored"]
+    assert pd.isna(scored["final_answer_norm"].iloc[-1])
 
 
 def test_runner_job_order_shuffle_is_recorded_and_deterministic(tmp_path):

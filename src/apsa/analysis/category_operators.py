@@ -235,9 +235,13 @@ class StudyData:
     verdicts: dict[tuple[str, str], str] | None = None
     verdict_agreement: dict[str, Any] | None = None
     source_hashes: dict[str, str | None] = field(default_factory=dict)
+    noise_operators: list[str] = field(default_factory=list)
+    execution_modes: list[str] = field(default_factory=list)
 
     @property
     def evidence_mode(self) -> str:
+        if "mock" in self.execution_modes:
+            return "mock"
         return "validation" if self.verdicts is not None else "retrospective"
 
     def prompts_in_category(self, category: str) -> list[str]:
@@ -344,7 +348,8 @@ def measure(data: StudyData, prompt: str, model: str, operator: str) -> Measurem
 # --------------------------------------------------------------------------- loading
 def _load_verdicts(path: Path) -> tuple[dict[tuple[str, str], str], dict[str, Any] | None]:
     """Read final preservation verdicts; report agreement when two reviewer columns exist."""
-    rows = list(csv.DictReader(path.open(encoding="utf-8", newline="")))
+    with path.open(encoding="utf-8-sig", newline="") as file:
+        rows = list(csv.DictReader(file))
     if not rows:
         raise DataIntegrityError(f"{path} has no verdict rows")
     allowed = {"preserved", "changed", "uncertain"}
@@ -421,7 +426,13 @@ def load_study(study_dir: Path | str, *, verdicts_path: Path | str | None = None
                 metadata = {}
         prompts[pid] = {"category": category, "original_prompt": ds.get("original_prompt"),
                         "expected_answer": ds.get("expected_answer"),
-                        "eval_metric": metadata.get("eval_metric")}
+                        "eval_metric": metadata.get("eval_metric"),
+                        "category_identification": metadata.get("category_identification") or {
+                            "source": "dataset" if ds.get("task_category") else "candidate_metadata",
+                            "reason": ds.get("task_description") or (
+                                "The dataset records this task category." if ds.get("task_category")
+                                else "The stored candidate metadata records this task category."),
+                        }}
 
     treatments: dict[tuple[str, str, str], dict[str, str]] = {}
     controls: dict[tuple[str, str], dict[int, dict[str, str]]] = defaultdict(dict)
@@ -461,12 +472,17 @@ def load_study(study_dir: Path | str, *, verdicts_path: Path | str | None = None
     audit_file = root / MAIN_STUDY_AUDIT_FILE
     if verdicts is None and audit_file.exists():
         hashes[MAIN_STUDY_AUDIT_FILE] = _sha256(audit_file)
+    analysis_path = study_dir / "analysis" / "results.json"
+    modes = json.loads(analysis_path.read_text(encoding="utf-8")).get("execution_modes", []) if analysis_path.exists() else []
+    if not modes and {run.get("execution_mode") for run in manifest.get("runs", [])} == {"mock"}:
+        modes = ["mock"]
     return StudyData(study_dir=study_dir, study_id=manifest.get("study_id", study_dir.name),
                      config_path=manifest.get("config_path", ""), models=models, operators=operators,
                      control_repetitions=reps, prompt_ids=prompt_ids, prompts=prompts,
                      candidates=candidates, treatments=treatments, controls=dict(controls),
                      flagged=flagged, verdicts=verdicts, verdict_agreement=agreement,
-                     source_hashes=hashes)
+                     source_hashes=hashes, execution_modes=modes,
+                     noise_operators=[op for op in config["operators"] if op in NOISE_OPERATORS])
 
 
 # --------------------------------------------------------------------------- category rankings
@@ -587,7 +603,8 @@ def rank_category(data: StudyData, category: str, budget: float | None = DEFAULT
                 "shared_eligible_n": shared_n, "shared_eligible_gap": shared_gap,
                 "c2i_flips": c2i, "i2c_flips": i2c, "n_scorable_pairs": n_scorable,
                 "n_models": len(models),
-                "evidence_status": ("exploratory (discovery data)" if data.evidence_mode == "retrospective"
+                "evidence_status": ("mock (pipeline verification only)" if data.evidence_mode == "mock"
+                                    else "exploratory (discovery data)" if data.evidence_mode == "retrospective"
                                     else "held-out measurement (see validate for the claim rule)"),
                 "study_id": data.study_id,
             })
@@ -662,6 +679,8 @@ class PromptSelection:
     best_achieved: float | None = None
     study_id: str = ""
     evidence_mode: str = "retrospective"
+    rivals: list[OperatorResult] = field(default_factory=list)
+    tied_on_objective: list[str] = field(default_factory=list)
 
     @property
     def chosen(self) -> OperatorResult | None:
@@ -729,7 +748,9 @@ def category_recommendation(category: str, budget: float | None,
                 "evidence_status": "unavailable", "note": note, "rationale": ""}
     leaders = ranking.leaders
     status = f"exploratory ({ranking.rows[0]['study_id']} discovery ranking)"
-    if validated and validated.get(category) in leaders:
+    if ranking.rows[0]["evidence_status"].startswith("mock"):
+        status = "mock (pipeline verification only)"
+    elif validated and validated.get(category) in leaders:
         status = "validated on held-out prompts"
     row = next(r for r in ranking.rows if r["operator"] == leaders[0])
     rationale = CATEGORY_RATIONALE.get((category, leaders[0]),
@@ -777,6 +798,8 @@ def select_for_prompt(data: StudyData, prompt_id: str, *, budget: float | None =
     winners: list[str] = []
     tie_status = ""
     provisional: list[str] = []
+    rivals: list[OperatorResult] = []
+    tied_on_objective: list[str] = []
     best_achieved = max((r.excess for r in measured), default=None)
     pareto = pareto_frontier(measured) if measured else []
 
@@ -797,13 +820,15 @@ def select_for_prompt(data: StudyData, prompt_id: str, *, budget: float | None =
     elif mode == "budget":
         top = max(r.excess for r in measured)
         tied = [r for r in measured if r.excess == top]
+        tied_on_objective = [r.operator for r in tied] if len(tied) > 1 else []
         kept, tie_status = _break_ties(tied)
         winners = [r.operator for r in kept]
         status = "selected"
         chosen = kept[0]
         others = sorted((r for r in measured if r.operator not in winners), key=lambda r: -r.excess)
-        runner = (f" The next best eligible edit was {others[0].operator} ({others[0].excess:+.4f})."
-                  if others else " It was the only eligible measured edit.")
+        rivals = [r for r in others if r.excess == others[0].excess] if others else []
+        runner = (f" The gap to {', '.join(r.operator for r in rivals)} ({rivals[0].excess:+.4f}) "
+                  f"was {chosen.excess - rivals[0].excess:+.4f}." if rivals else "")
         tie_text = {"unique": "", "tie_broken_by_char_edits": " Exact score tie broken by fewer character edits.",
                     "tie_broken_by_input_distance": " Exact score tie broken by smaller normalised input distance.",
                     "unresolved_tie": f" Exact tie retained: {', '.join(winners)} are indistinguishable on score, "
@@ -823,15 +848,42 @@ def select_for_prompt(data: StudyData, prompt_id: str, *, budget: float | None =
             winners = [r.operator for r in kept]
             status = "selected"
             chosen = kept[0]
+            tied_on_objective = [r.operator for r in reaching if r.char_edits == chosen.char_edits]
+            if len(tied_on_objective) == 1:
+                tied_on_objective = []
+            others = sorted((r for r in reaching if r.operator not in winners),
+                            key=lambda r: (r.char_edits, r.d_in_char, -r.excess))
+            if others:
+                key = (others[0].char_edits, others[0].d_in_char, others[0].excess)
+                rivals = [r for r in others if (r.char_edits, r.d_in_char, r.excess) == key]
             explanation = (f"{chosen.operator} is the smallest eligible edit ({chosen.char_edits} character "
                            f"edit(s), d_in_char {chosen.d_in_char:.4f}) whose control-adjusted change "
                            f"({chosen.excess:+.4f}) reaches the target {target:.4f}; {len(reaching)} of "
                            f"{len(measured)} measured edits reached it. Preservation evidence: "
                            f"{chosen.eligibility_detail}.")
+    for op in data.noise_operators:
+        candidate = data.candidates.get((prompt_id, op))
+        state, reason = data.eligibility(prompt_id, op, budget)
+        comparable = state in {ELIGIBLE, "uncertain", "meaning_changing"}
+        measurements = [measure(data, prompt_id, model, op) for model in models] if comparable else []
+        audit = data.verdicts.get((prompt_id, op)) if data.verdicts is not None else None
+        detail = f"Noise benchmark only. Preservation: {audit or 'unaudited'}."
+        if not comparable:
+            detail += f" {reason}."
+        if measurements and all(m.status == MEASURED for m in measurements):
+            results.append(OperatorResult(op, "noise_benchmark", detail, candidate, measurements, MEASURED,
+                                          raw=mean(m.raw for m in measurements),
+                                          control=mean(m.control_mean for m in measurements),
+                                          excess=mean(m.excess for m in measurements)))
+        else:
+            noise_status = "over_budget" if state == "over_budget" else "unmeasured"
+            if any(m.row for m in measurements):
+                noise_status = "incomplete"
+            results.append(OperatorResult(op, "noise_benchmark", detail, candidate, measurements, noise_status))
     return PromptSelection(prompt_id, category, info.get("original_prompt"), info.get("expected_answer"),
                            budget, target, list(models), mode, status, winners, tie_status, results, pareto,
                            recommendation, explanation, provisional, best_achieved, data.study_id,
-                           data.evidence_mode)
+                           data.evidence_mode, rivals, tied_on_objective)
 
 
 # --------------------------------------------------------------------------- protected content screen
@@ -908,6 +960,9 @@ def held_out_validation(data: StudyData, nominees: dict[str, str], *, budget: fl
                         discovery: StudyData | None = None) -> dict[str, Any]:
     """Plan Section 4: Bonferroni-adjusted one-sided paired t lower bounds for each locked nominee."""
     from scipy import stats
+
+    if data.evidence_mode == "mock" or (discovery is not None and discovery.evidence_mode == "mock"):
+        raise DataIntegrityError("Mock outputs cannot support held-out validation")
 
     overlap: list[str] = []
     if discovery is not None:
