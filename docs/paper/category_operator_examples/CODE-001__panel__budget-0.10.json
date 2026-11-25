@@ -1,0 +1,1983 @@
+{
+  "prompt_id": "CODE-001",
+  "category": "code_generation",
+  "original_prompt": "Write a Python function reverse_string(s: str) -> str that returns the reversed string without using Python's built-in slice step [::-1] or reversed().",
+  "category_identification": {
+    "source": "dataset",
+    "reason": "Python string reversal without slice step"
+  },
+  "reference_answer": "def reverse_string(s: str) -> str:\r\n    return ''.join(s[i] for i in range(len(s) - 1, -1, -1))",
+  "study_id": "main_v1",
+  "evidence_mode": "retrospective",
+  "selection_rule": {
+    "mode": "budget",
+    "budget": "0.10",
+    "target": null,
+    "tie_breaks": [
+      "largest excess",
+      "fewest character edits",
+      "smallest normalized input distance"
+    ]
+  },
+  "model_scope": {
+    "models": [
+      "qwen/qwen3.8-27b",
+      "openai/gpt-oss-120b",
+      "openai/gpt-oss-20b",
+      "allam-2-7b",
+      "gemini-3.1-flash-lite"
+    ],
+    "label": "fixed panel of 5 models, equal weights"
+  },
+  "status": "selected",
+  "selected": [
+    "word_insertion"
+  ],
+  "tie_status": "unique",
+  "tied_on_objective": [],
+  "closest_rivals": [
+    {
+      "operator": "word_deletion",
+      "char_edits": 4,
+      "d_in_char": 0.02649,
+      "excess_distance": 0.022054123878479003,
+      "excess_gap": 0.008268177509307861,
+      "character_edits_saved": -6
+    }
+  ],
+  "explanation": "word_insertion produced the largest control-adjusted change (+0.0303) among 6 eligible, measured edits within budget 0.10. The gap to word_deletion (+0.0221) was +0.0083. Preservation evidence: not flagged by the retrospective audit (operator audited by a sample of 5 candidates).",
+  "provisional_best": [],
+  "best_achieved_excess": 0.030322301387786865,
+  "tradeoff_frontier": [
+    "capitalization",
+    "word_substitution",
+    "word_deletion",
+    "word_insertion"
+  ],
+  "recommendation": {
+    "operators": [
+      "word_insertion"
+    ],
+    "source": "category_operator_rankings.csv (code_generation, budget 0.10)",
+    "budget": "0.10",
+    "category_score": 0.03862167000770569,
+    "coverage": "10/10 complete prompts",
+    "evidence_status": "exploratory (main_v1 discovery ranking)",
+    "rationale": "A leading tone cue ('Carefully') can change which implementation the model writes while preserving the signature and input/output contract.",
+    "note": "",
+    "prompt_status": "measured"
+  },
+  "evidence_notes": [
+    "Exploratory measurement from stored main_v1 outputs."
+  ],
+  "operators": [
+    {
+      "operator": "char_substitution",
+      "eligibility": "meaning_changing",
+      "eligibility_detail": "retrospective audit flag: specification_changed",
+      "status": "meaning_changing",
+      "perturbation_id": "CODE-001__char_substitution__42__3e700a698309",
+      "role": "candidate",
+      "perturbed_prompt": "Write a Python function reverse_5tring(s: str) -> str that returns the reversed string without using Python's built-in slice step [::-1] or reversed().",
+      "char_edits": 1,
+      "d_in_char": 0.006623,
+      "exact_edit": [
+        {
+          "original_offset": 32,
+          "edited_offset": 32,
+          "removed": "s",
+          "added": "5"
+        }
+      ],
+      "input_length_denominator": 151,
+      "d_in_sem": 0.05297114,
+      "auto_protected_changes": [
+        "code identifier 'reverse_string' no longer present"
+      ],
+      "raw_distance": null,
+      "control_distance": null,
+      "excess_distance": null,
+      "per_model": []
+    },
+    {
+      "operator": "capitalization",
+      "eligibility": "eligible",
+      "eligibility_detail": "not flagged by the retrospective audit (operator audited by a sample of 5 candidates)",
+      "status": "measured",
+      "perturbation_id": "CODE-001__capitalization__42__1444de083f87",
+      "role": "candidate",
+      "perturbed_prompt": "write a Python function reverse_string(s: str) -> str that returns the reversed string without using Python's built-in slice step [::-1] or reversed().",
+      "char_edits": 1,
+      "d_in_char": 0.006623,
+      "exact_edit": [
+        {
+          "original_offset": 0,
+          "edited_offset": 0,
+          "removed": "W",
+          "added": "w"
+        }
+      ],
+      "input_length_denominator": 151,
+      "d_in_sem": 0.0,
+      "auto_protected_changes": [],
+      "raw_distance": 0.01479029655456543,
+      "control_distance": 0.0,
+      "excess_distance": 0.01479029655456543,
+      "per_model": [
+        {
+          "model": "qwen/qwen3.8-27b",
+          "model_label": "Qwen 3.8 27B",
+          "status": "measured",
+          "pair_id": "qwen/qwen3.8-27b|CODE-001|treatment|capitalization|1",
+          "anchor_record_id": "648567a3-f571-475c-b934-2514a38e4b06",
+          "comparison_record_id": "071e669c-e8a6-459a-8110-3855a41648f3",
+          "raw_distance": 0.0,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "qwen/qwen3.8-27b|CODE-001|control|None|1",
+              "anchor_record_id": "648567a3-f571-475c-b934-2514a38e4b06",
+              "comparison_record_id": "6e628a8b-9029-4d44-8d1b-79553fa4b34c",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "qwen/qwen3.8-27b|CODE-001|control|None|2",
+              "anchor_record_id": "648567a3-f571-475c-b934-2514a38e4b06",
+              "comparison_record_id": "045f2b4f-c0a3-4139-b1a5-aceb79ed45f3",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.0,
+          "d_out_char": 0.0,
+          "d_out_token": 0.0,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": null,
+          "comparison_final": null,
+          "scoring_method": "unit_tests",
+          "code_signature_compliant": true,
+          "taxonomy": "identical",
+          "anchor_output": "```python\r\ndef reverse_string(s: str) -> str:\r\n    result = []\r\n    for char in s:\r\n        result.append(char)\r\n    result.reverse()\r\n    return ''.join(result)\r\n```",
+          "comparison_output": "```python\r\ndef reverse_string(s: str) -> str:\r\n    result = []\r\n    for char in s:\r\n        result.append(char)\r\n    result.reverse()\r\n    return ''.join(result)\r\n```"
+        },
+        {
+          "model": "openai/gpt-oss-120b",
+          "model_label": "GPT-OSS-120B",
+          "status": "measured",
+          "pair_id": "openai/gpt-oss-120b|CODE-001|treatment|capitalization|1",
+          "anchor_record_id": "8dbece3c-325a-4d7a-adc0-732f31e3d967",
+          "comparison_record_id": "7e7dd68d-eb58-4149-9ed9-617248e9c2ce",
+          "raw_distance": 0.0,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "openai/gpt-oss-120b|CODE-001|control|None|1",
+              "anchor_record_id": "8dbece3c-325a-4d7a-adc0-732f31e3d967",
+              "comparison_record_id": "e3504754-6847-4726-817b-705f41fcf662",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "openai/gpt-oss-120b|CODE-001|control|None|2",
+              "anchor_record_id": "8dbece3c-325a-4d7a-adc0-732f31e3d967",
+              "comparison_record_id": "e7eab799-a679-4c25-9cae-9ea68230ec99",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.0,
+          "d_out_char": 0.0,
+          "d_out_token": 0.0,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": null,
+          "comparison_final": null,
+          "scoring_method": "unit_tests",
+          "code_signature_compliant": true,
+          "taxonomy": "identical",
+          "anchor_output": "```python\r\ndef reverse_string(s: str) -> str:\r\n    \"\"\"Return the reversed version of the input string without using slicing or reversed().\"\"\"\r\n    # Convert the string to a list of characters for in‑place swapping\r\n    chars = list(s)\r\n    left, right = 0, len(chars) - 1\r\n\r\n    # Swap characters moving towards the center\r\n    while left < right:\r\n        chars[left], chars[right] = chars[right], chars[left]\r\n        left += 1\r\n        right -= 1\r\n\r\n    # Join the list back into a string\r\n    return ''.join(chars)\r\n```",
+          "comparison_output": "```python\r\ndef reverse_string(s: str) -> str:\r\n    \"\"\"Return the reversed version of the input string without using slicing or reversed().\"\"\"\r\n    # Convert the string to a list of characters for in‑place swapping\r\n    chars = list(s)\r\n    left, right = 0, len(chars) - 1\r\n\r\n    # Swap characters moving towards the center\r\n    while left < right:\r\n        chars[left], chars[right] = chars[right], chars[left]\r\n        left += 1\r\n        right -= 1\r\n\r\n    # Join the list back into a string\r\n    return ''.join(chars)\r\n```"
+        },
+        {
+          "model": "openai/gpt-oss-20b",
+          "model_label": "GPT-OSS-20B",
+          "status": "measured",
+          "pair_id": "openai/gpt-oss-20b|CODE-001|treatment|capitalization|1",
+          "anchor_record_id": "c4650085-bde3-4c81-9829-f5a904a83849",
+          "comparison_record_id": "86a43bd5-460e-4a7e-9abf-72abe8b7a277",
+          "raw_distance": 0.0709538459777832,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "openai/gpt-oss-20b|CODE-001|control|None|1",
+              "anchor_record_id": "c4650085-bde3-4c81-9829-f5a904a83849",
+              "comparison_record_id": "750e4f75-beee-4ca5-910b-8a8bdd2023d0",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "openai/gpt-oss-20b|CODE-001|control|None|2",
+              "anchor_record_id": "c4650085-bde3-4c81-9829-f5a904a83849",
+              "comparison_record_id": "31c6cdce-7df8-4794-9074-9861cf11d470",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.0709538459777832,
+          "d_out_char": 0.2572614107883817,
+          "d_out_token": 0.44999999999999996,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": null,
+          "comparison_final": null,
+          "scoring_method": "unit_tests",
+          "code_signature_compliant": true,
+          "taxonomy": "content_change_same_answer",
+          "anchor_output": "```python\r\ndef reverse_string(s: str) -> str:\r\n    \"\"\"Return the reversed string without using slice step or reversed().\"\"\"\r\n    result = []\r\n    for i in range(len(s) - 1, -1, -1):\r\n        result.append(s[i])\r\n    return ''.join(result)\r\n```",
+          "comparison_output": "```python\r\ndef reverse_string(s: str) -> str:\r\n    \"\"\"Return the reversed string without using slicing or reversed().\"\"\"\r\n    result = []\r\n    for char in s:\r\n        result.insert(0, char)  # prepend each character\r\n    return ''.join(result)\r\n```"
+        },
+        {
+          "model": "allam-2-7b",
+          "model_label": "ALLaM-2-7B",
+          "status": "measured",
+          "pair_id": "allam-2-7b|CODE-001|treatment|capitalization|1",
+          "anchor_record_id": "fd208254-bc03-4861-87b4-c372ac461843",
+          "comparison_record_id": "1a41ac97-46fb-4c42-9593-419b890aaf90",
+          "raw_distance": 0.0029976367950439453,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "allam-2-7b|CODE-001|control|None|1",
+              "anchor_record_id": "fd208254-bc03-4861-87b4-c372ac461843",
+              "comparison_record_id": "590b8242-fd21-4c3a-9fbf-f3c1f38679f7",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "allam-2-7b|CODE-001|control|None|2",
+              "anchor_record_id": "fd208254-bc03-4861-87b4-c372ac461843",
+              "comparison_record_id": "5f9188c7-334f-440a-bd4b-87d0d8dd23da",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.0029976367950439453,
+          "d_out_char": 0.006741573033707815,
+          "d_out_token": 0.0357142857142857,
+          "answer_changed": false,
+          "anchor_correct": false,
+          "comparison_correct": false,
+          "anchor_final": null,
+          "comparison_final": null,
+          "scoring_method": "unit_tests",
+          "code_signature_compliant": true,
+          "taxonomy": "wording_change_only",
+          "anchor_output": "To create a Python function that reverses a string without using the slice step [::-1] or the reversed() function, you can use a loop and a list to store the characters of the string. Here's the code:\r\n\r\n```python\r\ndef reverse_string(s: str) -> str:\r\n    reversed_str = []\r\n    for char in s:\r\n        reversed_str.append(char)\r\n    return ''.join(reversed_str)\r\n```\r\n\r\nThis function takes a string `s` as input and returns the reversed string as output. ",
+          "comparison_output": "To write a Python function that reverses a string without using the slice step [::-1] or the reversed() function, you can use a loop and a list to store the characters of the string. Here's the code:\r\n\r\n```python\r\ndef reverse_string(s: str) -> str:\r\n    reversed_str = []\r\n    for char in s:\r\n        reversed_str.append(char)\r\n    return ''.join(reversed_str)\r\n```\r\n\r\nThis function takes a string `s` as input and returns the reversed string as output. "
+        },
+        {
+          "model": "gemini-3.1-flash-lite",
+          "model_label": "Gemini 3.1 Flash-Lite",
+          "status": "measured",
+          "pair_id": "gemini-3.1-flash-lite|CODE-001|treatment|capitalization|1",
+          "anchor_record_id": "497d5459-2c55-46d8-9b75-fb92cce9babe",
+          "comparison_record_id": "2ab9503d-9ef1-439c-9bf7-ce1d688c99c6",
+          "raw_distance": 0.0,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "gemini-3.1-flash-lite|CODE-001|control|None|1",
+              "anchor_record_id": "497d5459-2c55-46d8-9b75-fb92cce9babe",
+              "comparison_record_id": "c58132ae-05f3-437c-9fa3-a98eee05953f",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "gemini-3.1-flash-lite|CODE-001|control|None|2",
+              "anchor_record_id": "497d5459-2c55-46d8-9b75-fb92cce9babe",
+              "comparison_record_id": "b4af3d6c-4e1f-419c-88d5-b940974cc6e7",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.0,
+          "d_out_char": 0.0,
+          "d_out_token": 0.0,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": null,
+          "comparison_final": null,
+          "scoring_method": "unit_tests",
+          "code_signature_compliant": true,
+          "taxonomy": "identical",
+          "anchor_output": "```python\r\ndef reverse_string(s: str) -> str:\r\n    reversed_s = \"\"\r\n    for char in s:\r\n        reversed_s = char + reversed_s\r\n    return reversed_s\r\n```\r\n\r\nFinal answer: The provided Python function uses a loop to prepend each character to a new string, effectively reversing it without using slicing or the `reversed()` function.",
+          "comparison_output": "```python\r\ndef reverse_string(s: str) -> str:\r\n    reversed_s = \"\"\r\n    for char in s:\r\n        reversed_s = char + reversed_s\r\n    return reversed_s\r\n```\r\n\r\nFinal answer: The provided Python function uses a loop to prepend each character to a new string, effectively reversing it without using slicing or the `reversed()` function."
+        }
+      ]
+    },
+    {
+      "operator": "punctuation",
+      "eligibility": "eligible",
+      "eligibility_detail": "not flagged by the retrospective audit (operator audited by a sample of 5 candidates)",
+      "status": "measured",
+      "perturbation_id": "CODE-001__punctuation__42__edc913802770",
+      "role": "candidate",
+      "perturbed_prompt": "Write a Python function reverse_string(s: str) -> str that returns the reversed string without using Python's built-in slice step [::-1] or reversed()",
+      "char_edits": 1,
+      "d_in_char": 0.006623,
+      "exact_edit": [
+        {
+          "original_offset": 150,
+          "edited_offset": 150,
+          "removed": ".",
+          "added": ""
+        }
+      ],
+      "input_length_denominator": 151,
+      "d_in_sem": 0.00748124,
+      "auto_protected_changes": [],
+      "raw_distance": 0.012844455242156983,
+      "control_distance": 0.0,
+      "excess_distance": 0.012844455242156983,
+      "per_model": [
+        {
+          "model": "qwen/qwen3.8-27b",
+          "model_label": "Qwen 3.8 27B",
+          "status": "measured",
+          "pair_id": "qwen/qwen3.8-27b|CODE-001|treatment|punctuation|1",
+          "anchor_record_id": "648567a3-f571-475c-b934-2514a38e4b06",
+          "comparison_record_id": "5ba85122-9bce-454c-9926-1e6787609380",
+          "raw_distance": 0.0,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "qwen/qwen3.8-27b|CODE-001|control|None|1",
+              "anchor_record_id": "648567a3-f571-475c-b934-2514a38e4b06",
+              "comparison_record_id": "6e628a8b-9029-4d44-8d1b-79553fa4b34c",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "qwen/qwen3.8-27b|CODE-001|control|None|2",
+              "anchor_record_id": "648567a3-f571-475c-b934-2514a38e4b06",
+              "comparison_record_id": "045f2b4f-c0a3-4139-b1a5-aceb79ed45f3",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.0,
+          "d_out_char": 0.0,
+          "d_out_token": 0.0,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": null,
+          "comparison_final": null,
+          "scoring_method": "unit_tests",
+          "code_signature_compliant": true,
+          "taxonomy": "identical",
+          "anchor_output": "```python\r\ndef reverse_string(s: str) -> str:\r\n    result = []\r\n    for char in s:\r\n        result.append(char)\r\n    result.reverse()\r\n    return ''.join(result)\r\n```",
+          "comparison_output": "```python\r\ndef reverse_string(s: str) -> str:\r\n    result = []\r\n    for char in s:\r\n        result.append(char)\r\n    result.reverse()\r\n    return ''.join(result)\r\n```"
+        },
+        {
+          "model": "openai/gpt-oss-120b",
+          "model_label": "GPT-OSS-120B",
+          "status": "measured",
+          "pair_id": "openai/gpt-oss-120b|CODE-001|treatment|punctuation|1",
+          "anchor_record_id": "8dbece3c-325a-4d7a-adc0-732f31e3d967",
+          "comparison_record_id": "7f14c948-9f6b-4d5f-8b52-609ecd06e79f",
+          "raw_distance": 0.0,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "openai/gpt-oss-120b|CODE-001|control|None|1",
+              "anchor_record_id": "8dbece3c-325a-4d7a-adc0-732f31e3d967",
+              "comparison_record_id": "e3504754-6847-4726-817b-705f41fcf662",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "openai/gpt-oss-120b|CODE-001|control|None|2",
+              "anchor_record_id": "8dbece3c-325a-4d7a-adc0-732f31e3d967",
+              "comparison_record_id": "e7eab799-a679-4c25-9cae-9ea68230ec99",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.0,
+          "d_out_char": 0.0,
+          "d_out_token": 0.0,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": null,
+          "comparison_final": null,
+          "scoring_method": "unit_tests",
+          "code_signature_compliant": true,
+          "taxonomy": "identical",
+          "anchor_output": "```python\r\ndef reverse_string(s: str) -> str:\r\n    \"\"\"Return the reversed version of the input string without using slicing or reversed().\"\"\"\r\n    # Convert the string to a list of characters for in‑place swapping\r\n    chars = list(s)\r\n    left, right = 0, len(chars) - 1\r\n\r\n    # Swap characters moving towards the center\r\n    while left < right:\r\n        chars[left], chars[right] = chars[right], chars[left]\r\n        left += 1\r\n        right -= 1\r\n\r\n    # Join the list back into a string\r\n    return ''.join(chars)\r\n```",
+          "comparison_output": "```python\r\ndef reverse_string(s: str) -> str:\r\n    \"\"\"Return the reversed version of the input string without using slicing or reversed().\"\"\"\r\n    # Convert the string to a list of characters for in‑place swapping\r\n    chars = list(s)\r\n    left, right = 0, len(chars) - 1\r\n\r\n    # Swap characters moving towards the center\r\n    while left < right:\r\n        chars[left], chars[right] = chars[right], chars[left]\r\n        left += 1\r\n        right -= 1\r\n\r\n    # Join the list back into a string\r\n    return ''.join(chars)\r\n```"
+        },
+        {
+          "model": "openai/gpt-oss-20b",
+          "model_label": "GPT-OSS-20B",
+          "status": "measured",
+          "pair_id": "openai/gpt-oss-20b|CODE-001|treatment|punctuation|1",
+          "anchor_record_id": "c4650085-bde3-4c81-9829-f5a904a83849",
+          "comparison_record_id": "0197f1d6-c1ff-4d1f-af3f-7b69d44b0cab",
+          "raw_distance": 0.05232161283493042,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "openai/gpt-oss-20b|CODE-001|control|None|1",
+              "anchor_record_id": "c4650085-bde3-4c81-9829-f5a904a83849",
+              "comparison_record_id": "750e4f75-beee-4ca5-910b-8a8bdd2023d0",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "openai/gpt-oss-20b|CODE-001|control|None|2",
+              "anchor_record_id": "c4650085-bde3-4c81-9829-f5a904a83849",
+              "comparison_record_id": "31c6cdce-7df8-4794-9074-9861cf11d470",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.05232161283493042,
+          "d_out_char": 0.2295081967213115,
+          "d_out_token": 0.3846153846153846,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": null,
+          "comparison_final": null,
+          "scoring_method": "unit_tests",
+          "code_signature_compliant": true,
+          "taxonomy": "content_change_same_answer",
+          "anchor_output": "```python\r\ndef reverse_string(s: str) -> str:\r\n    \"\"\"Return the reversed string without using slice step or reversed().\"\"\"\r\n    result = []\r\n    for i in range(len(s) - 1, -1, -1):\r\n        result.append(s[i])\r\n    return ''.join(result)\r\n```",
+          "comparison_output": "```python\r\ndef reverse_string(s: str) -> str:\r\n    \"\"\"Return the reversed string without using slice step or reversed().\"\"\"\r\n    result = []\r\n    for char in s:\r\n        result.insert(0, char)  # prepend each character\r\n    return ''.join(result)\r\n```"
+        },
+        {
+          "model": "allam-2-7b",
+          "model_label": "ALLaM-2-7B",
+          "status": "measured",
+          "pair_id": "allam-2-7b|CODE-001|treatment|punctuation|1",
+          "anchor_record_id": "fd208254-bc03-4861-87b4-c372ac461843",
+          "comparison_record_id": "97c7209a-f27f-479d-a90f-8e1b60d42d65",
+          "raw_distance": 0.011900663375854492,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "allam-2-7b|CODE-001|control|None|1",
+              "anchor_record_id": "fd208254-bc03-4861-87b4-c372ac461843",
+              "comparison_record_id": "590b8242-fd21-4c3a-9fbf-f3c1f38679f7",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "allam-2-7b|CODE-001|control|None|2",
+              "anchor_record_id": "fd208254-bc03-4861-87b4-c372ac461843",
+              "comparison_record_id": "5f9188c7-334f-440a-bd4b-87d0d8dd23da",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.011900663375854492,
+          "d_out_char": 0.4030172413793103,
+          "d_out_token": 0.38235294117647056,
+          "answer_changed": true,
+          "anchor_correct": false,
+          "comparison_correct": true,
+          "anchor_final": null,
+          "comparison_final": null,
+          "scoring_method": "unit_tests",
+          "code_signature_compliant": true,
+          "taxonomy": "correctness_flip_incorrect_to_correct",
+          "anchor_output": "To create a Python function that reverses a string without using the slice step [::-1] or the reversed() function, you can use a loop and a list to store the characters of the string. Here's the code:\r\n\r\n```python\r\ndef reverse_string(s: str) -> str:\r\n    reversed_str = []\r\n    for char in s:\r\n        reversed_str.append(char)\r\n    return ''.join(reversed_str)\r\n```\r\n\r\nThis function takes a string `s` as input and returns the reversed string as output. ",
+          "comparison_output": "To create a Python function that reverses a string without using the slice step [::-1] or the reversed() function, you can use the following code:\r\n\r\n```python\r\ndef reverse_string(s: str) -> str:\r\n    reversed_str = ''\r\n    for char in s:\r\n        reversed_str = char + reversed_str\r\n    return reversed_str\r\n```\r\n\r\nThis function iterates over each character in the input string and appends it to a new string called `reversed_str`. Finally, it returns the reversed string. "
+        },
+        {
+          "model": "gemini-3.1-flash-lite",
+          "model_label": "Gemini 3.1 Flash-Lite",
+          "status": "measured",
+          "pair_id": "gemini-3.1-flash-lite|CODE-001|treatment|punctuation|1",
+          "anchor_record_id": "497d5459-2c55-46d8-9b75-fb92cce9babe",
+          "comparison_record_id": "6bda3883-6fae-437c-8345-750c569d1e29",
+          "raw_distance": 0.0,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "gemini-3.1-flash-lite|CODE-001|control|None|1",
+              "anchor_record_id": "497d5459-2c55-46d8-9b75-fb92cce9babe",
+              "comparison_record_id": "c58132ae-05f3-437c-9fa3-a98eee05953f",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "gemini-3.1-flash-lite|CODE-001|control|None|2",
+              "anchor_record_id": "497d5459-2c55-46d8-9b75-fb92cce9babe",
+              "comparison_record_id": "b4af3d6c-4e1f-419c-88d5-b940974cc6e7",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.0,
+          "d_out_char": 0.0,
+          "d_out_token": 0.0,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": null,
+          "comparison_final": null,
+          "scoring_method": "unit_tests",
+          "code_signature_compliant": true,
+          "taxonomy": "identical",
+          "anchor_output": "```python\r\ndef reverse_string(s: str) -> str:\r\n    reversed_s = \"\"\r\n    for char in s:\r\n        reversed_s = char + reversed_s\r\n    return reversed_s\r\n```\r\n\r\nFinal answer: The provided Python function uses a loop to prepend each character to a new string, effectively reversing it without using slicing or the `reversed()` function.",
+          "comparison_output": "```python\r\ndef reverse_string(s: str) -> str:\r\n    reversed_s = \"\"\r\n    for char in s:\r\n        reversed_s = char + reversed_s\r\n    return reversed_s\r\n```\r\n\r\nFinal answer: The provided Python function uses a loop to prepend each character to a new string, effectively reversing it without using slicing or the `reversed()` function."
+        }
+      ]
+    },
+    {
+      "operator": "whitespace",
+      "eligibility": "over_budget",
+      "eligibility_detail": "d_in_char 0.1221 exceeds budget 0.10",
+      "status": "over_budget",
+      "perturbation_id": "CODE-001__whitespace__42__1b8012d4ede1",
+      "role": "candidate",
+      "perturbed_prompt": "Write  a  Python  function  reverse_string(s:  str)  ->  str  that  returns  the  reversed  string  without  using  Python's  built-in  slice  step  [::-1]  or  reversed().",
+      "char_edits": 21,
+      "d_in_char": 0.122093,
+      "exact_edit": [
+        {
+          "original_offset": 6,
+          "edited_offset": 6,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 7,
+          "edited_offset": 8,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 14,
+          "edited_offset": 16,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 23,
+          "edited_offset": 26,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 42,
+          "edited_offset": 46,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 47,
+          "edited_offset": 52,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 49,
+          "edited_offset": 55,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 54,
+          "edited_offset": 61,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 58,
+          "edited_offset": 66,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 67,
+          "edited_offset": 76,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 70,
+          "edited_offset": 80,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 80,
+          "edited_offset": 91,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 86,
+          "edited_offset": 98,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 95,
+          "edited_offset": 108,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 100,
+          "edited_offset": 114,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 110,
+          "edited_offset": 125,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 119,
+          "edited_offset": 135,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 125,
+          "edited_offset": 142,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 129,
+          "edited_offset": 147,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 137,
+          "edited_offset": 156,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 139,
+          "edited_offset": 159,
+          "removed": "",
+          "added": " "
+        }
+      ],
+      "input_length_denominator": 172,
+      "d_in_sem": 0.0,
+      "auto_protected_changes": [],
+      "raw_distance": null,
+      "control_distance": null,
+      "excess_distance": null,
+      "per_model": []
+    },
+    {
+      "operator": "word_insertion",
+      "eligibility": "eligible",
+      "eligibility_detail": "not flagged by the retrospective audit (operator audited by a sample of 5 candidates)",
+      "status": "measured",
+      "perturbation_id": "CODE-001__word_insertion__42__b2c18bad7e55",
+      "role": "candidate",
+      "perturbed_prompt": "Carefully Write a Python function reverse_string(s: str) -> str that returns the reversed string without using Python's built-in slice step [::-1] or reversed().",
+      "char_edits": 10,
+      "d_in_char": 0.062112,
+      "exact_edit": [
+        {
+          "original_offset": 0,
+          "edited_offset": 0,
+          "removed": "",
+          "added": "Carefully "
+        }
+      ],
+      "input_length_denominator": 161,
+      "d_in_sem": 0.00578598,
+      "auto_protected_changes": [],
+      "raw_distance": 0.030322301387786865,
+      "control_distance": 0.0,
+      "excess_distance": 0.030322301387786865,
+      "per_model": [
+        {
+          "model": "qwen/qwen3.8-27b",
+          "model_label": "Qwen 3.8 27B",
+          "status": "measured",
+          "pair_id": "qwen/qwen3.8-27b|CODE-001|treatment|word_insertion|1",
+          "anchor_record_id": "648567a3-f571-475c-b934-2514a38e4b06",
+          "comparison_record_id": "30b4dc48-5559-4078-ba48-0ed965558786",
+          "raw_distance": 0.0,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "qwen/qwen3.8-27b|CODE-001|control|None|1",
+              "anchor_record_id": "648567a3-f571-475c-b934-2514a38e4b06",
+              "comparison_record_id": "6e628a8b-9029-4d44-8d1b-79553fa4b34c",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "qwen/qwen3.8-27b|CODE-001|control|None|2",
+              "anchor_record_id": "648567a3-f571-475c-b934-2514a38e4b06",
+              "comparison_record_id": "045f2b4f-c0a3-4139-b1a5-aceb79ed45f3",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.0,
+          "d_out_char": 0.0,
+          "d_out_token": 0.0,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": null,
+          "comparison_final": null,
+          "scoring_method": "unit_tests",
+          "code_signature_compliant": true,
+          "taxonomy": "identical",
+          "anchor_output": "```python\r\ndef reverse_string(s: str) -> str:\r\n    result = []\r\n    for char in s:\r\n        result.append(char)\r\n    result.reverse()\r\n    return ''.join(result)\r\n```",
+          "comparison_output": "```python\r\ndef reverse_string(s: str) -> str:\r\n    result = []\r\n    for char in s:\r\n        result.append(char)\r\n    result.reverse()\r\n    return ''.join(result)\r\n```"
+        },
+        {
+          "model": "openai/gpt-oss-120b",
+          "model_label": "GPT-OSS-120B",
+          "status": "measured",
+          "pair_id": "openai/gpt-oss-120b|CODE-001|treatment|word_insertion|1",
+          "anchor_record_id": "8dbece3c-325a-4d7a-adc0-732f31e3d967",
+          "comparison_record_id": "2856c44b-5f84-401e-b5dd-91633bb002ef",
+          "raw_distance": 0.06336009502410889,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "openai/gpt-oss-120b|CODE-001|control|None|1",
+              "anchor_record_id": "8dbece3c-325a-4d7a-adc0-732f31e3d967",
+              "comparison_record_id": "e3504754-6847-4726-817b-705f41fcf662",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "openai/gpt-oss-120b|CODE-001|control|None|2",
+              "anchor_record_id": "8dbece3c-325a-4d7a-adc0-732f31e3d967",
+              "comparison_record_id": "e7eab799-a679-4c25-9cae-9ea68230ec99",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.06336009502410889,
+          "d_out_char": 0.49576988155668356,
+          "d_out_token": 0.6808510638297872,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": null,
+          "comparison_final": null,
+          "scoring_method": "unit_tests",
+          "code_signature_compliant": true,
+          "taxonomy": "content_change_same_answer",
+          "anchor_output": "```python\r\ndef reverse_string(s: str) -> str:\r\n    \"\"\"Return the reversed version of the input string without using slicing or reversed().\"\"\"\r\n    # Convert the string to a list of characters for in‑place swapping\r\n    chars = list(s)\r\n    left, right = 0, len(chars) - 1\r\n\r\n    # Swap characters moving towards the center\r\n    while left < right:\r\n        chars[left], chars[right] = chars[right], chars[left]\r\n        left += 1\r\n        right -= 1\r\n\r\n    # Join the list back into a string\r\n    return ''.join(chars)\r\n```",
+          "comparison_output": "```python\r\ndef reverse_string(s: str) -> str:\r\n    \"\"\"\r\n    Return the reversed version of the input string `s` without using\r\n    slicing with a step or the built‑in reversed() function.\r\n\r\n    The implementation builds a list of characters in reverse order\r\n    and then joins them back into a string.\r\n    \"\"\"\r\n    # Allocate a list of the same length for efficiency\r\n    n = len(s)\r\n    rev_chars = [''] * n\r\n\r\n    # Fill the list from the end of the original string\r\n    for i in range(n):\r\n        rev_chars[i] = s[n - 1 - i]\r\n\r\n    # Convert the list back to a string\r\n    return ''.join(rev_chars)\r\n```"
+        },
+        {
+          "model": "openai/gpt-oss-20b",
+          "model_label": "GPT-OSS-20B",
+          "status": "measured",
+          "pair_id": "openai/gpt-oss-20b|CODE-001|treatment|word_insertion|1",
+          "anchor_record_id": "c4650085-bde3-4c81-9829-f5a904a83849",
+          "comparison_record_id": "33623588-63cb-430d-a889-1b7af616a6b8",
+          "raw_distance": 0.07592493295669556,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "openai/gpt-oss-20b|CODE-001|control|None|1",
+              "anchor_record_id": "c4650085-bde3-4c81-9829-f5a904a83849",
+              "comparison_record_id": "750e4f75-beee-4ca5-910b-8a8bdd2023d0",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "openai/gpt-oss-20b|CODE-001|control|None|2",
+              "anchor_record_id": "c4650085-bde3-4c81-9829-f5a904a83849",
+              "comparison_record_id": "31c6cdce-7df8-4794-9074-9861cf11d470",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.07592493295669556,
+          "d_out_char": 0.3050193050193051,
+          "d_out_token": 0.5555555555555556,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": null,
+          "comparison_final": null,
+          "scoring_method": "unit_tests",
+          "code_signature_compliant": true,
+          "taxonomy": "content_change_same_answer",
+          "anchor_output": "```python\r\ndef reverse_string(s: str) -> str:\r\n    \"\"\"Return the reversed string without using slice step or reversed().\"\"\"\r\n    result = []\r\n    for i in range(len(s) - 1, -1, -1):\r\n        result.append(s[i])\r\n    return ''.join(result)\r\n```",
+          "comparison_output": "```python\r\ndef reverse_string(s: str) -> str:\r\n    \"\"\"\r\n    Return the reversed string of `s` without using slicing or reversed().\r\n    \"\"\"\r\n    result = []\r\n    for char in s:\r\n        result.insert(0, char)   # prepend each character\r\n    return ''.join(result)\r\n```"
+        },
+        {
+          "model": "allam-2-7b",
+          "model_label": "ALLaM-2-7B",
+          "status": "measured",
+          "pair_id": "allam-2-7b|CODE-001|treatment|word_insertion|1",
+          "anchor_record_id": "fd208254-bc03-4861-87b4-c372ac461843",
+          "comparison_record_id": "a0d3ffb9-0778-4cd9-8ef7-00324005b48c",
+          "raw_distance": 0.011900663375854492,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "allam-2-7b|CODE-001|control|None|1",
+              "anchor_record_id": "fd208254-bc03-4861-87b4-c372ac461843",
+              "comparison_record_id": "590b8242-fd21-4c3a-9fbf-f3c1f38679f7",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "allam-2-7b|CODE-001|control|None|2",
+              "anchor_record_id": "fd208254-bc03-4861-87b4-c372ac461843",
+              "comparison_record_id": "5f9188c7-334f-440a-bd4b-87d0d8dd23da",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.011900663375854492,
+          "d_out_char": 0.4030172413793103,
+          "d_out_token": 0.38235294117647056,
+          "answer_changed": true,
+          "anchor_correct": false,
+          "comparison_correct": true,
+          "anchor_final": null,
+          "comparison_final": null,
+          "scoring_method": "unit_tests",
+          "code_signature_compliant": true,
+          "taxonomy": "correctness_flip_incorrect_to_correct",
+          "anchor_output": "To create a Python function that reverses a string without using the slice step [::-1] or the reversed() function, you can use a loop and a list to store the characters of the string. Here's the code:\r\n\r\n```python\r\ndef reverse_string(s: str) -> str:\r\n    reversed_str = []\r\n    for char in s:\r\n        reversed_str.append(char)\r\n    return ''.join(reversed_str)\r\n```\r\n\r\nThis function takes a string `s` as input and returns the reversed string as output. ",
+          "comparison_output": "To create a Python function that reverses a string without using the slice step [::-1] or the reversed() function, you can use the following code:\r\n\r\n```python\r\ndef reverse_string(s: str) -> str:\r\n    reversed_str = ''\r\n    for char in s:\r\n        reversed_str = char + reversed_str\r\n    return reversed_str\r\n```\r\n\r\nThis function iterates over each character in the input string and appends it to a new string called `reversed_str`. Finally, it returns the reversed string. "
+        },
+        {
+          "model": "gemini-3.1-flash-lite",
+          "model_label": "Gemini 3.1 Flash-Lite",
+          "status": "measured",
+          "pair_id": "gemini-3.1-flash-lite|CODE-001|treatment|word_insertion|1",
+          "anchor_record_id": "497d5459-2c55-46d8-9b75-fb92cce9babe",
+          "comparison_record_id": "87a5b4db-2f75-45dc-baab-2acbdf04a7e2",
+          "raw_distance": 0.0004258155822753906,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "gemini-3.1-flash-lite|CODE-001|control|None|1",
+              "anchor_record_id": "497d5459-2c55-46d8-9b75-fb92cce9babe",
+              "comparison_record_id": "c58132ae-05f3-437c-9fa3-a98eee05953f",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "gemini-3.1-flash-lite|CODE-001|control|None|2",
+              "anchor_record_id": "497d5459-2c55-46d8-9b75-fb92cce9babe",
+              "comparison_record_id": "b4af3d6c-4e1f-419c-88d5-b940974cc6e7",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.0004258155822753906,
+          "d_out_char": 0.006172839506172867,
+          "d_out_token": 0.04761904761904767,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": null,
+          "comparison_final": null,
+          "scoring_method": "unit_tests",
+          "code_signature_compliant": true,
+          "taxonomy": "wording_change_only",
+          "anchor_output": "```python\r\ndef reverse_string(s: str) -> str:\r\n    reversed_s = \"\"\r\n    for char in s:\r\n        reversed_s = char + reversed_s\r\n    return reversed_s\r\n```\r\n\r\nFinal answer: The provided Python function uses a loop to prepend each character to a new string, effectively reversing it without using slicing or the `reversed()` function.",
+          "comparison_output": "```python\r\ndef reverse_string(s: str) -> str:\r\n    reversed_s = \"\"\r\n    for char in s:\r\n        reversed_s = char + reversed_s\r\n    return reversed_s\r\n```\r\n\r\nFinal answer: The provided Python function uses a loop to prepend each character to a new string, effectively reversing it without using slicing or the reversed() function."
+        }
+      ]
+    },
+    {
+      "operator": "word_deletion",
+      "eligibility": "eligible",
+      "eligibility_detail": "not flagged by the retrospective audit (every candidate of this operator was audited)",
+      "status": "measured",
+      "perturbation_id": "CODE-001__word_deletion__42__0c72901c8537",
+      "role": "candidate",
+      "perturbed_prompt": "Write a Python function reverse_string(s: str) -> str that returns reversed string without using Python's built-in slice step [::-1] or reversed().",
+      "char_edits": 4,
+      "d_in_char": 0.02649,
+      "exact_edit": [
+        {
+          "original_offset": 66,
+          "edited_offset": 66,
+          "removed": " the",
+          "added": ""
+        }
+      ],
+      "input_length_denominator": 151,
+      "d_in_sem": 0.00142091,
+      "auto_protected_changes": [],
+      "raw_distance": 0.022054123878479003,
+      "control_distance": 0.0,
+      "excess_distance": 0.022054123878479003,
+      "per_model": [
+        {
+          "model": "qwen/qwen3.8-27b",
+          "model_label": "Qwen 3.8 27B",
+          "status": "measured",
+          "pair_id": "qwen/qwen3.8-27b|CODE-001|treatment|word_deletion|1",
+          "anchor_record_id": "648567a3-f571-475c-b934-2514a38e4b06",
+          "comparison_record_id": "79e94096-6ac2-4b8a-abc5-138baae4e9c3",
+          "raw_distance": 0.0,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "qwen/qwen3.8-27b|CODE-001|control|None|1",
+              "anchor_record_id": "648567a3-f571-475c-b934-2514a38e4b06",
+              "comparison_record_id": "6e628a8b-9029-4d44-8d1b-79553fa4b34c",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "qwen/qwen3.8-27b|CODE-001|control|None|2",
+              "anchor_record_id": "648567a3-f571-475c-b934-2514a38e4b06",
+              "comparison_record_id": "045f2b4f-c0a3-4139-b1a5-aceb79ed45f3",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.0,
+          "d_out_char": 0.0,
+          "d_out_token": 0.0,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": null,
+          "comparison_final": null,
+          "scoring_method": "unit_tests",
+          "code_signature_compliant": true,
+          "taxonomy": "identical",
+          "anchor_output": "```python\r\ndef reverse_string(s: str) -> str:\r\n    result = []\r\n    for char in s:\r\n        result.append(char)\r\n    result.reverse()\r\n    return ''.join(result)\r\n```",
+          "comparison_output": "```python\r\ndef reverse_string(s: str) -> str:\r\n    result = []\r\n    for char in s:\r\n        result.append(char)\r\n    result.reverse()\r\n    return ''.join(result)\r\n```"
+        },
+        {
+          "model": "openai/gpt-oss-120b",
+          "model_label": "GPT-OSS-120B",
+          "status": "measured",
+          "pair_id": "openai/gpt-oss-120b|CODE-001|treatment|word_deletion|1",
+          "anchor_record_id": "8dbece3c-325a-4d7a-adc0-732f31e3d967",
+          "comparison_record_id": "b38a4f9c-5147-44b7-b1f2-658a023d5e84",
+          "raw_distance": 0.0,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "openai/gpt-oss-120b|CODE-001|control|None|1",
+              "anchor_record_id": "8dbece3c-325a-4d7a-adc0-732f31e3d967",
+              "comparison_record_id": "e3504754-6847-4726-817b-705f41fcf662",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "openai/gpt-oss-120b|CODE-001|control|None|2",
+              "anchor_record_id": "8dbece3c-325a-4d7a-adc0-732f31e3d967",
+              "comparison_record_id": "e7eab799-a679-4c25-9cae-9ea68230ec99",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.0,
+          "d_out_char": 0.0,
+          "d_out_token": 0.0,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": null,
+          "comparison_final": null,
+          "scoring_method": "unit_tests",
+          "code_signature_compliant": true,
+          "taxonomy": "identical",
+          "anchor_output": "```python\r\ndef reverse_string(s: str) -> str:\r\n    \"\"\"Return the reversed version of the input string without using slicing or reversed().\"\"\"\r\n    # Convert the string to a list of characters for in‑place swapping\r\n    chars = list(s)\r\n    left, right = 0, len(chars) - 1\r\n\r\n    # Swap characters moving towards the center\r\n    while left < right:\r\n        chars[left], chars[right] = chars[right], chars[left]\r\n        left += 1\r\n        right -= 1\r\n\r\n    # Join the list back into a string\r\n    return ''.join(chars)\r\n```",
+          "comparison_output": "```python\r\ndef reverse_string(s: str) -> str:\r\n    \"\"\"Return the reversed version of the input string without using slicing or reversed().\"\"\"\r\n    # Convert the string to a list of characters for in‑place swapping\r\n    chars = list(s)\r\n    left, right = 0, len(chars) - 1\r\n\r\n    # Swap characters moving towards the center\r\n    while left < right:\r\n        chars[left], chars[right] = chars[right], chars[left]\r\n        left += 1\r\n        right -= 1\r\n\r\n    # Join the list back into a string\r\n    return ''.join(chars)\r\n```"
+        },
+        {
+          "model": "openai/gpt-oss-20b",
+          "model_label": "GPT-OSS-20B",
+          "status": "measured",
+          "pair_id": "openai/gpt-oss-20b|CODE-001|treatment|word_deletion|1",
+          "anchor_record_id": "c4650085-bde3-4c81-9829-f5a904a83849",
+          "comparison_record_id": "9c388dd0-d681-47de-b02e-309f4957e61e",
+          "raw_distance": 0.0709538459777832,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "openai/gpt-oss-20b|CODE-001|control|None|1",
+              "anchor_record_id": "c4650085-bde3-4c81-9829-f5a904a83849",
+              "comparison_record_id": "750e4f75-beee-4ca5-910b-8a8bdd2023d0",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "openai/gpt-oss-20b|CODE-001|control|None|2",
+              "anchor_record_id": "c4650085-bde3-4c81-9829-f5a904a83849",
+              "comparison_record_id": "31c6cdce-7df8-4794-9074-9861cf11d470",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.0709538459777832,
+          "d_out_char": 0.25619834710743805,
+          "d_out_token": 0.44999999999999996,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": null,
+          "comparison_final": null,
+          "scoring_method": "unit_tests",
+          "code_signature_compliant": true,
+          "taxonomy": "content_change_same_answer",
+          "anchor_output": "```python\r\ndef reverse_string(s: str) -> str:\r\n    \"\"\"Return the reversed string without using slice step or reversed().\"\"\"\r\n    result = []\r\n    for i in range(len(s) - 1, -1, -1):\r\n        result.append(s[i])\r\n    return ''.join(result)\r\n```",
+          "comparison_output": "```python\r\ndef reverse_string(s: str) -> str:\r\n    \"\"\"Return the reversed string without using slicing or reversed().\"\"\"\r\n    result = []\r\n    for char in s:\r\n        result.insert(0, char)   # prepend each character\r\n    return ''.join(result)\r\n```"
+        },
+        {
+          "model": "allam-2-7b",
+          "model_label": "ALLaM-2-7B",
+          "status": "measured",
+          "pair_id": "allam-2-7b|CODE-001|treatment|word_deletion|1",
+          "anchor_record_id": "fd208254-bc03-4861-87b4-c372ac461843",
+          "comparison_record_id": "6d9baad6-ea50-4ce9-acf3-144ac247b0e5",
+          "raw_distance": 0.039316773414611816,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "allam-2-7b|CODE-001|control|None|1",
+              "anchor_record_id": "fd208254-bc03-4861-87b4-c372ac461843",
+              "comparison_record_id": "590b8242-fd21-4c3a-9fbf-f3c1f38679f7",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "allam-2-7b|CODE-001|control|None|2",
+              "anchor_record_id": "fd208254-bc03-4861-87b4-c372ac461843",
+              "comparison_record_id": "5f9188c7-334f-440a-bd4b-87d0d8dd23da",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.039316773414611816,
+          "d_out_char": 0.3907875185735512,
+          "d_out_token": 0.3116883116883117,
+          "answer_changed": false,
+          "anchor_correct": false,
+          "comparison_correct": false,
+          "anchor_final": null,
+          "comparison_final": null,
+          "scoring_method": "unit_tests",
+          "code_signature_compliant": true,
+          "taxonomy": "wording_change_only",
+          "anchor_output": "To create a Python function that reverses a string without using the slice step [::-1] or the reversed() function, you can use a loop and a list to store the characters of the string. Here's the code:\r\n\r\n```python\r\ndef reverse_string(s: str) -> str:\r\n    reversed_str = []\r\n    for char in s:\r\n        reversed_str.append(char)\r\n    return ''.join(reversed_str)\r\n```\r\n\r\nThis function takes a string `s` as input and returns the reversed string as output. ",
+          "comparison_output": "To write a Python function that reverses a string without using the slice step [::-1] or the reversed() function, you can use a loop and a list to store the characters. Here's the code:\r\n\r\n```python\r\ndef reverse_string(s: str) -> str:\r\n    reversed_str = []\r\n    for char in s:\r\n        reversed_str.append(char)\r\n    return ''.join(reversed_str)\r\n```\r\n\r\nThis function takes a string `s` as input and returns a reversed string as output. It creates an empty list `reversed_str` to store the characters, then iterates over each character in `s` and appends it to the list. Finally, it joins the characters back into a string using the `join()` method and returns the reversed string. "
+        },
+        {
+          "model": "gemini-3.1-flash-lite",
+          "model_label": "Gemini 3.1 Flash-Lite",
+          "status": "measured",
+          "pair_id": "gemini-3.1-flash-lite|CODE-001|treatment|word_deletion|1",
+          "anchor_record_id": "497d5459-2c55-46d8-9b75-fb92cce9babe",
+          "comparison_record_id": "1788d408-805d-4ff5-9cb3-d3c9a3408322",
+          "raw_distance": 0.0,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "gemini-3.1-flash-lite|CODE-001|control|None|1",
+              "anchor_record_id": "497d5459-2c55-46d8-9b75-fb92cce9babe",
+              "comparison_record_id": "c58132ae-05f3-437c-9fa3-a98eee05953f",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "gemini-3.1-flash-lite|CODE-001|control|None|2",
+              "anchor_record_id": "497d5459-2c55-46d8-9b75-fb92cce9babe",
+              "comparison_record_id": "b4af3d6c-4e1f-419c-88d5-b940974cc6e7",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.0,
+          "d_out_char": 0.0,
+          "d_out_token": 0.0,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": null,
+          "comparison_final": null,
+          "scoring_method": "unit_tests",
+          "code_signature_compliant": true,
+          "taxonomy": "identical",
+          "anchor_output": "```python\r\ndef reverse_string(s: str) -> str:\r\n    reversed_s = \"\"\r\n    for char in s:\r\n        reversed_s = char + reversed_s\r\n    return reversed_s\r\n```\r\n\r\nFinal answer: The provided Python function uses a loop to prepend each character to a new string, effectively reversing it without using slicing or the `reversed()` function.",
+          "comparison_output": "```python\r\ndef reverse_string(s: str) -> str:\r\n    reversed_s = \"\"\r\n    for char in s:\r\n        reversed_s = char + reversed_s\r\n    return reversed_s\r\n```\r\n\r\nFinal answer: The provided Python function uses a loop to prepend each character to a new string, effectively reversing it without using slicing or the `reversed()` function."
+        }
+      ]
+    },
+    {
+      "operator": "synonym",
+      "eligibility": "eligible",
+      "eligibility_detail": "not flagged by the retrospective audit (every candidate of this operator was audited)",
+      "status": "measured",
+      "perturbation_id": "CODE-001__synonym_replacement__42__f2e2e70610bc",
+      "role": "candidate",
+      "perturbed_prompt": "Write a Python procedure reverse_string(s: str) -> str that returns the reversed string without using Python's built-in slice step [::-1] or reversed().",
+      "char_edits": 8,
+      "d_in_char": 0.052632,
+      "exact_edit": [
+        {
+          "original_offset": 15,
+          "edited_offset": 15,
+          "removed": "f",
+          "added": "proced"
+        },
+        {
+          "original_offset": 17,
+          "edited_offset": 22,
+          "removed": "nction",
+          "added": "re"
+        }
+      ],
+      "input_length_denominator": 152,
+      "d_in_sem": 0.03400449,
+      "auto_protected_changes": [],
+      "raw_distance": 0.01342604160308838,
+      "control_distance": 0.0,
+      "excess_distance": 0.01342604160308838,
+      "per_model": [
+        {
+          "model": "qwen/qwen3.8-27b",
+          "model_label": "Qwen 3.8 27B",
+          "status": "measured",
+          "pair_id": "qwen/qwen3.8-27b|CODE-001|treatment|synonym|1",
+          "anchor_record_id": "648567a3-f571-475c-b934-2514a38e4b06",
+          "comparison_record_id": "c799ae93-ea6b-4715-95e6-f697ff7878a9",
+          "raw_distance": 0.0,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "qwen/qwen3.8-27b|CODE-001|control|None|1",
+              "anchor_record_id": "648567a3-f571-475c-b934-2514a38e4b06",
+              "comparison_record_id": "6e628a8b-9029-4d44-8d1b-79553fa4b34c",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "qwen/qwen3.8-27b|CODE-001|control|None|2",
+              "anchor_record_id": "648567a3-f571-475c-b934-2514a38e4b06",
+              "comparison_record_id": "045f2b4f-c0a3-4139-b1a5-aceb79ed45f3",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.0,
+          "d_out_char": 0.0,
+          "d_out_token": 0.0,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": null,
+          "comparison_final": null,
+          "scoring_method": "unit_tests",
+          "code_signature_compliant": true,
+          "taxonomy": "identical",
+          "anchor_output": "```python\r\ndef reverse_string(s: str) -> str:\r\n    result = []\r\n    for char in s:\r\n        result.append(char)\r\n    result.reverse()\r\n    return ''.join(result)\r\n```",
+          "comparison_output": "```python\r\ndef reverse_string(s: str) -> str:\r\n    result = []\r\n    for char in s:\r\n        result.append(char)\r\n    result.reverse()\r\n    return ''.join(result)\r\n```"
+        },
+        {
+          "model": "openai/gpt-oss-120b",
+          "model_label": "GPT-OSS-120B",
+          "status": "measured",
+          "pair_id": "openai/gpt-oss-120b|CODE-001|treatment|synonym|1",
+          "anchor_record_id": "8dbece3c-325a-4d7a-adc0-732f31e3d967",
+          "comparison_record_id": "319783ff-a798-493b-ae5c-be71cafa9b20",
+          "raw_distance": 0.0,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "openai/gpt-oss-120b|CODE-001|control|None|1",
+              "anchor_record_id": "8dbece3c-325a-4d7a-adc0-732f31e3d967",
+              "comparison_record_id": "e3504754-6847-4726-817b-705f41fcf662",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "openai/gpt-oss-120b|CODE-001|control|None|2",
+              "anchor_record_id": "8dbece3c-325a-4d7a-adc0-732f31e3d967",
+              "comparison_record_id": "e7eab799-a679-4c25-9cae-9ea68230ec99",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.0,
+          "d_out_char": 0.0,
+          "d_out_token": 0.0,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": null,
+          "comparison_final": null,
+          "scoring_method": "unit_tests",
+          "code_signature_compliant": true,
+          "taxonomy": "identical",
+          "anchor_output": "```python\r\ndef reverse_string(s: str) -> str:\r\n    \"\"\"Return the reversed version of the input string without using slicing or reversed().\"\"\"\r\n    # Convert the string to a list of characters for in‑place swapping\r\n    chars = list(s)\r\n    left, right = 0, len(chars) - 1\r\n\r\n    # Swap characters moving towards the center\r\n    while left < right:\r\n        chars[left], chars[right] = chars[right], chars[left]\r\n        left += 1\r\n        right -= 1\r\n\r\n    # Join the list back into a string\r\n    return ''.join(chars)\r\n```",
+          "comparison_output": "```python\r\ndef reverse_string(s: str) -> str:\r\n    \"\"\"Return the reversed version of the input string without using slicing or reversed().\"\"\"\r\n    # Convert the string to a list of characters for in‑place swapping\r\n    chars = list(s)\r\n    left, right = 0, len(chars) - 1\r\n\r\n    # Swap characters moving towards the center\r\n    while left < right:\r\n        chars[left], chars[right] = chars[right], chars[left]\r\n        left += 1\r\n        right -= 1\r\n\r\n    # Join the list back into a string\r\n    return ''.join(chars)\r\n```"
+        },
+        {
+          "model": "openai/gpt-oss-20b",
+          "model_label": "GPT-OSS-20B",
+          "status": "measured",
+          "pair_id": "openai/gpt-oss-20b|CODE-001|treatment|synonym|1",
+          "anchor_record_id": "c4650085-bde3-4c81-9829-f5a904a83849",
+          "comparison_record_id": "8a1fed81-8918-4fec-885f-fdb5595368ae",
+          "raw_distance": 0.008916974067687988,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "openai/gpt-oss-20b|CODE-001|control|None|1",
+              "anchor_record_id": "c4650085-bde3-4c81-9829-f5a904a83849",
+              "comparison_record_id": "750e4f75-beee-4ca5-910b-8a8bdd2023d0",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "openai/gpt-oss-20b|CODE-001|control|None|2",
+              "anchor_record_id": "c4650085-bde3-4c81-9829-f5a904a83849",
+              "comparison_record_id": "31c6cdce-7df8-4794-9074-9861cf11d470",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.008916974067687988,
+          "d_out_char": 0.025423728813559365,
+          "d_out_token": 0.09375,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": null,
+          "comparison_final": null,
+          "scoring_method": "unit_tests",
+          "code_signature_compliant": true,
+          "taxonomy": "wording_change_only",
+          "anchor_output": "```python\r\ndef reverse_string(s: str) -> str:\r\n    \"\"\"Return the reversed string without using slice step or reversed().\"\"\"\r\n    result = []\r\n    for i in range(len(s) - 1, -1, -1):\r\n        result.append(s[i])\r\n    return ''.join(result)\r\n```",
+          "comparison_output": "```python\r\ndef reverse_string(s: str) -> str:\r\n    \"\"\"Return the reversed string without using slicing or reversed().\"\"\"\r\n    result = []\r\n    for i in range(len(s) - 1, -1, -1):\r\n        result.append(s[i])\r\n    return ''.join(result)\r\n```"
+        },
+        {
+          "model": "allam-2-7b",
+          "model_label": "ALLaM-2-7B",
+          "status": "measured",
+          "pair_id": "allam-2-7b|CODE-001|treatment|synonym|1",
+          "anchor_record_id": "fd208254-bc03-4861-87b4-c372ac461843",
+          "comparison_record_id": "ab059e57-a09e-408b-8927-1f884497756c",
+          "raw_distance": 0.05361819267272949,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "allam-2-7b|CODE-001|control|None|1",
+              "anchor_record_id": "fd208254-bc03-4861-87b4-c372ac461843",
+              "comparison_record_id": "590b8242-fd21-4c3a-9fbf-f3c1f38679f7",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "allam-2-7b|CODE-001|control|None|2",
+              "anchor_record_id": "fd208254-bc03-4861-87b4-c372ac461843",
+              "comparison_record_id": "5f9188c7-334f-440a-bd4b-87d0d8dd23da",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.05361819267272949,
+          "d_out_char": 0.04943820224719098,
+          "d_out_token": 0.07017543859649122,
+          "answer_changed": false,
+          "anchor_correct": false,
+          "comparison_correct": false,
+          "anchor_final": null,
+          "comparison_final": null,
+          "scoring_method": "unit_tests",
+          "code_signature_compliant": true,
+          "taxonomy": "content_change_same_answer",
+          "anchor_output": "To create a Python function that reverses a string without using the slice step [::-1] or the reversed() function, you can use a loop and a list to store the characters of the string. Here's the code:\r\n\r\n```python\r\ndef reverse_string(s: str) -> str:\r\n    reversed_str = []\r\n    for char in s:\r\n        reversed_str.append(char)\r\n    return ''.join(reversed_str)\r\n```\r\n\r\nThis function takes a string `s` as input and returns the reversed string as output. ",
+          "comparison_output": "To write a Python procedure that reverses a string without using the slice step [::-1] or the reversed() function, you can use a loop and a list to store the characters of the string. Here's the code:\r\n\r\n```python\r\ndef reverse_string(s: str) -> str:\r\n    reversed_str = []\r\n    for char in s:\r\n        reversed_str.append(char)\r\n    return ''.join(reversed_str)\r\n```\r\n\r\nThis procedure takes a string `s` as input and returns a reversed string as output. "
+        },
+        {
+          "model": "gemini-3.1-flash-lite",
+          "model_label": "Gemini 3.1 Flash-Lite",
+          "status": "measured",
+          "pair_id": "gemini-3.1-flash-lite|CODE-001|treatment|synonym|1",
+          "anchor_record_id": "497d5459-2c55-46d8-9b75-fb92cce9babe",
+          "comparison_record_id": "79ddfcc7-5099-4c87-9522-1f254b23e58d",
+          "raw_distance": 0.004595041275024414,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "gemini-3.1-flash-lite|CODE-001|control|None|1",
+              "anchor_record_id": "497d5459-2c55-46d8-9b75-fb92cce9babe",
+              "comparison_record_id": "c58132ae-05f3-437c-9fa3-a98eee05953f",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "gemini-3.1-flash-lite|CODE-001|control|None|2",
+              "anchor_record_id": "497d5459-2c55-46d8-9b75-fb92cce9babe",
+              "comparison_record_id": "b4af3d6c-4e1f-419c-88d5-b940974cc6e7",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.004595041275024414,
+          "d_out_char": 0.19020172910662825,
+          "d_out_token": 0.23913043478260865,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": null,
+          "comparison_final": null,
+          "scoring_method": "unit_tests",
+          "code_signature_compliant": true,
+          "taxonomy": "wording_change_only",
+          "anchor_output": "```python\r\ndef reverse_string(s: str) -> str:\r\n    reversed_s = \"\"\r\n    for char in s:\r\n        reversed_s = char + reversed_s\r\n    return reversed_s\r\n```\r\n\r\nFinal answer: The provided Python function uses a loop to prepend each character to a new string, effectively reversing it without using slicing or the `reversed()` function.",
+          "comparison_output": "```python\r\ndef reverse_string(s: str) -> str:\r\n    reversed_s = \"\"\r\n    for char in s:\r\n        reversed_s = char + reversed_s\r\n    return reversed_s\r\n```\r\n\r\nFinal answer: The provided Python code defines the `reverse_string` function using a loop to prepend characters, effectively reversing the string without using slicing or the `reversed()` function."
+        }
+      ]
+    },
+    {
+      "operator": "word_substitution",
+      "eligibility": "eligible",
+      "eligibility_detail": "not flagged by the retrospective audit (every candidate of this operator was audited)",
+      "status": "measured",
+      "perturbation_id": "CODE-001__word_substitution__42__e5a1ffaade1a",
+      "role": "candidate",
+      "perturbed_prompt": "Create a Python function reverse_string(s: str) -> str that returns the reversed string without using Python's built-in slice step [::-1] or reversed().",
+      "char_edits": 3,
+      "d_in_char": 0.019737,
+      "exact_edit": [
+        {
+          "original_offset": 0,
+          "edited_offset": 0,
+          "removed": "W",
+          "added": "C"
+        },
+        {
+          "original_offset": 2,
+          "edited_offset": 2,
+          "removed": "i",
+          "added": "ea"
+        }
+      ],
+      "input_length_denominator": 152,
+      "d_in_sem": 0.00239639,
+      "auto_protected_changes": [],
+      "raw_distance": 0.017715299129486085,
+      "control_distance": 0.0,
+      "excess_distance": 0.017715299129486085,
+      "per_model": [
+        {
+          "model": "qwen/qwen3.8-27b",
+          "model_label": "Qwen 3.8 27B",
+          "status": "measured",
+          "pair_id": "qwen/qwen3.8-27b|CODE-001|treatment|word_substitution|1",
+          "anchor_record_id": "648567a3-f571-475c-b934-2514a38e4b06",
+          "comparison_record_id": "009eb5f0-341b-4b62-a810-1b097a35d506",
+          "raw_distance": 0.0,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "qwen/qwen3.8-27b|CODE-001|control|None|1",
+              "anchor_record_id": "648567a3-f571-475c-b934-2514a38e4b06",
+              "comparison_record_id": "6e628a8b-9029-4d44-8d1b-79553fa4b34c",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "qwen/qwen3.8-27b|CODE-001|control|None|2",
+              "anchor_record_id": "648567a3-f571-475c-b934-2514a38e4b06",
+              "comparison_record_id": "045f2b4f-c0a3-4139-b1a5-aceb79ed45f3",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.0,
+          "d_out_char": 0.0,
+          "d_out_token": 0.0,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": null,
+          "comparison_final": null,
+          "scoring_method": "unit_tests",
+          "code_signature_compliant": true,
+          "taxonomy": "identical",
+          "anchor_output": "```python\r\ndef reverse_string(s: str) -> str:\r\n    result = []\r\n    for char in s:\r\n        result.append(char)\r\n    result.reverse()\r\n    return ''.join(result)\r\n```",
+          "comparison_output": "```python\r\ndef reverse_string(s: str) -> str:\r\n    result = []\r\n    for char in s:\r\n        result.append(char)\r\n    result.reverse()\r\n    return ''.join(result)\r\n```"
+        },
+        {
+          "model": "openai/gpt-oss-120b",
+          "model_label": "GPT-OSS-120B",
+          "status": "measured",
+          "pair_id": "openai/gpt-oss-120b|CODE-001|treatment|word_substitution|1",
+          "anchor_record_id": "8dbece3c-325a-4d7a-adc0-732f31e3d967",
+          "comparison_record_id": "75eb6476-e997-4386-85a1-22b28f507300",
+          "raw_distance": 0.0,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "openai/gpt-oss-120b|CODE-001|control|None|1",
+              "anchor_record_id": "8dbece3c-325a-4d7a-adc0-732f31e3d967",
+              "comparison_record_id": "e3504754-6847-4726-817b-705f41fcf662",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "openai/gpt-oss-120b|CODE-001|control|None|2",
+              "anchor_record_id": "8dbece3c-325a-4d7a-adc0-732f31e3d967",
+              "comparison_record_id": "e7eab799-a679-4c25-9cae-9ea68230ec99",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.0,
+          "d_out_char": 0.0,
+          "d_out_token": 0.0,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": null,
+          "comparison_final": null,
+          "scoring_method": "unit_tests",
+          "code_signature_compliant": true,
+          "taxonomy": "identical",
+          "anchor_output": "```python\r\ndef reverse_string(s: str) -> str:\r\n    \"\"\"Return the reversed version of the input string without using slicing or reversed().\"\"\"\r\n    # Convert the string to a list of characters for in‑place swapping\r\n    chars = list(s)\r\n    left, right = 0, len(chars) - 1\r\n\r\n    # Swap characters moving towards the center\r\n    while left < right:\r\n        chars[left], chars[right] = chars[right], chars[left]\r\n        left += 1\r\n        right -= 1\r\n\r\n    # Join the list back into a string\r\n    return ''.join(chars)\r\n```",
+          "comparison_output": "```python\r\ndef reverse_string(s: str) -> str:\r\n    \"\"\"Return the reversed version of the input string without using slicing or reversed().\"\"\"\r\n    # Convert the string to a list of characters for in‑place swapping\r\n    chars = list(s)\r\n    left, right = 0, len(chars) - 1\r\n\r\n    # Swap characters moving towards the center\r\n    while left < right:\r\n        chars[left], chars[right] = chars[right], chars[left]\r\n        left += 1\r\n        right -= 1\r\n\r\n    # Join the list back into a string\r\n    return ''.join(chars)\r\n```"
+        },
+        {
+          "model": "openai/gpt-oss-20b",
+          "model_label": "GPT-OSS-20B",
+          "status": "measured",
+          "pair_id": "openai/gpt-oss-20b|CODE-001|treatment|word_substitution|1",
+          "anchor_record_id": "c4650085-bde3-4c81-9829-f5a904a83849",
+          "comparison_record_id": "840a7a6d-4c70-4800-988f-62b74199b0e2",
+          "raw_distance": 0.05232161283493042,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "openai/gpt-oss-20b|CODE-001|control|None|1",
+              "anchor_record_id": "c4650085-bde3-4c81-9829-f5a904a83849",
+              "comparison_record_id": "750e4f75-beee-4ca5-910b-8a8bdd2023d0",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "openai/gpt-oss-20b|CODE-001|control|None|2",
+              "anchor_record_id": "c4650085-bde3-4c81-9829-f5a904a83849",
+              "comparison_record_id": "31c6cdce-7df8-4794-9074-9861cf11d470",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.05232161283493042,
+          "d_out_char": 0.2295081967213115,
+          "d_out_token": 0.3846153846153846,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": null,
+          "comparison_final": null,
+          "scoring_method": "unit_tests",
+          "code_signature_compliant": true,
+          "taxonomy": "content_change_same_answer",
+          "anchor_output": "```python\r\ndef reverse_string(s: str) -> str:\r\n    \"\"\"Return the reversed string without using slice step or reversed().\"\"\"\r\n    result = []\r\n    for i in range(len(s) - 1, -1, -1):\r\n        result.append(s[i])\r\n    return ''.join(result)\r\n```",
+          "comparison_output": "```python\r\ndef reverse_string(s: str) -> str:\r\n    \"\"\"Return the reversed string without using slice step or reversed().\"\"\"\r\n    result = []\r\n    for char in s:\r\n        result.insert(0, char)  # prepend each character\r\n    return ''.join(result)\r\n```"
+        },
+        {
+          "model": "allam-2-7b",
+          "model_label": "ALLaM-2-7B",
+          "status": "measured",
+          "pair_id": "allam-2-7b|CODE-001|treatment|word_substitution|1",
+          "anchor_record_id": "fd208254-bc03-4861-87b4-c372ac461843",
+          "comparison_record_id": "aa072b11-5491-488d-9ad8-c64973a61055",
+          "raw_distance": 0.0362548828125,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "allam-2-7b|CODE-001|control|None|1",
+              "anchor_record_id": "fd208254-bc03-4861-87b4-c372ac461843",
+              "comparison_record_id": "590b8242-fd21-4c3a-9fbf-f3c1f38679f7",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "allam-2-7b|CODE-001|control|None|2",
+              "anchor_record_id": "fd208254-bc03-4861-87b4-c372ac461843",
+              "comparison_record_id": "5f9188c7-334f-440a-bd4b-87d0d8dd23da",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.0362548828125,
+          "d_out_char": 0.38426966292134823,
+          "d_out_token": 0.3728813559322034,
+          "answer_changed": true,
+          "anchor_correct": false,
+          "comparison_correct": true,
+          "anchor_final": null,
+          "comparison_final": null,
+          "scoring_method": "unit_tests",
+          "code_signature_compliant": true,
+          "taxonomy": "correctness_flip_incorrect_to_correct",
+          "anchor_output": "To create a Python function that reverses a string without using the slice step [::-1] or the reversed() function, you can use a loop and a list to store the characters of the string. Here's the code:\r\n\r\n```python\r\ndef reverse_string(s: str) -> str:\r\n    reversed_str = []\r\n    for char in s:\r\n        reversed_str.append(char)\r\n    return ''.join(reversed_str)\r\n```\r\n\r\nThis function takes a string `s` as input and returns the reversed string as output. ",
+          "comparison_output": "To create a Python function that reverses a string without using the slice step [::-1] or the reversed() function, you can use the following code:\r\n\r\n```python\r\ndef reverse_string(s: str) -> str:\r\n    return s[::-1]\r\n```\r\n\r\nThis function takes a string `s` as input and returns the reversed string using index slicing. "
+        },
+        {
+          "model": "gemini-3.1-flash-lite",
+          "model_label": "Gemini 3.1 Flash-Lite",
+          "status": "measured",
+          "pair_id": "gemini-3.1-flash-lite|CODE-001|treatment|word_substitution|1",
+          "anchor_record_id": "497d5459-2c55-46d8-9b75-fb92cce9babe",
+          "comparison_record_id": "4733c143-a6fa-40b7-a953-af8e9fe79265",
+          "raw_distance": 0.0,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "gemini-3.1-flash-lite|CODE-001|control|None|1",
+              "anchor_record_id": "497d5459-2c55-46d8-9b75-fb92cce9babe",
+              "comparison_record_id": "c58132ae-05f3-437c-9fa3-a98eee05953f",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "gemini-3.1-flash-lite|CODE-001|control|None|2",
+              "anchor_record_id": "497d5459-2c55-46d8-9b75-fb92cce9babe",
+              "comparison_record_id": "b4af3d6c-4e1f-419c-88d5-b940974cc6e7",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.0,
+          "d_out_char": 0.0,
+          "d_out_token": 0.0,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": null,
+          "comparison_final": null,
+          "scoring_method": "unit_tests",
+          "code_signature_compliant": true,
+          "taxonomy": "identical",
+          "anchor_output": "```python\r\ndef reverse_string(s: str) -> str:\r\n    reversed_s = \"\"\r\n    for char in s:\r\n        reversed_s = char + reversed_s\r\n    return reversed_s\r\n```\r\n\r\nFinal answer: The provided Python function uses a loop to prepend each character to a new string, effectively reversing it without using slicing or the `reversed()` function.",
+          "comparison_output": "```python\r\ndef reverse_string(s: str) -> str:\r\n    reversed_s = \"\"\r\n    for char in s:\r\n        reversed_s = char + reversed_s\r\n    return reversed_s\r\n```\r\n\r\nFinal answer: The provided Python function uses a loop to prepend each character to a new string, effectively reversing it without using slicing or the `reversed()` function."
+        }
+      ]
+    },
+    {
+      "operator": "instruction_reordering",
+      "eligibility": "inapplicable",
+      "eligibility_detail": "inapplicable_or_no_op",
+      "status": "inapplicable",
+      "perturbation_id": null,
+      "role": "candidate",
+      "perturbed_prompt": null,
+      "char_edits": null,
+      "d_in_char": null,
+      "exact_edit": [],
+      "input_length_denominator": null,
+      "d_in_sem": null,
+      "auto_protected_changes": [],
+      "raw_distance": null,
+      "control_distance": null,
+      "excess_distance": null,
+      "per_model": []
+    },
+    {
+      "operator": "random_edit",
+      "eligibility": "noise_benchmark",
+      "eligibility_detail": "Noise benchmark only. Preservation: unaudited.",
+      "status": "measured",
+      "perturbation_id": "CODE-001__random_edit__42__23584ad96443",
+      "role": "noise_benchmark",
+      "perturbed_prompt": "Write a Python function revese_string(s: str) -> str that returns the heversed string without using Python's built-in slice step [::-1] or reversed().",
+      "char_edits": 2,
+      "d_in_char": 0.013245,
+      "exact_edit": [
+        {
+          "original_offset": 28,
+          "edited_offset": 28,
+          "removed": "r",
+          "added": ""
+        },
+        {
+          "original_offset": 71,
+          "edited_offset": 70,
+          "removed": "r",
+          "added": "h"
+        }
+      ],
+      "input_length_denominator": 151,
+      "d_in_sem": 0.06957504,
+      "auto_protected_changes": [
+        "code identifier 'reverse_string' no longer present"
+      ],
+      "raw_distance": 0.04754507541656494,
+      "control_distance": 0.0,
+      "excess_distance": 0.04754507541656494,
+      "per_model": [
+        {
+          "model": "qwen/qwen3.8-27b",
+          "model_label": "Qwen 3.8 27B",
+          "status": "measured",
+          "pair_id": "qwen/qwen3.8-27b|CODE-001|treatment|random_edit|1",
+          "anchor_record_id": "648567a3-f571-475c-b934-2514a38e4b06",
+          "comparison_record_id": "0765b6b9-5447-4a00-960b-5aedba007d02",
+          "raw_distance": 0.11623716354370117,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "qwen/qwen3.8-27b|CODE-001|control|None|1",
+              "anchor_record_id": "648567a3-f571-475c-b934-2514a38e4b06",
+              "comparison_record_id": "6e628a8b-9029-4d44-8d1b-79553fa4b34c",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "qwen/qwen3.8-27b|CODE-001|control|None|2",
+              "anchor_record_id": "648567a3-f571-475c-b934-2514a38e4b06",
+              "comparison_record_id": "045f2b4f-c0a3-4139-b1a5-aceb79ed45f3",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.11623716354370117,
+          "d_out_char": 0.5405405405405406,
+          "d_out_token": 0.6,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": null,
+          "comparison_final": null,
+          "scoring_method": "unit_tests",
+          "code_signature_compliant": false,
+          "taxonomy": "content_change_same_answer",
+          "anchor_output": "```python\r\ndef reverse_string(s: str) -> str:\r\n    result = []\r\n    for char in s:\r\n        result.append(char)\r\n    result.reverse()\r\n    return ''.join(result)\r\n```",
+          "comparison_output": "```python\r\ndef revese_string(s: str) -> str:\r\n    result = []\r\n    for char in s:\r\n        result.append(char)\r\n    # Manually reverse the list\r\n    left, right = 0, len(result) - 1\r\n    while left < right:\r\n        result[left], result[right] = result[right], result[left]\r\n        left += 1\r\n        right -= 1\r\n    return ''.join(result)\r\n```"
+        },
+        {
+          "model": "openai/gpt-oss-120b",
+          "model_label": "GPT-OSS-120B",
+          "status": "measured",
+          "pair_id": "openai/gpt-oss-120b|CODE-001|treatment|random_edit|1",
+          "anchor_record_id": "8dbece3c-325a-4d7a-adc0-732f31e3d967",
+          "comparison_record_id": "9bbe16a7-a0f4-4b49-8367-103a8a1ef65f",
+          "raw_distance": 0.044687628746032715,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "openai/gpt-oss-120b|CODE-001|control|None|1",
+              "anchor_record_id": "8dbece3c-325a-4d7a-adc0-732f31e3d967",
+              "comparison_record_id": "e3504754-6847-4726-817b-705f41fcf662",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "openai/gpt-oss-120b|CODE-001|control|None|2",
+              "anchor_record_id": "8dbece3c-325a-4d7a-adc0-732f31e3d967",
+              "comparison_record_id": "e7eab799-a679-4c25-9cae-9ea68230ec99",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.044687628746032715,
+          "d_out_char": 0.2998430141287285,
+          "d_out_token": 0.37662337662337664,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": null,
+          "comparison_final": null,
+          "scoring_method": "unit_tests",
+          "code_signature_compliant": false,
+          "taxonomy": "wording_change_only",
+          "anchor_output": "```python\r\ndef reverse_string(s: str) -> str:\r\n    \"\"\"Return the reversed version of the input string without using slicing or reversed().\"\"\"\r\n    # Convert the string to a list of characters for in‑place swapping\r\n    chars = list(s)\r\n    left, right = 0, len(chars) - 1\r\n\r\n    # Swap characters moving towards the center\r\n    while left < right:\r\n        chars[left], chars[right] = chars[right], chars[left]\r\n        left += 1\r\n        right -= 1\r\n\r\n    # Join the list back into a string\r\n    return ''.join(chars)\r\n```",
+          "comparison_output": "```python\r\ndef revese_string(s: str) -> str:\r\n    \"\"\"\r\n    Return the reversed version of the input string `s` without using\r\n    slicing with a negative step or the built-in `reversed` function.\r\n    \"\"\"\r\n    # Convert the string to a list of characters for mutable operations\r\n    chars = list(s)\r\n    # Use two‑pointer technique to swap characters in place\r\n    left, right = 0, len(chars) - 1\r\n    while left < right:\r\n        # Swap the characters at positions left and right\r\n        chars[left], chars[right] = chars[right], chars[left]\r\n        left += 1\r\n        right -= 1\r\n    # Join the list back into a string\r\n    return ''.join(chars)\r\n```"
+        },
+        {
+          "model": "openai/gpt-oss-20b",
+          "model_label": "GPT-OSS-20B",
+          "status": "measured",
+          "pair_id": "openai/gpt-oss-20b|CODE-001|treatment|random_edit|1",
+          "anchor_record_id": "c4650085-bde3-4c81-9829-f5a904a83849",
+          "comparison_record_id": "4e68cff8-1ef0-4b6d-8154-37852e480bce",
+          "raw_distance": 0.02052128314971924,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "openai/gpt-oss-20b|CODE-001|control|None|1",
+              "anchor_record_id": "c4650085-bde3-4c81-9829-f5a904a83849",
+              "comparison_record_id": "750e4f75-beee-4ca5-910b-8a8bdd2023d0",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "openai/gpt-oss-20b|CODE-001|control|None|2",
+              "anchor_record_id": "c4650085-bde3-4c81-9829-f5a904a83849",
+              "comparison_record_id": "31c6cdce-7df8-4794-9074-9861cf11d470",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.02052128314971924,
+          "d_out_char": 0.004237288135593209,
+          "d_out_token": 0.0625,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": null,
+          "comparison_final": null,
+          "scoring_method": "unit_tests",
+          "code_signature_compliant": false,
+          "taxonomy": "wording_change_only",
+          "anchor_output": "```python\r\ndef reverse_string(s: str) -> str:\r\n    \"\"\"Return the reversed string without using slice step or reversed().\"\"\"\r\n    result = []\r\n    for i in range(len(s) - 1, -1, -1):\r\n        result.append(s[i])\r\n    return ''.join(result)\r\n```",
+          "comparison_output": "```python\r\ndef revese_string(s: str) -> str:\r\n    \"\"\"Return the reversed string without using slice step or reversed().\"\"\"\r\n    result = []\r\n    for i in range(len(s) - 1, -1, -1):\r\n        result.append(s[i])\r\n    return ''.join(result)\r\n```"
+        },
+        {
+          "model": "allam-2-7b",
+          "model_label": "ALLaM-2-7B",
+          "status": "measured",
+          "pair_id": "allam-2-7b|CODE-001|treatment|random_edit|1",
+          "anchor_record_id": "fd208254-bc03-4861-87b4-c372ac461843",
+          "comparison_record_id": "73492b33-a4bd-464e-8e37-ebd8816bc9de",
+          "raw_distance": 0.03751862049102783,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "allam-2-7b|CODE-001|control|None|1",
+              "anchor_record_id": "fd208254-bc03-4861-87b4-c372ac461843",
+              "comparison_record_id": "590b8242-fd21-4c3a-9fbf-f3c1f38679f7",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "allam-2-7b|CODE-001|control|None|2",
+              "anchor_record_id": "fd208254-bc03-4861-87b4-c372ac461843",
+              "comparison_record_id": "5f9188c7-334f-440a-bd4b-87d0d8dd23da",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.03751862049102783,
+          "d_out_char": 0.35507246376811596,
+          "d_out_token": 0.2666666666666667,
+          "answer_changed": false,
+          "anchor_correct": false,
+          "comparison_correct": false,
+          "anchor_final": null,
+          "comparison_final": null,
+          "scoring_method": "unit_tests",
+          "code_signature_compliant": true,
+          "taxonomy": "wording_change_only",
+          "anchor_output": "To create a Python function that reverses a string without using the slice step [::-1] or the reversed() function, you can use a loop and a list to store the characters of the string. Here's the code:\r\n\r\n```python\r\ndef reverse_string(s: str) -> str:\r\n    reversed_str = []\r\n    for char in s:\r\n        reversed_str.append(char)\r\n    return ''.join(reversed_str)\r\n```\r\n\r\nThis function takes a string `s` as input and returns the reversed string as output. ",
+          "comparison_output": "To create a Python function that reverses a string without using the slice step [::-1] or the reversed() function, you can use a loop and a list to store the characters of the string. Here's the code:\r\n\r\n```python\r\ndef reverse_string(s: str) -> str:\r\n    reversed_str = []\r\n    for char in s:\r\n        reversed_str.append(char)\r\n    return ''.join(reversed_str)\r\n```\r\n\r\nThis function takes a string `s` as input and returns the reversed string as output. It creates an empty list `reversed_str` to store the characters, then iterates over each character in `s` and appends it to the list. Finally, it joins the characters back into a string using the `join()` method and returns the reversed string. "
+        },
+        {
+          "model": "gemini-3.1-flash-lite",
+          "model_label": "Gemini 3.1 Flash-Lite",
+          "status": "measured",
+          "pair_id": "gemini-3.1-flash-lite|CODE-001|treatment|random_edit|1",
+          "anchor_record_id": "497d5459-2c55-46d8-9b75-fb92cce9babe",
+          "comparison_record_id": "049b7181-a987-46ab-a3cc-57b48cb8e824",
+          "raw_distance": 0.01876068115234375,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "gemini-3.1-flash-lite|CODE-001|control|None|1",
+              "anchor_record_id": "497d5459-2c55-46d8-9b75-fb92cce9babe",
+              "comparison_record_id": "c58132ae-05f3-437c-9fa3-a98eee05953f",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "gemini-3.1-flash-lite|CODE-001|control|None|2",
+              "anchor_record_id": "497d5459-2c55-46d8-9b75-fb92cce9babe",
+              "comparison_record_id": "b4af3d6c-4e1f-419c-88d5-b940974cc6e7",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.01876068115234375,
+          "d_out_char": 0.0030864197530864335,
+          "d_out_token": 0.04761904761904767,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": null,
+          "comparison_final": null,
+          "scoring_method": "unit_tests",
+          "code_signature_compliant": false,
+          "taxonomy": "wording_change_only",
+          "anchor_output": "```python\r\ndef reverse_string(s: str) -> str:\r\n    reversed_s = \"\"\r\n    for char in s:\r\n        reversed_s = char + reversed_s\r\n    return reversed_s\r\n```\r\n\r\nFinal answer: The provided Python function uses a loop to prepend each character to a new string, effectively reversing it without using slicing or the `reversed()` function.",
+          "comparison_output": "```python\r\ndef revese_string(s: str) -> str:\r\n    reversed_s = \"\"\r\n    for char in s:\r\n        reversed_s = char + reversed_s\r\n    return reversed_s\r\n```\r\n\r\nFinal answer: The provided Python function uses a loop to prepend each character to a new string, effectively reversing it without using slicing or the `reversed()` function."
+        }
+      ]
+    }
+  ],
+  "generated_at": "2026-11-25T18:32:11.305438+00:00"
+}

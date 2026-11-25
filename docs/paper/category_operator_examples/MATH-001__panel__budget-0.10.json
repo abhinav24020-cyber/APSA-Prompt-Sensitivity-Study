@@ -1,0 +1,1833 @@
+{
+  "prompt_id": "MATH-001",
+  "category": "mathematical_reasoning",
+  "original_prompt": "A store sells apples in bags of 5 for $3.00. On Tuesday, they offer a 20% discount on all apple bags. If a customer buys 15 apples on Tuesday, how much do they pay in total?",
+  "category_identification": {
+    "source": "dataset",
+    "reason": "Multi-step arithmetic ratio and percentage calculation"
+  },
+  "reference_answer": "$7.20",
+  "study_id": "main_v1",
+  "evidence_mode": "retrospective",
+  "selection_rule": {
+    "mode": "budget",
+    "budget": "0.10",
+    "target": null,
+    "tie_breaks": [
+      "largest excess",
+      "fewest character edits",
+      "smallest normalized input distance"
+    ]
+  },
+  "model_scope": {
+    "models": [
+      "qwen/qwen3.8-27b",
+      "openai/gpt-oss-120b",
+      "openai/gpt-oss-20b",
+      "allam-2-7b",
+      "gemini-3.1-flash-lite"
+    ],
+    "label": "fixed panel of 5 models, equal weights"
+  },
+  "status": "selected",
+  "selected": [
+    "char_substitution"
+  ],
+  "tie_status": "unique",
+  "tied_on_objective": [],
+  "closest_rivals": [
+    {
+      "operator": "word_insertion",
+      "char_edits": 10,
+      "d_in_char": 0.054645,
+      "excess_distance": 0.04494287967681885,
+      "excess_gap": 0.0013326048851013197,
+      "character_edits_saved": 9
+    }
+  ],
+  "explanation": "char_substitution produced the largest control-adjusted change (+0.0463) among 5 eligible, measured edits within budget 0.10. The gap to word_insertion (+0.0449) was +0.0013. Preservation evidence: not flagged by the retrospective audit (every candidate of this operator was audited).",
+  "provisional_best": [],
+  "best_achieved_excess": 0.04627548456192017,
+  "tradeoff_frontier": [
+    "char_substitution"
+  ],
+  "recommendation": {
+    "operators": [
+      "char_substitution"
+    ],
+    "source": "category_operator_rankings.csv (mathematical_reasoning, budget 0.10)",
+    "budget": "0.10",
+    "category_score": 0.0853278949856758,
+    "coverage": "8/8 complete prompts",
+    "evidence_status": "exploratory (main_v1 discovery ranking)",
+    "rationale": "A typo in prose changes how the task is rendered while leaving quantities and the requested result intact.",
+    "note": "",
+    "prompt_status": "measured"
+  },
+  "evidence_notes": [
+    "Exploratory measurement from stored main_v1 outputs."
+  ],
+  "operators": [
+    {
+      "operator": "char_substitution",
+      "eligibility": "eligible",
+      "eligibility_detail": "not flagged by the retrospective audit (every candidate of this operator was audited)",
+      "status": "measured",
+      "perturbation_id": "MATH-001__char_substitution__42__9007f3f85776",
+      "role": "candidate",
+      "perturbed_prompt": "A store sells apples in 6ags of 5 for $3.00. On Tuesday, they offer a 20% discount on all apple bags. If a customer buys 15 apples on Tuesday, how much do they pay in total?",
+      "char_edits": 1,
+      "d_in_char": 0.00578,
+      "exact_edit": [
+        {
+          "original_offset": 24,
+          "edited_offset": 24,
+          "removed": "b",
+          "added": "6"
+        }
+      ],
+      "input_length_denominator": 173,
+      "d_in_sem": 0.02675957,
+      "auto_protected_changes": [],
+      "raw_distance": 0.046471786499023435,
+      "control_distance": 0.0001963019371032715,
+      "excess_distance": 0.04627548456192017,
+      "per_model": [
+        {
+          "model": "qwen/qwen3.8-27b",
+          "model_label": "Qwen 3.8 27B",
+          "status": "measured",
+          "pair_id": "qwen/qwen3.8-27b|MATH-001|treatment|char_substitution|1",
+          "anchor_record_id": "04410e83-86b0-4ba9-b910-a0e3c20a2991",
+          "comparison_record_id": "fc7a6b10-aa79-4f23-9eb5-abb9fb9841b0",
+          "raw_distance": 0.09190583229064941,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "qwen/qwen3.8-27b|MATH-001|control|None|1",
+              "anchor_record_id": "04410e83-86b0-4ba9-b910-a0e3c20a2991",
+              "comparison_record_id": "da958b2d-43e7-4567-9207-9263bf06b51e",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "qwen/qwen3.8-27b|MATH-001|control|None|2",
+              "anchor_record_id": "04410e83-86b0-4ba9-b910-a0e3c20a2991",
+              "comparison_record_id": "38b00c7d-6ff9-44ea-b30d-0f34942d3196",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.09190583229064941,
+          "d_out_char": 0.6556240369799692,
+          "d_out_token": 0.6285714285714286,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": "7.20",
+          "comparison_final": "7.20",
+          "scoring_method": "answer_key",
+          "code_signature_compliant": null,
+          "taxonomy": "content_change_same_answer",
+          "anchor_output": "To determine the total cost, we need to calculate the number of bags required and apply the discount.\r\n\r\n1.  **Calculate the number of bags needed:**\r\n    The customer buys 15 apples, and each bag contains 5 apples.\r\n    $$ \\text{Number of bags} = \\frac{15 \\text{ apples}}{5 \\text{ apples/bag}} = 3 \\text{ bags} $$\r\n\r\n2.  **Calculate the original total cost:**\r\n    Each bag costs $\\$3.00$.\r\n    $$ \\text{Original Cost} = 3 \\text{ bags} \\times \\$3.00/\\text{bag} = \\$9.00 $$\r\n\r\n3.  **Apply the discount:**\r\n    The store offers a 20% discount on Tuesday.\r\n    $$ \\text{Discount Amount} = \\$9.00 \\times 0.20 = \\$1.80 $$\r\n    $$ \\text{Final Price} = \\text{Original Cost} - \\text{Discount Amount} $$\r\n    $$ \\text{Final Price} = \\$9.00 - \\$1.80 = \\$7.20 $$\r\n\r\nAlternatively, you can calculate the discounted price per bag:\r\n$$ \\text{Discounted Price per Bag} = \\$3.00 \\times (1 - 0.20) = \\$3.00 \\times 0.80 = \\$2.40 $$\r\n$$ \\text{Total Cost} = 3 \\text{ bags} \\times \\$2.40/\\text{bag} = \\$7.20 $$\r\n\r\nFinal answer: $7.20",
+          "comparison_output": "To determine the total cost, we need to calculate the price per apple, apply the discount, and then multiply by the number of apples purchased.\r\n\r\n**Step 1: Determine the original price per apple.**\r\nThe store sells 5 apples for $3.00.\r\n$$ \\text{Price per apple} = \\frac{\\$3.00}{5} = \\$0.60 $$\r\n\r\n**Step 2: Calculate the discounted price per apple.**\r\nOn Tuesday, there is a 20% discount.\r\n$$ \\text{Discount amount} = \\$0.60 \\times 0.20 = \\$0.12 $$\r\n$$ \\text{Discounted price per apple} = \\$0.60 - \\$0.12 = \\$0.48 $$\r\n\r\nAlternatively, you can calculate the discounted price directly:\r\n$$ \\text{Discounted price per apple} = \\$0.60 \\times (1 - 0.20) = \\$0.60 \\times 0.80 = \\$0.48 $$\r\n\r\n**Step 3: Calculate the total cost for 15 apples.**\r\nThe customer buys 15 apples at the discounted price.\r\n$$ \\text{Total Cost} = 15 \\times \\$0.48 $$\r\n\r\nCalculation:\r\n$$ 15 \\times 0.48 = 15 \\times \\left(\\frac{48}{100}\\right) = \\frac{720}{100} = 7.20 $$\r\n\r\nSo, the total cost is $7.20.\r\n\r\n**Alternative Method:**\r\n1. Calculate the original cost for 15 apples:\r\n   Since 5 apples cost $3.00, 15 apples (which is 3 sets of 5) would cost:\r\n   $$ 3 \\times \\$3.00 = \\$9.00 $$\r\n2. Apply the 20% discount to the total:\r\n   $$ \\text{Discount} = \\$9.00 \\times 0.20 = \\$1.80 $$\r\n   $$ \\text{Total Cost} = \\$9.00 - \\$1.80 = \\$7.20 $$\r\n\r\nFinal answer: $7.20"
+        },
+        {
+          "model": "openai/gpt-oss-120b",
+          "model_label": "GPT-OSS-120B",
+          "status": "measured",
+          "pair_id": "openai/gpt-oss-120b|MATH-001|treatment|char_substitution|1",
+          "anchor_record_id": "f1b0fe7b-747d-4093-9e8f-7f471d75744c",
+          "comparison_record_id": "3942dceb-ce57-4cd7-9a64-0626004ae1b4",
+          "raw_distance": 0.05304908752441406,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "openai/gpt-oss-120b|MATH-001|control|None|1",
+              "anchor_record_id": "f1b0fe7b-747d-4093-9e8f-7f471d75744c",
+              "comparison_record_id": "628f7e7b-978f-4f6a-becf-ec9c6d5d52af",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "openai/gpt-oss-120b|MATH-001|control|None|2",
+              "anchor_record_id": "f1b0fe7b-747d-4093-9e8f-7f471d75744c",
+              "comparison_record_id": "aebf4a15-3705-4a57-b949-54f8e0d8507e",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.05304908752441406,
+          "d_out_char": 0.5171102661596958,
+          "d_out_token": 0.6607142857142857,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": "7.20",
+          "comparison_final": "7.20",
+          "scoring_method": "answer_key",
+          "code_signature_compliant": null,
+          "taxonomy": "content_change_same_answer",
+          "anchor_output": "The customer needs three bags (15 apples ÷ 5 apples per bag).  \r\nEach bag costs $3.00, and a 20 % discount reduces the price to:\r\n\r\n\\(3.00 \\times (1 - 0.20) = 3.00 \\times 0.80 = \\$2.40\\).\r\n\r\nTotal cost:\r\n\r\n\\(3 \\text{ bags} \\times \\$2.40 = \\$7.20\\).\r\n\r\nFinal answer: $7.20.",
+          "comparison_output": "The customer needs three bags (15 apples ÷ 5 apples per bag).  \r\nCost before discount: 3 bags × $3.00 = $9.00.  \r\n20 % discount → pay 80 % of $9.00: $9.00 × 0.80 = $7.20.\r\n\r\nFinal answer: $7.20."
+        },
+        {
+          "model": "openai/gpt-oss-20b",
+          "model_label": "GPT-OSS-20B",
+          "status": "measured",
+          "pair_id": "openai/gpt-oss-20b|MATH-001|treatment|char_substitution|1",
+          "anchor_record_id": "7dad7eb5-9ee8-4095-bc85-2ac308e4d594",
+          "comparison_record_id": "8533bf72-df1a-471c-9d7c-cadee00ba99c",
+          "raw_distance": 0.0,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "openai/gpt-oss-20b|MATH-001|control|None|1",
+              "anchor_record_id": "7dad7eb5-9ee8-4095-bc85-2ac308e4d594",
+              "comparison_record_id": "b99131b6-50f0-48fb-b622-457818692601",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "openai/gpt-oss-20b|MATH-001|control|None|2",
+              "anchor_record_id": "7dad7eb5-9ee8-4095-bc85-2ac308e4d594",
+              "comparison_record_id": "2e21ca25-565c-44fc-ac22-4fa5149d077e",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.0,
+          "d_out_char": 0.0,
+          "d_out_token": 0.0,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": "7.20",
+          "comparison_final": "7.20",
+          "scoring_method": "answer_key",
+          "code_signature_compliant": null,
+          "taxonomy": "identical",
+          "anchor_output": "$7.20  \r\nFinal answer: 7.20",
+          "comparison_output": "$7.20  \r\nFinal answer: 7.20"
+        },
+        {
+          "model": "allam-2-7b",
+          "model_label": "ALLaM-2-7B",
+          "status": "measured",
+          "pair_id": "allam-2-7b|MATH-001|treatment|char_substitution|1",
+          "anchor_record_id": "0706a8fd-b7e2-4f96-85c5-a26dbb9d9334",
+          "comparison_record_id": "53bcb16f-a602-4fd3-b106-b0bd419b8b2a",
+          "raw_distance": 0.0848270058631897,
+          "control_values": {
+            "1": 0.001963019371032715,
+            "2": 0.0
+          },
+          "control_distance": 0.0009815096855163574,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "allam-2-7b|MATH-001|control|None|1",
+              "anchor_record_id": "0706a8fd-b7e2-4f96-85c5-a26dbb9d9334",
+              "comparison_record_id": "3db90d14-fe50-4d1f-a5ec-75eaeb156552",
+              "distance": 0.001963019371032715
+            },
+            {
+              "repeat": 2,
+              "pair_id": "allam-2-7b|MATH-001|control|None|2",
+              "anchor_record_id": "0706a8fd-b7e2-4f96-85c5-a26dbb9d9334",
+              "comparison_record_id": "d1e0bd8c-c8f3-44a5-8048-ef0b9c0a401f",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.08384549617767334,
+          "d_out_char": 0.6327160493827161,
+          "d_out_token": 0.5671641791044777,
+          "answer_changed": true,
+          "anchor_correct": true,
+          "comparison_correct": false,
+          "anchor_final": "thecustomerpays7.20intotal",
+          "comparison_final": "150.406.00thecustomerpays6.00intotal",
+          "scoring_method": "answer_key",
+          "code_signature_compliant": null,
+          "taxonomy": "correctness_flip_correct_to_incorrect",
+          "anchor_output": "First, let's find the discounted price per bag:\r\n\r\nFinal price per bag after discount: $3.00 - (20% of $3.00)\r\n                                 = $3.00 - (0.20 * $3.00)\r\n                                 = $3.00 - $0.60\r\n                                 = $2.40\r\n\r\nNow, let's find out how many bags the customer buys with 15 apples:\r\n\r\nNumber of bags = Total apples / Apples per bag\r\n                = 15 / 5\r\n                = 3 bags\r\n\r\nNow that we know the customer buys 3 bags, let's calculate the total cost:\r\n\r\nTotal cost = Number of bags * Final price per bag\r\n            = 3 bags * $2.40\r\n            = $7.20\r\n\r\nFinal answer: The customer pays $7.20 in total. ",
+          "comparison_output": "First, let's find the price of one apple bag:\r\n\r\nFinal answer: $3.00 / (6 * 5) = $0.50 per apple\r\n\r\nNow, let's calculate the discount for one apple bag:\r\n\r\nFinal answer: 0.20 * $0.50 = $0.10 discount per bag\r\n\r\nNow, let's find the price after the discount:\r\n\r\nFinal answer: $0.50 - $0.10 = $0.40 per apple bag\r\n\r\nThe customer buys 15 apples, so let's calculate the total cost:\r\n\r\nFinal answer: 15 * $0.40 = $6.00\r\n\r\nThe customer pays $6.00 in total. "
+        },
+        {
+          "model": "gemini-3.1-flash-lite",
+          "model_label": "Gemini 3.1 Flash-Lite",
+          "status": "measured",
+          "pair_id": "gemini-3.1-flash-lite|MATH-001|treatment|char_substitution|1",
+          "anchor_record_id": "e989c003-8409-456d-8049-ddca6410254f",
+          "comparison_record_id": "d1fb7ef4-448f-4ee4-8338-5d90423c6807",
+          "raw_distance": 0.0025770068168640137,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "gemini-3.1-flash-lite|MATH-001|control|None|1",
+              "anchor_record_id": "e989c003-8409-456d-8049-ddca6410254f",
+              "comparison_record_id": "9febfb5e-b4b8-45f9-9e07-063e4e27a8a6",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "gemini-3.1-flash-lite|MATH-001|control|None|2",
+              "anchor_record_id": "e989c003-8409-456d-8049-ddca6410254f",
+              "comparison_record_id": "60378ae3-e3ac-42bc-b2b9-d6e6a8d3c886",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.0025770068168640137,
+          "d_out_char": 0.03816793893129766,
+          "d_out_token": 0.052631578947368474,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": "7.20",
+          "comparison_final": "7.20",
+          "scoring_method": "answer_key",
+          "code_signature_compliant": null,
+          "taxonomy": "wording_change_only",
+          "anchor_output": "To calculate the total cost:\r\n\r\n1.  **Determine the number of bags:** Since there are 5 apples per bag, 15 apples require $15 / 5 = 3$ bags.\r\n2.  **Calculate the original price:** 3 bags at $3.00 each equals $3 \\times 3 = $9.00.\r\n3.  **Calculate the discount:** A 20% discount on $9.00 is $9.00 \\times 0.20 = $1.80.\r\n4.  **Calculate the final price:** $9.00 - $1.80 = $7.20.\r\n\r\nFinal answer: $7.20",
+          "comparison_output": "To calculate the total cost:\r\n\r\n1.  **Determine the number of bags needed:** Since there are 5 apples per bag, 15 apples require $15 / 5 = 3$ bags.\r\n2.  **Calculate the original price:** 3 bags at $3.00 each equals $3 \\times 3 = $9.00.\r\n3.  **Apply the discount:** A 20% discount on $9.00 is $9.00 \\times 0.20 = $1.80.\r\n4.  **Calculate the final price:** $9.00 - $1.80 = $7.20.\r\n\r\nFinal answer: $7.20"
+        }
+      ]
+    },
+    {
+      "operator": "capitalization",
+      "eligibility": "eligible",
+      "eligibility_detail": "not flagged by the retrospective audit (operator audited by a sample of 5 candidates)",
+      "status": "measured",
+      "perturbation_id": "MATH-001__capitalization__42__9dca4d183a59",
+      "role": "candidate",
+      "perturbed_prompt": "a store sells apples in bags of 5 for $3.00. On Tuesday, they offer a 20% discount on all apple bags. If a customer buys 15 apples on Tuesday, how much do they pay in total?",
+      "char_edits": 1,
+      "d_in_char": 0.00578,
+      "exact_edit": [
+        {
+          "original_offset": 0,
+          "edited_offset": 0,
+          "removed": "A",
+          "added": "a"
+        }
+      ],
+      "input_length_denominator": 173,
+      "d_in_sem": 0.0,
+      "auto_protected_changes": [],
+      "raw_distance": 0.026202011108398437,
+      "control_distance": 0.0001963019371032715,
+      "excess_distance": 0.026005709171295167,
+      "per_model": [
+        {
+          "model": "qwen/qwen3.8-27b",
+          "model_label": "Qwen 3.8 27B",
+          "status": "measured",
+          "pair_id": "qwen/qwen3.8-27b|MATH-001|treatment|capitalization|1",
+          "anchor_record_id": "04410e83-86b0-4ba9-b910-a0e3c20a2991",
+          "comparison_record_id": "219022fa-816c-400d-a57b-9cec8806c0a5",
+          "raw_distance": 0.037918806076049805,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "qwen/qwen3.8-27b|MATH-001|control|None|1",
+              "anchor_record_id": "04410e83-86b0-4ba9-b910-a0e3c20a2991",
+              "comparison_record_id": "da958b2d-43e7-4567-9207-9263bf06b51e",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "qwen/qwen3.8-27b|MATH-001|control|None|2",
+              "anchor_record_id": "04410e83-86b0-4ba9-b910-a0e3c20a2991",
+              "comparison_record_id": "38b00c7d-6ff9-44ea-b30d-0f34942d3196",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.037918806076049805,
+          "d_out_char": 0.07955689828801615,
+          "d_out_token": 0.21052631578947367,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": "7.20",
+          "comparison_final": "7.20",
+          "scoring_method": "answer_key",
+          "code_signature_compliant": null,
+          "taxonomy": "wording_change_only",
+          "anchor_output": "To determine the total cost, we need to calculate the number of bags required and apply the discount.\r\n\r\n1.  **Calculate the number of bags needed:**\r\n    The customer buys 15 apples, and each bag contains 5 apples.\r\n    $$ \\text{Number of bags} = \\frac{15 \\text{ apples}}{5 \\text{ apples/bag}} = 3 \\text{ bags} $$\r\n\r\n2.  **Calculate the original total cost:**\r\n    Each bag costs $\\$3.00$.\r\n    $$ \\text{Original Cost} = 3 \\text{ bags} \\times \\$3.00/\\text{bag} = \\$9.00 $$\r\n\r\n3.  **Apply the discount:**\r\n    The store offers a 20% discount on Tuesday.\r\n    $$ \\text{Discount Amount} = \\$9.00 \\times 0.20 = \\$1.80 $$\r\n    $$ \\text{Final Price} = \\text{Original Cost} - \\text{Discount Amount} $$\r\n    $$ \\text{Final Price} = \\$9.00 - \\$1.80 = \\$7.20 $$\r\n\r\nAlternatively, you can calculate the discounted price per bag:\r\n$$ \\text{Discounted Price per Bag} = \\$3.00 \\times (1 - 0.20) = \\$3.00 \\times 0.80 = \\$2.40 $$\r\n$$ \\text{Total Cost} = 3 \\text{ bags} \\times \\$2.40/\\text{bag} = \\$7.20 $$\r\n\r\nFinal answer: $7.20",
+          "comparison_output": "To determine the total cost, we need to calculate the number of bags required and apply the discount.\r\n\r\n1.  **Calculate the number of bags needed:**\r\n    The store sells apples in bags of 5. The customer wants to buy 15 apples.\r\n    $$ \\text{Number of bags} = \\frac{15 \\text{ apples}}{5 \\text{ apples/bag}} = 3 \\text{ bags} $$\r\n\r\n2.  **Calculate the original total cost:**\r\n    Each bag costs $\\$3.00$.\r\n    $$ \\text{Original Cost} = 3 \\text{ bags} \\times \\$3.00/\\text{bag} = \\$9.00 $$\r\n\r\n3.  **Apply the discount:**\r\n    The discount is 20%.\r\n    $$ \\text{Discount Amount} = \\$9.00 \\times 0.20 = \\$1.80 $$\r\n    $$ \\text{Final Price} = \\text{Original Cost} - \\text{Discount Amount} $$\r\n    $$ \\text{Final Price} = \\$9.00 - \\$1.80 = \\$7.20 $$\r\n\r\nAlternatively, calculate the discounted price per bag:\r\n$$ \\text{Discounted Price per Bag} = \\$3.00 \\times (1 - 0.20) = \\$3.00 \\times 0.80 = \\$2.40 $$\r\n$$ \\text{Total Cost} = 3 \\text{ bags} \\times \\$2.40/\\text{bag} = \\$7.20 $$\r\n\r\nFinal answer: $7.20"
+        },
+        {
+          "model": "openai/gpt-oss-120b",
+          "model_label": "GPT-OSS-120B",
+          "status": "measured",
+          "pair_id": "openai/gpt-oss-120b|MATH-001|treatment|capitalization|1",
+          "anchor_record_id": "f1b0fe7b-747d-4093-9e8f-7f471d75744c",
+          "comparison_record_id": "cd52f0ca-34c8-4fe0-919b-59ad75d5f612",
+          "raw_distance": 0.009071767330169678,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "openai/gpt-oss-120b|MATH-001|control|None|1",
+              "anchor_record_id": "f1b0fe7b-747d-4093-9e8f-7f471d75744c",
+              "comparison_record_id": "628f7e7b-978f-4f6a-becf-ec9c6d5d52af",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "openai/gpt-oss-120b|MATH-001|control|None|2",
+              "anchor_record_id": "f1b0fe7b-747d-4093-9e8f-7f471d75744c",
+              "comparison_record_id": "aebf4a15-3705-4a57-b949-54f8e0d8507e",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.009071767330169678,
+          "d_out_char": 0.14068441064638781,
+          "d_out_token": 0.27083333333333337,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": "7.20",
+          "comparison_final": "7.20",
+          "scoring_method": "answer_key",
+          "code_signature_compliant": null,
+          "taxonomy": "wording_change_only",
+          "anchor_output": "The customer needs three bags (15 apples ÷ 5 apples per bag).  \r\nEach bag costs $3.00, and a 20 % discount reduces the price to:\r\n\r\n\\(3.00 \\times (1 - 0.20) = 3.00 \\times 0.80 = \\$2.40\\).\r\n\r\nTotal cost:\r\n\r\n\\(3 \\text{ bags} \\times \\$2.40 = \\$7.20\\).\r\n\r\nFinal answer: $7.20.",
+          "comparison_output": "The customer needs three bags (15 apples ÷ 5 apples per bag).  \r\nEach bag costs $3.00 with a 20 % discount:  \r\n\r\n\\(3.00 \\times (1 - 0.20) = 3.00 \\times 0.80 = \\$2.40\\) per bag.  \r\n\r\nTotal cost:  \r\n\r\n\\(3 \\text{ bags} \\times \\$2.40 = \\$7.20\\).\r\n\r\nFinal answer: $7.20."
+        },
+        {
+          "model": "openai/gpt-oss-20b",
+          "model_label": "GPT-OSS-20B",
+          "status": "measured",
+          "pair_id": "openai/gpt-oss-20b|MATH-001|treatment|capitalization|1",
+          "anchor_record_id": "7dad7eb5-9ee8-4095-bc85-2ac308e4d594",
+          "comparison_record_id": "4b301cd1-cc7a-4657-a095-00553a1b3637",
+          "raw_distance": 0.0,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "openai/gpt-oss-20b|MATH-001|control|None|1",
+              "anchor_record_id": "7dad7eb5-9ee8-4095-bc85-2ac308e4d594",
+              "comparison_record_id": "b99131b6-50f0-48fb-b622-457818692601",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "openai/gpt-oss-20b|MATH-001|control|None|2",
+              "anchor_record_id": "7dad7eb5-9ee8-4095-bc85-2ac308e4d594",
+              "comparison_record_id": "2e21ca25-565c-44fc-ac22-4fa5149d077e",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.0,
+          "d_out_char": 0.0,
+          "d_out_token": 0.0,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": "7.20",
+          "comparison_final": "7.20",
+          "scoring_method": "answer_key",
+          "code_signature_compliant": null,
+          "taxonomy": "identical",
+          "anchor_output": "$7.20  \r\nFinal answer: 7.20",
+          "comparison_output": "$7.20  \r\nFinal answer: 7.20"
+        },
+        {
+          "model": "allam-2-7b",
+          "model_label": "ALLaM-2-7B",
+          "status": "measured",
+          "pair_id": "allam-2-7b|MATH-001|treatment|capitalization|1",
+          "anchor_record_id": "0706a8fd-b7e2-4f96-85c5-a26dbb9d9334",
+          "comparison_record_id": "242136a6-222c-45fc-a50d-4cd7cbeeac22",
+          "raw_distance": 0.08363378047943115,
+          "control_values": {
+            "1": 0.001963019371032715,
+            "2": 0.0
+          },
+          "control_distance": 0.0009815096855163574,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "allam-2-7b|MATH-001|control|None|1",
+              "anchor_record_id": "0706a8fd-b7e2-4f96-85c5-a26dbb9d9334",
+              "comparison_record_id": "3db90d14-fe50-4d1f-a5ec-75eaeb156552",
+              "distance": 0.001963019371032715
+            },
+            {
+              "repeat": 2,
+              "pair_id": "allam-2-7b|MATH-001|control|None|2",
+              "anchor_record_id": "0706a8fd-b7e2-4f96-85c5-a26dbb9d9334",
+              "comparison_record_id": "d1e0bd8c-c8f3-44a5-8048-ef0b9c0a401f",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.0826522707939148,
+          "d_out_char": 0.5805739514348786,
+          "d_out_token": 0.5319148936170213,
+          "answer_changed": true,
+          "anchor_correct": true,
+          "comparison_correct": false,
+          "anchor_final": "thecustomerpays7.20intotal",
+          "comparison_final": "thecustomerpays9.60intotal",
+          "scoring_method": "answer_key",
+          "code_signature_compliant": null,
+          "taxonomy": "correctness_flip_correct_to_incorrect",
+          "anchor_output": "First, let's find the discounted price per bag:\r\n\r\nFinal price per bag after discount: $3.00 - (20% of $3.00)\r\n                                 = $3.00 - (0.20 * $3.00)\r\n                                 = $3.00 - $0.60\r\n                                 = $2.40\r\n\r\nNow, let's find out how many bags the customer buys with 15 apples:\r\n\r\nNumber of bags = Total apples / Apples per bag\r\n                = 15 / 5\r\n                = 3 bags\r\n\r\nNow that we know the customer buys 3 bags, let's calculate the total cost:\r\n\r\nTotal cost = Number of bags * Final price per bag\r\n            = 3 bags * $2.40\r\n            = $7.20\r\n\r\nFinal answer: The customer pays $7.20 in total. ",
+          "comparison_output": "First, let's find the discounted price for one apple bag:\r\n\r\nOriginal price per apple bag: $3.00\r\nDiscount percentage: 20%\r\n\r\nDiscount amount per apple bag: $3.00 * 20% = $3.00 * 0.20 = $0.60\r\n\r\nDiscounted price per apple bag: $3.00 - $0.60 = $2.40\r\n\r\nNow, let's find out how many apple bags the customer buys with 15 apples:\r\n\r\nNumber of apple bags: 15 apples / 5 apples per bag = 3 bags\r\n\r\nTotal cost before tax: 3 bags * $2.40 per bag = $7.20\r\n\r\nSince the customer buys 15 apples, we need to find out how many bags they actually get:\r\n\r\nActual number of bags: 15 apples / 5 apples per bag = 3 bags\r\n\r\nNow, let's calculate the difference between the total cost before tax and the actual cost:\r\n\r\nDifference: $7.20 - ($7.20 / (3 bags / 2 bags)) = $7.20 - ($7.20 / 1.5) = $7.20 - $4.80 = $2.40\r\n\r\nThe customer pays an extra $2.40 for the 2 extra bags they get due to the discount. Final answer: The customer pays $9.60 in total. "
+        },
+        {
+          "model": "gemini-3.1-flash-lite",
+          "model_label": "Gemini 3.1 Flash-Lite",
+          "status": "measured",
+          "pair_id": "gemini-3.1-flash-lite|MATH-001|treatment|capitalization|1",
+          "anchor_record_id": "e989c003-8409-456d-8049-ddca6410254f",
+          "comparison_record_id": "719315d1-3f31-43ff-9aa3-ab3263292a1e",
+          "raw_distance": 0.00038570165634155273,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "gemini-3.1-flash-lite|MATH-001|control|None|1",
+              "anchor_record_id": "e989c003-8409-456d-8049-ddca6410254f",
+              "comparison_record_id": "9febfb5e-b4b8-45f9-9e07-063e4e27a8a6",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "gemini-3.1-flash-lite|MATH-001|control|None|2",
+              "anchor_record_id": "e989c003-8409-456d-8049-ddca6410254f",
+              "comparison_record_id": "60378ae3-e3ac-42bc-b2b9-d6e6a8d3c886",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.00038570165634155273,
+          "d_out_char": 0.02051282051282055,
+          "d_out_token": 0.017857142857142905,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": "7.20",
+          "comparison_final": "7.20",
+          "scoring_method": "answer_key",
+          "code_signature_compliant": null,
+          "taxonomy": "wording_change_only",
+          "anchor_output": "To calculate the total cost:\r\n\r\n1.  **Determine the number of bags:** Since there are 5 apples per bag, 15 apples require $15 / 5 = 3$ bags.\r\n2.  **Calculate the original price:** 3 bags at $3.00 each equals $3 \\times 3 = $9.00.\r\n3.  **Calculate the discount:** A 20% discount on $9.00 is $9.00 \\times 0.20 = $1.80.\r\n4.  **Calculate the final price:** $9.00 - $1.80 = $7.20.\r\n\r\nFinal answer: $7.20",
+          "comparison_output": "To calculate the total cost:\r\n\r\n1.  **Determine the number of bags:** Since there are 5 apples per bag, 15 apples require $15 / 5 = 3$ bags.\r\n2.  **Calculate the original price:** 3 bags at $3.00 each equals $3 \\times 3 = $9.00.\r\n3.  **Apply the discount:** A 20% discount on $9.00 is $9.00 \\times 0.20 = $1.80.\r\n4.  **Calculate the final price:** $9.00 - $1.80 = $7.20.\r\n\r\nFinal answer: $7.20"
+        }
+      ]
+    },
+    {
+      "operator": "punctuation",
+      "eligibility": "eligible",
+      "eligibility_detail": "not flagged by the retrospective audit (operator audited by a sample of 5 candidates)",
+      "status": "measured",
+      "perturbation_id": "MATH-001__punctuation__42__0ef58f5d464e",
+      "role": "candidate",
+      "perturbed_prompt": "A store sells apples in bags of 5 for $3.00. On Tuesday, they offer a 20% discount on all apple bags. If a customer buys 15 apples on Tuesday, how much do they pay in total",
+      "char_edits": 1,
+      "d_in_char": 0.00578,
+      "exact_edit": [
+        {
+          "original_offset": 172,
+          "edited_offset": 172,
+          "removed": "?",
+          "added": ""
+        }
+      ],
+      "input_length_denominator": 173,
+      "d_in_sem": 0.00672212,
+      "auto_protected_changes": [],
+      "raw_distance": 0.01715301275253296,
+      "control_distance": 0.0001963019371032715,
+      "excess_distance": 0.01695671081542969,
+      "per_model": [
+        {
+          "model": "qwen/qwen3.8-27b",
+          "model_label": "Qwen 3.8 27B",
+          "status": "measured",
+          "pair_id": "qwen/qwen3.8-27b|MATH-001|treatment|punctuation|1",
+          "anchor_record_id": "04410e83-86b0-4ba9-b910-a0e3c20a2991",
+          "comparison_record_id": "8d9b08e4-a3a5-4c8f-8dd4-4d5ae6ea101e",
+          "raw_distance": 0.0069931745529174805,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "qwen/qwen3.8-27b|MATH-001|control|None|1",
+              "anchor_record_id": "04410e83-86b0-4ba9-b910-a0e3c20a2991",
+              "comparison_record_id": "da958b2d-43e7-4567-9207-9263bf06b51e",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "qwen/qwen3.8-27b|MATH-001|control|None|2",
+              "anchor_record_id": "04410e83-86b0-4ba9-b910-a0e3c20a2991",
+              "comparison_record_id": "38b00c7d-6ff9-44ea-b30d-0f34942d3196",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.0069931745529174805,
+          "d_out_char": 0.07754279959718025,
+          "d_out_token": 0.0,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": "7.20",
+          "comparison_final": "7.20",
+          "scoring_method": "answer_key",
+          "code_signature_compliant": null,
+          "taxonomy": "wording_change_only",
+          "anchor_output": "To determine the total cost, we need to calculate the number of bags required and apply the discount.\r\n\r\n1.  **Calculate the number of bags needed:**\r\n    The customer buys 15 apples, and each bag contains 5 apples.\r\n    $$ \\text{Number of bags} = \\frac{15 \\text{ apples}}{5 \\text{ apples/bag}} = 3 \\text{ bags} $$\r\n\r\n2.  **Calculate the original total cost:**\r\n    Each bag costs $\\$3.00$.\r\n    $$ \\text{Original Cost} = 3 \\text{ bags} \\times \\$3.00/\\text{bag} = \\$9.00 $$\r\n\r\n3.  **Apply the discount:**\r\n    The store offers a 20% discount on Tuesday.\r\n    $$ \\text{Discount Amount} = \\$9.00 \\times 0.20 = \\$1.80 $$\r\n    $$ \\text{Final Price} = \\text{Original Cost} - \\text{Discount Amount} $$\r\n    $$ \\text{Final Price} = \\$9.00 - \\$1.80 = \\$7.20 $$\r\n\r\nAlternatively, you can calculate the discounted price per bag:\r\n$$ \\text{Discounted Price per Bag} = \\$3.00 \\times (1 - 0.20) = \\$3.00 \\times 0.80 = \\$2.40 $$\r\n$$ \\text{Total Cost} = 3 \\text{ bags} \\times \\$2.40/\\text{bag} = \\$7.20 $$\r\n\r\nFinal answer: $7.20",
+          "comparison_output": "To determine the total cost, we need to calculate the number of bags required and apply the discount.\r\n\r\n1.  **Calculate the number of bags needed:**\r\n    The customer buys 15 apples, and each bag contains 5 apples.\r\n    $$ \\text{Number of bags} = \\frac{15 \\text{ apples}}{5 \\text{ apples/bag}} = 3 \\text{ bags} $$\r\n\r\n2.  **Calculate the original total cost:**\r\n    Each bag costs $\\$3.00$.\r\n    $$ \\text{Original Cost} = 3 \\text{ bags} \\times \\$3.00/\\text{bag} = \\$9.00 $$\r\n\r\n3.  **Apply the discount:**\r\n    The store offers a 20% discount on Tuesday.\r\n    $$ \\text{Discount Amount} = \\$9.00 \\times 0.20 = \\$1.80 $$\r\n    $$ \\text{Final Price} = \\$9.00 - \\$1.80 = \\$7.20 $$\r\n\r\nAlternatively, you can calculate the discounted price per bag:\r\n$$ \\text{Discounted Price per Bag} = \\$3.00 \\times (1 - 0.20) = \\$3.00 \\times 0.80 = \\$2.40 $$\r\n$$ \\text{Total Cost} = 3 \\text{ bags} \\times \\$2.40/\\text{bag} = \\$7.20 $$\r\n\r\nFinal answer: $7.20"
+        },
+        {
+          "model": "openai/gpt-oss-120b",
+          "model_label": "GPT-OSS-120B",
+          "status": "measured",
+          "pair_id": "openai/gpt-oss-120b|MATH-001|treatment|punctuation|1",
+          "anchor_record_id": "f1b0fe7b-747d-4093-9e8f-7f471d75744c",
+          "comparison_record_id": "ae8b4fa8-f889-44d4-a65a-ff0371cfa68f",
+          "raw_distance": 0.0013735294342041016,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "openai/gpt-oss-120b|MATH-001|control|None|1",
+              "anchor_record_id": "f1b0fe7b-747d-4093-9e8f-7f471d75744c",
+              "comparison_record_id": "628f7e7b-978f-4f6a-becf-ec9c6d5d52af",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "openai/gpt-oss-120b|MATH-001|control|None|2",
+              "anchor_record_id": "f1b0fe7b-747d-4093-9e8f-7f471d75744c",
+              "comparison_record_id": "aebf4a15-3705-4a57-b949-54f8e0d8507e",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.0013735294342041016,
+          "d_out_char": 0.040590405904059046,
+          "d_out_token": 0.10869565217391308,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": "7.20",
+          "comparison_final": "7.20",
+          "scoring_method": "answer_key",
+          "code_signature_compliant": null,
+          "taxonomy": "wording_change_only",
+          "anchor_output": "The customer needs three bags (15 apples ÷ 5 apples per bag).  \r\nEach bag costs $3.00, and a 20 % discount reduces the price to:\r\n\r\n\\(3.00 \\times (1 - 0.20) = 3.00 \\times 0.80 = \\$2.40\\).\r\n\r\nTotal cost:\r\n\r\n\\(3 \\text{ bags} \\times \\$2.40 = \\$7.20\\).\r\n\r\nFinal answer: $7.20.",
+          "comparison_output": "The customer needs three bags (15 apples ÷ 5 apples per bag).  \r\nEach bag costs $3.00, and a 20 % discount reduces the price to:\r\n\r\n\\(3.00 \\times (1 - 0.20) = 3.00 \\times 0.80 = \\$2.40\\) per bag.\r\n\r\nTotal cost = \\(3 \\text{ bags} \\times \\$2.40 = \\$7.20\\).\r\n\r\nFinal answer: $7.20."
+        },
+        {
+          "model": "openai/gpt-oss-20b",
+          "model_label": "GPT-OSS-20B",
+          "status": "measured",
+          "pair_id": "openai/gpt-oss-20b|MATH-001|treatment|punctuation|1",
+          "anchor_record_id": "7dad7eb5-9ee8-4095-bc85-2ac308e4d594",
+          "comparison_record_id": "72f42b57-60ec-478a-bc31-613ef90a99f6",
+          "raw_distance": 0.0,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "openai/gpt-oss-20b|MATH-001|control|None|1",
+              "anchor_record_id": "7dad7eb5-9ee8-4095-bc85-2ac308e4d594",
+              "comparison_record_id": "b99131b6-50f0-48fb-b622-457818692601",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "openai/gpt-oss-20b|MATH-001|control|None|2",
+              "anchor_record_id": "7dad7eb5-9ee8-4095-bc85-2ac308e4d594",
+              "comparison_record_id": "2e21ca25-565c-44fc-ac22-4fa5149d077e",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.0,
+          "d_out_char": 0.0,
+          "d_out_token": 0.0,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": "7.20",
+          "comparison_final": "7.20",
+          "scoring_method": "answer_key",
+          "code_signature_compliant": null,
+          "taxonomy": "identical",
+          "anchor_output": "$7.20  \r\nFinal answer: 7.20",
+          "comparison_output": "$7.20  \r\nFinal answer: 7.20"
+        },
+        {
+          "model": "allam-2-7b",
+          "model_label": "ALLaM-2-7B",
+          "status": "measured",
+          "pair_id": "allam-2-7b|MATH-001|treatment|punctuation|1",
+          "anchor_record_id": "0706a8fd-b7e2-4f96-85c5-a26dbb9d9334",
+          "comparison_record_id": "de4f0e99-4aee-45df-a61d-6e9ad124fccc",
+          "raw_distance": 0.07701265811920166,
+          "control_values": {
+            "1": 0.001963019371032715,
+            "2": 0.0
+          },
+          "control_distance": 0.0009815096855163574,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "allam-2-7b|MATH-001|control|None|1",
+              "anchor_record_id": "0706a8fd-b7e2-4f96-85c5-a26dbb9d9334",
+              "comparison_record_id": "3db90d14-fe50-4d1f-a5ec-75eaeb156552",
+              "distance": 0.001963019371032715
+            },
+            {
+              "repeat": 2,
+              "pair_id": "allam-2-7b|MATH-001|control|None|2",
+              "anchor_record_id": "0706a8fd-b7e2-4f96-85c5-a26dbb9d9334",
+              "comparison_record_id": "d1e0bd8c-c8f3-44a5-8048-ef0b9c0a401f",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.0760311484336853,
+          "d_out_char": 0.5462610899873257,
+          "d_out_token": 0.4642857142857143,
+          "answer_changed": true,
+          "anchor_correct": true,
+          "comparison_correct": false,
+          "anchor_final": "thecustomerpays7.20intotal",
+          "comparison_final": "thecustomerpays10.20intotal",
+          "scoring_method": "answer_key",
+          "code_signature_compliant": null,
+          "taxonomy": "correctness_flip_correct_to_incorrect",
+          "anchor_output": "First, let's find the discounted price per bag:\r\n\r\nFinal price per bag after discount: $3.00 - (20% of $3.00)\r\n                                 = $3.00 - (0.20 * $3.00)\r\n                                 = $3.00 - $0.60\r\n                                 = $2.40\r\n\r\nNow, let's find out how many bags the customer buys with 15 apples:\r\n\r\nNumber of bags = Total apples / Apples per bag\r\n                = 15 / 5\r\n                = 3 bags\r\n\r\nNow that we know the customer buys 3 bags, let's calculate the total cost:\r\n\r\nTotal cost = Number of bags * Final price per bag\r\n            = 3 bags * $2.40\r\n            = $7.20\r\n\r\nFinal answer: The customer pays $7.20 in total. ",
+          "comparison_output": "First, let's find the discounted price per bag:\r\n\r\nOriginal price per bag: $3.00\r\nDiscount percentage: 20%\r\n\r\nDiscount amount per bag: $3.00 * 20% = $3.00 * 0.20 = $0.60\r\n\r\nDiscounted price per bag: $3.00 - $0.60 = $2.40\r\n\r\nNow, let's find out how many bags the customer buys with 15 apples:\r\n\r\nNumber of bags: 15 apples / 5 apples per bag = 3 bags\r\n\r\nTotal cost before tax: 3 bags * $2.40 per bag = $7.20\r\n\r\nSince the customer buys 15 apples, we need to find the remaining apples that are not in a bag:\r\n\r\nApples not in a bag: 15 apples - 5 apples per bag * 3 bags = 3 apples\r\n\r\nNow, let's calculate the cost for these 3 apples:\r\n\r\nCost for 3 apples: 3 apples * $1.00 (since each extra apple costs $1.00) = $3.00\r\n\r\nTotal cost after tax: $7.20 + $3.00 = $10.20\r\n\r\nFinal answer: The customer pays $10.20 in total. "
+        },
+        {
+          "model": "gemini-3.1-flash-lite",
+          "model_label": "Gemini 3.1 Flash-Lite",
+          "status": "measured",
+          "pair_id": "gemini-3.1-flash-lite|MATH-001|treatment|punctuation|1",
+          "anchor_record_id": "e989c003-8409-456d-8049-ddca6410254f",
+          "comparison_record_id": "ad8c2c39-0f5f-49a8-96e2-8642f95646bf",
+          "raw_distance": 0.00038570165634155273,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "gemini-3.1-flash-lite|MATH-001|control|None|1",
+              "anchor_record_id": "e989c003-8409-456d-8049-ddca6410254f",
+              "comparison_record_id": "9febfb5e-b4b8-45f9-9e07-063e4e27a8a6",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "gemini-3.1-flash-lite|MATH-001|control|None|2",
+              "anchor_record_id": "e989c003-8409-456d-8049-ddca6410254f",
+              "comparison_record_id": "60378ae3-e3ac-42bc-b2b9-d6e6a8d3c886",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.00038570165634155273,
+          "d_out_char": 0.02051282051282055,
+          "d_out_token": 0.017857142857142905,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": "7.20",
+          "comparison_final": "7.20",
+          "scoring_method": "answer_key",
+          "code_signature_compliant": null,
+          "taxonomy": "wording_change_only",
+          "anchor_output": "To calculate the total cost:\r\n\r\n1.  **Determine the number of bags:** Since there are 5 apples per bag, 15 apples require $15 / 5 = 3$ bags.\r\n2.  **Calculate the original price:** 3 bags at $3.00 each equals $3 \\times 3 = $9.00.\r\n3.  **Calculate the discount:** A 20% discount on $9.00 is $9.00 \\times 0.20 = $1.80.\r\n4.  **Calculate the final price:** $9.00 - $1.80 = $7.20.\r\n\r\nFinal answer: $7.20",
+          "comparison_output": "To calculate the total cost:\r\n\r\n1.  **Determine the number of bags:** Since there are 5 apples per bag, 15 apples require $15 / 5 = 3$ bags.\r\n2.  **Calculate the original price:** 3 bags at $3.00 each equals $3 \\times 3 = $9.00.\r\n3.  **Apply the discount:** A 20% discount on $9.00 is $9.00 \\times 0.20 = $1.80.\r\n4.  **Calculate the final price:** $9.00 - $1.80 = $7.20.\r\n\r\nFinal answer: $7.20"
+        }
+      ]
+    },
+    {
+      "operator": "whitespace",
+      "eligibility": "over_budget",
+      "eligibility_detail": "d_in_char 0.1683 exceeds budget 0.10",
+      "status": "over_budget",
+      "perturbation_id": "MATH-001__whitespace__42__f19187631f58",
+      "role": "candidate",
+      "perturbed_prompt": "A  store  sells  apples  in  bags  of  5  for  $3.00.  On  Tuesday,  they  offer  a  20%  discount  on  all  apple  bags.  If  a  customer  buys  15  apples  on  Tuesday,  how  much  do  they  pay  in  total?",
+      "char_edits": 35,
+      "d_in_char": 0.168269,
+      "exact_edit": [
+        {
+          "original_offset": 1,
+          "edited_offset": 1,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 8,
+          "edited_offset": 9,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 13,
+          "edited_offset": 15,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 21,
+          "edited_offset": 24,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 23,
+          "edited_offset": 27,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 29,
+          "edited_offset": 34,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 32,
+          "edited_offset": 38,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 33,
+          "edited_offset": 40,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 37,
+          "edited_offset": 45,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 45,
+          "edited_offset": 54,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 47,
+          "edited_offset": 57,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 57,
+          "edited_offset": 68,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 61,
+          "edited_offset": 73,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 68,
+          "edited_offset": 81,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 69,
+          "edited_offset": 83,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 73,
+          "edited_offset": 88,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 83,
+          "edited_offset": 99,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 85,
+          "edited_offset": 102,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 89,
+          "edited_offset": 107,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 96,
+          "edited_offset": 115,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 102,
+          "edited_offset": 122,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 105,
+          "edited_offset": 126,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 106,
+          "edited_offset": 128,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 116,
+          "edited_offset": 139,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 121,
+          "edited_offset": 145,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 123,
+          "edited_offset": 148,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 131,
+          "edited_offset": 157,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 133,
+          "edited_offset": 160,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 143,
+          "edited_offset": 171,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 146,
+          "edited_offset": 175,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 152,
+          "edited_offset": 182,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 154,
+          "edited_offset": 185,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 160,
+          "edited_offset": 192,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 164,
+          "edited_offset": 197,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 166,
+          "edited_offset": 200,
+          "removed": "",
+          "added": " "
+        }
+      ],
+      "input_length_denominator": 208,
+      "d_in_sem": 0.0,
+      "auto_protected_changes": [],
+      "raw_distance": null,
+      "control_distance": null,
+      "excess_distance": null,
+      "per_model": []
+    },
+    {
+      "operator": "word_insertion",
+      "eligibility": "eligible",
+      "eligibility_detail": "not flagged by the retrospective audit (operator audited by a sample of 5 candidates)",
+      "status": "measured",
+      "perturbation_id": "MATH-001__word_insertion__42__16b7477ec081",
+      "role": "candidate",
+      "perturbed_prompt": "Carefully A store sells apples in bags of 5 for $3.00. On Tuesday, they offer a 20% discount on all apple bags. If a customer buys 15 apples on Tuesday, how much do they pay in total?",
+      "char_edits": 10,
+      "d_in_char": 0.054645,
+      "exact_edit": [
+        {
+          "original_offset": 0,
+          "edited_offset": 0,
+          "removed": "",
+          "added": "Carefully "
+        }
+      ],
+      "input_length_denominator": 183,
+      "d_in_sem": 0.00409438,
+      "auto_protected_changes": [],
+      "raw_distance": 0.04513918161392212,
+      "control_distance": 0.0001963019371032715,
+      "excess_distance": 0.04494287967681885,
+      "per_model": [
+        {
+          "model": "qwen/qwen3.8-27b",
+          "model_label": "Qwen 3.8 27B",
+          "status": "measured",
+          "pair_id": "qwen/qwen3.8-27b|MATH-001|treatment|word_insertion|1",
+          "anchor_record_id": "04410e83-86b0-4ba9-b910-a0e3c20a2991",
+          "comparison_record_id": "39cc04b0-68de-43b9-bce9-4c3d3dc8a688",
+          "raw_distance": 0.058029890060424805,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "qwen/qwen3.8-27b|MATH-001|control|None|1",
+              "anchor_record_id": "04410e83-86b0-4ba9-b910-a0e3c20a2991",
+              "comparison_record_id": "da958b2d-43e7-4567-9207-9263bf06b51e",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "qwen/qwen3.8-27b|MATH-001|control|None|2",
+              "anchor_record_id": "04410e83-86b0-4ba9-b910-a0e3c20a2991",
+              "comparison_record_id": "38b00c7d-6ff9-44ea-b30d-0f34942d3196",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.058029890060424805,
+          "d_out_char": 0.3031218529707955,
+          "d_out_token": 0.5043478260869565,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": "7.20",
+          "comparison_final": "7.20",
+          "scoring_method": "answer_key",
+          "code_signature_compliant": null,
+          "taxonomy": "content_change_same_answer",
+          "anchor_output": "To determine the total cost, we need to calculate the number of bags required and apply the discount.\r\n\r\n1.  **Calculate the number of bags needed:**\r\n    The customer buys 15 apples, and each bag contains 5 apples.\r\n    $$ \\text{Number of bags} = \\frac{15 \\text{ apples}}{5 \\text{ apples/bag}} = 3 \\text{ bags} $$\r\n\r\n2.  **Calculate the original total cost:**\r\n    Each bag costs $\\$3.00$.\r\n    $$ \\text{Original Cost} = 3 \\text{ bags} \\times \\$3.00/\\text{bag} = \\$9.00 $$\r\n\r\n3.  **Apply the discount:**\r\n    The store offers a 20% discount on Tuesday.\r\n    $$ \\text{Discount Amount} = \\$9.00 \\times 0.20 = \\$1.80 $$\r\n    $$ \\text{Final Price} = \\text{Original Cost} - \\text{Discount Amount} $$\r\n    $$ \\text{Final Price} = \\$9.00 - \\$1.80 = \\$7.20 $$\r\n\r\nAlternatively, you can calculate the discounted price per bag:\r\n$$ \\text{Discounted Price per Bag} = \\$3.00 \\times (1 - 0.20) = \\$3.00 \\times 0.80 = \\$2.40 $$\r\n$$ \\text{Total Cost} = 3 \\text{ bags} \\times \\$2.40/\\text{bag} = \\$7.20 $$\r\n\r\nFinal answer: $7.20",
+          "comparison_output": "To determine the total cost, we need to calculate the number of bags required, the original price, and then apply the discount.\r\n\r\n**Step 1: Determine the number of bags needed.**\r\nThe store sells apples in bags of 5. The customer wants to buy 15 apples.\r\n$$ \\text{Number of bags} = \\frac{15 \\text{ apples}}{5 \\text{ apples/bag}} = 3 \\text{ bags} $$\r\n\r\n**Step 2: Calculate the original total price.**\r\nEach bag costs $\\$3.00$.\r\n$$ \\text{Original Total} = 3 \\text{ bags} \\times \\$3.00/\\text{bag} = \\$9.00 $$\r\n\r\n**Step 3: Apply the 20% discount.**\r\nThe discount is 20% off the total price.\r\n$$ \\text{Discount Amount} = \\$9.00 \\times 0.20 = \\$1.80 $$\r\n$$ \\text{Final Price} = \\text{Original Total} - \\text{Discount Amount} $$\r\n$$ \\text{Final Price} = \\$9.00 - \\$1.80 = \\$7.20 $$\r\n\r\nAlternatively, you can calculate the discounted price directly by multiplying by $1 - 0.20 = 0.80$:\r\n$$ \\text{Final Price} = \\$9.00 \\times 0.80 = \\$7.20 $$\r\n\r\nFinal answer: $7.20"
+        },
+        {
+          "model": "openai/gpt-oss-120b",
+          "model_label": "GPT-OSS-120B",
+          "status": "measured",
+          "pair_id": "openai/gpt-oss-120b|MATH-001|treatment|word_insertion|1",
+          "anchor_record_id": "f1b0fe7b-747d-4093-9e8f-7f471d75744c",
+          "comparison_record_id": "258807c7-c040-4b99-a426-33aaf84b124d",
+          "raw_distance": 0.07853448390960693,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "openai/gpt-oss-120b|MATH-001|control|None|1",
+              "anchor_record_id": "f1b0fe7b-747d-4093-9e8f-7f471d75744c",
+              "comparison_record_id": "628f7e7b-978f-4f6a-becf-ec9c6d5d52af",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "openai/gpt-oss-120b|MATH-001|control|None|2",
+              "anchor_record_id": "f1b0fe7b-747d-4093-9e8f-7f471d75744c",
+              "comparison_record_id": "aebf4a15-3705-4a57-b949-54f8e0d8507e",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.07853448390960693,
+          "d_out_char": 0.6615969581749049,
+          "d_out_token": 0.7931034482758621,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": "7.20",
+          "comparison_final": "7.20",
+          "scoring_method": "answer_key",
+          "code_signature_compliant": null,
+          "taxonomy": "content_change_same_answer",
+          "anchor_output": "The customer needs three bags (15 apples ÷ 5 apples per bag).  \r\nEach bag costs $3.00, and a 20 % discount reduces the price to:\r\n\r\n\\(3.00 \\times (1 - 0.20) = 3.00 \\times 0.80 = \\$2.40\\).\r\n\r\nTotal cost:\r\n\r\n\\(3 \\text{ bags} \\times \\$2.40 = \\$7.20\\).\r\n\r\nFinal answer: $7.20.",
+          "comparison_output": "The discounted price per bag is $3.00 × (1 − 0.20) = $2.40.  \r\n15 apples require 3 bags, so the total cost is 3 × $2.40 = $7.20.\r\n\r\nFinal answer: $7.20"
+        },
+        {
+          "model": "openai/gpt-oss-20b",
+          "model_label": "GPT-OSS-20B",
+          "status": "measured",
+          "pair_id": "openai/gpt-oss-20b|MATH-001|treatment|word_insertion|1",
+          "anchor_record_id": "7dad7eb5-9ee8-4095-bc85-2ac308e4d594",
+          "comparison_record_id": "a718905f-b876-403f-a792-e626c76d7e36",
+          "raw_distance": 0.0,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "openai/gpt-oss-20b|MATH-001|control|None|1",
+              "anchor_record_id": "7dad7eb5-9ee8-4095-bc85-2ac308e4d594",
+              "comparison_record_id": "b99131b6-50f0-48fb-b622-457818692601",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "openai/gpt-oss-20b|MATH-001|control|None|2",
+              "anchor_record_id": "7dad7eb5-9ee8-4095-bc85-2ac308e4d594",
+              "comparison_record_id": "2e21ca25-565c-44fc-ac22-4fa5149d077e",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.0,
+          "d_out_char": 0.0,
+          "d_out_token": 0.0,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": "7.20",
+          "comparison_final": "7.20",
+          "scoring_method": "answer_key",
+          "code_signature_compliant": null,
+          "taxonomy": "identical",
+          "anchor_output": "$7.20  \r\nFinal answer: 7.20",
+          "comparison_output": "$7.20  \r\nFinal answer: 7.20"
+        },
+        {
+          "model": "allam-2-7b",
+          "model_label": "ALLaM-2-7B",
+          "status": "measured",
+          "pair_id": "allam-2-7b|MATH-001|treatment|word_insertion|1",
+          "anchor_record_id": "0706a8fd-b7e2-4f96-85c5-a26dbb9d9334",
+          "comparison_record_id": "bfe3ea5e-22c9-452c-9087-d45b18b2449c",
+          "raw_distance": 0.0853508710861206,
+          "control_values": {
+            "1": 0.001963019371032715,
+            "2": 0.0
+          },
+          "control_distance": 0.0009815096855163574,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "allam-2-7b|MATH-001|control|None|1",
+              "anchor_record_id": "0706a8fd-b7e2-4f96-85c5-a26dbb9d9334",
+              "comparison_record_id": "3db90d14-fe50-4d1f-a5ec-75eaeb156552",
+              "distance": 0.001963019371032715
+            },
+            {
+              "repeat": 2,
+              "pair_id": "allam-2-7b|MATH-001|control|None|2",
+              "anchor_record_id": "0706a8fd-b7e2-4f96-85c5-a26dbb9d9334",
+              "comparison_record_id": "d1e0bd8c-c8f3-44a5-8048-ef0b9c0a401f",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.08436936140060425,
+          "d_out_char": 0.60056258790436,
+          "d_out_token": 0.5,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": "thecustomerpays7.20intotal",
+          "comparison_final": "thecustomerpays7.20intotal",
+          "scoring_method": "answer_key",
+          "code_signature_compliant": null,
+          "taxonomy": "content_change_same_answer",
+          "anchor_output": "First, let's find the discounted price per bag:\r\n\r\nFinal price per bag after discount: $3.00 - (20% of $3.00)\r\n                                 = $3.00 - (0.20 * $3.00)\r\n                                 = $3.00 - $0.60\r\n                                 = $2.40\r\n\r\nNow, let's find out how many bags the customer buys with 15 apples:\r\n\r\nNumber of bags = Total apples / Apples per bag\r\n                = 15 / 5\r\n                = 3 bags\r\n\r\nNow that we know the customer buys 3 bags, let's calculate the total cost:\r\n\r\nTotal cost = Number of bags * Final price per bag\r\n            = 3 bags * $2.40\r\n            = $7.20\r\n\r\nFinal answer: The customer pays $7.20 in total. ",
+          "comparison_output": "First, let's find the discounted price per bag:\r\n\r\nFinal price per bag after discount: $3.00 * (1 - 0.20) = $3.00 * 0.80 = $2.40\r\n\r\nNow, let's calculate how many bags the customer gets with 15 apples:\r\n\r\nNumber of bags: 15 apples / 5 apples per bag = 3 bags\r\n\r\nNext, we'll find the total cost before tax:\r\n\r\nTotal cost before tax: 3 bags * $2.40 per bag = $7.20\r\n\r\nSince the customer buys 15 apples, we need to check if they bought the full bag or not:\r\n\r\nIf the customer bought the full bag: $7.20 is the total cost.\r\nIf the customer bought less than a full bag: $7.20 is the cost per apple, so the customer pays for 15 apples.\r\n\r\nLet's assume the customer bought the full bag:\r\n\r\nFinal answer: The customer pays $7.20 in total. "
+        },
+        {
+          "model": "gemini-3.1-flash-lite",
+          "model_label": "Gemini 3.1 Flash-Lite",
+          "status": "measured",
+          "pair_id": "gemini-3.1-flash-lite|MATH-001|treatment|word_insertion|1",
+          "anchor_record_id": "e989c003-8409-456d-8049-ddca6410254f",
+          "comparison_record_id": "c24129d8-ffef-4dcb-b9e0-43788820ab64",
+          "raw_distance": 0.003780663013458252,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "gemini-3.1-flash-lite|MATH-001|control|None|1",
+              "anchor_record_id": "e989c003-8409-456d-8049-ddca6410254f",
+              "comparison_record_id": "9febfb5e-b4b8-45f9-9e07-063e4e27a8a6",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "gemini-3.1-flash-lite|MATH-001|control|None|2",
+              "anchor_record_id": "e989c003-8409-456d-8049-ddca6410254f",
+              "comparison_record_id": "60378ae3-e3ac-42bc-b2b9-d6e6a8d3c886",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.003780663013458252,
+          "d_out_char": 0.12051282051282053,
+          "d_out_token": 0.19672131147540983,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": "7.20",
+          "comparison_final": "7.20",
+          "scoring_method": "answer_key",
+          "code_signature_compliant": null,
+          "taxonomy": "wording_change_only",
+          "anchor_output": "To calculate the total cost:\r\n\r\n1.  **Determine the number of bags:** Since there are 5 apples per bag, 15 apples require $15 / 5 = 3$ bags.\r\n2.  **Calculate the original price:** 3 bags at $3.00 each equals $3 \\times 3 = $9.00.\r\n3.  **Calculate the discount:** A 20% discount on $9.00 is $9.00 \\times 0.20 = $1.80.\r\n4.  **Calculate the final price:** $9.00 - $1.80 = $7.20.\r\n\r\nFinal answer: $7.20",
+          "comparison_output": "To calculate the total cost:\r\n\r\n1.  **Determine the number of bags:** Since there are 5 apples per bag, 15 apples require 3 bags (15 / 5 = 3).\r\n2.  **Calculate the original price:** 3 bags at $3.00 each equals $9.00.\r\n3.  **Apply the discount:** A 20% discount on $9.00 is $1.80 (9.00 * 0.20 = 1.80).\r\n4.  **Calculate the final price:** $9.00 - $1.80 = $7.20.\r\n\r\nFinal answer: $7.20"
+        }
+      ]
+    },
+    {
+      "operator": "word_deletion",
+      "eligibility": "eligible",
+      "eligibility_detail": "not flagged by the retrospective audit (every candidate of this operator was audited)",
+      "status": "measured",
+      "perturbation_id": "MATH-001__word_deletion__42__f708602b8a22",
+      "role": "candidate",
+      "perturbed_prompt": "store sells apples in bags of 5 for $3.00. On Tuesday, they offer a 20% discount on all apple bags. If a customer buys 15 apples on Tuesday, how much do they pay in total?",
+      "char_edits": 2,
+      "d_in_char": 0.011561,
+      "exact_edit": [
+        {
+          "original_offset": 0,
+          "edited_offset": 0,
+          "removed": "A ",
+          "added": ""
+        }
+      ],
+      "input_length_denominator": 173,
+      "d_in_sem": 0.00336447,
+      "auto_protected_changes": [],
+      "raw_distance": 0.03428562879562378,
+      "control_distance": 0.0001963019371032715,
+      "excess_distance": 0.03408932685852051,
+      "per_model": [
+        {
+          "model": "qwen/qwen3.8-27b",
+          "model_label": "Qwen 3.8 27B",
+          "status": "measured",
+          "pair_id": "qwen/qwen3.8-27b|MATH-001|treatment|word_deletion|1",
+          "anchor_record_id": "04410e83-86b0-4ba9-b910-a0e3c20a2991",
+          "comparison_record_id": "f26faf48-e846-416d-b5c6-5869e67422c4",
+          "raw_distance": 0.037918806076049805,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "qwen/qwen3.8-27b|MATH-001|control|None|1",
+              "anchor_record_id": "04410e83-86b0-4ba9-b910-a0e3c20a2991",
+              "comparison_record_id": "da958b2d-43e7-4567-9207-9263bf06b51e",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "qwen/qwen3.8-27b|MATH-001|control|None|2",
+              "anchor_record_id": "04410e83-86b0-4ba9-b910-a0e3c20a2991",
+              "comparison_record_id": "38b00c7d-6ff9-44ea-b30d-0f34942d3196",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.037918806076049805,
+          "d_out_char": 0.07955689828801615,
+          "d_out_token": 0.21052631578947367,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": "7.20",
+          "comparison_final": "7.20",
+          "scoring_method": "answer_key",
+          "code_signature_compliant": null,
+          "taxonomy": "wording_change_only",
+          "anchor_output": "To determine the total cost, we need to calculate the number of bags required and apply the discount.\r\n\r\n1.  **Calculate the number of bags needed:**\r\n    The customer buys 15 apples, and each bag contains 5 apples.\r\n    $$ \\text{Number of bags} = \\frac{15 \\text{ apples}}{5 \\text{ apples/bag}} = 3 \\text{ bags} $$\r\n\r\n2.  **Calculate the original total cost:**\r\n    Each bag costs $\\$3.00$.\r\n    $$ \\text{Original Cost} = 3 \\text{ bags} \\times \\$3.00/\\text{bag} = \\$9.00 $$\r\n\r\n3.  **Apply the discount:**\r\n    The store offers a 20% discount on Tuesday.\r\n    $$ \\text{Discount Amount} = \\$9.00 \\times 0.20 = \\$1.80 $$\r\n    $$ \\text{Final Price} = \\text{Original Cost} - \\text{Discount Amount} $$\r\n    $$ \\text{Final Price} = \\$9.00 - \\$1.80 = \\$7.20 $$\r\n\r\nAlternatively, you can calculate the discounted price per bag:\r\n$$ \\text{Discounted Price per Bag} = \\$3.00 \\times (1 - 0.20) = \\$3.00 \\times 0.80 = \\$2.40 $$\r\n$$ \\text{Total Cost} = 3 \\text{ bags} \\times \\$2.40/\\text{bag} = \\$7.20 $$\r\n\r\nFinal answer: $7.20",
+          "comparison_output": "To determine the total cost, we need to calculate the number of bags required and apply the discount.\r\n\r\n1.  **Calculate the number of bags needed:**\r\n    The store sells apples in bags of 5. The customer wants to buy 15 apples.\r\n    $$ \\text{Number of bags} = \\frac{15 \\text{ apples}}{5 \\text{ apples/bag}} = 3 \\text{ bags} $$\r\n\r\n2.  **Calculate the original total cost:**\r\n    Each bag costs $\\$3.00$.\r\n    $$ \\text{Original Cost} = 3 \\text{ bags} \\times \\$3.00/\\text{bag} = \\$9.00 $$\r\n\r\n3.  **Apply the discount:**\r\n    The discount is 20%.\r\n    $$ \\text{Discount Amount} = \\$9.00 \\times 0.20 = \\$1.80 $$\r\n    $$ \\text{Final Price} = \\text{Original Cost} - \\text{Discount Amount} $$\r\n    $$ \\text{Final Price} = \\$9.00 - \\$1.80 = \\$7.20 $$\r\n\r\nAlternatively, calculate the discounted price per bag:\r\n$$ \\text{Discounted Price per Bag} = \\$3.00 \\times (1 - 0.20) = \\$3.00 \\times 0.80 = \\$2.40 $$\r\n$$ \\text{Total Cost} = 3 \\text{ bags} \\times \\$2.40/\\text{bag} = \\$7.20 $$\r\n\r\nFinal answer: $7.20"
+        },
+        {
+          "model": "openai/gpt-oss-120b",
+          "model_label": "GPT-OSS-120B",
+          "status": "measured",
+          "pair_id": "openai/gpt-oss-120b|MATH-001|treatment|word_deletion|1",
+          "anchor_record_id": "f1b0fe7b-747d-4093-9e8f-7f471d75744c",
+          "comparison_record_id": "a12ce2ca-b36b-43df-91ba-01cdf6869e16",
+          "raw_distance": 0.04026186466217041,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "openai/gpt-oss-120b|MATH-001|control|None|1",
+              "anchor_record_id": "f1b0fe7b-747d-4093-9e8f-7f471d75744c",
+              "comparison_record_id": "628f7e7b-978f-4f6a-becf-ec9c6d5d52af",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "openai/gpt-oss-120b|MATH-001|control|None|2",
+              "anchor_record_id": "f1b0fe7b-747d-4093-9e8f-7f471d75744c",
+              "comparison_record_id": "aebf4a15-3705-4a57-b949-54f8e0d8507e",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.04026186466217041,
+          "d_out_char": 0.36882129277566533,
+          "d_out_token": 0.5490196078431373,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": "7.20",
+          "comparison_final": "7.20",
+          "scoring_method": "answer_key",
+          "code_signature_compliant": null,
+          "taxonomy": "wording_change_only",
+          "anchor_output": "The customer needs three bags (15 apples ÷ 5 apples per bag).  \r\nEach bag costs $3.00, and a 20 % discount reduces the price to:\r\n\r\n\\(3.00 \\times (1 - 0.20) = 3.00 \\times 0.80 = \\$2.40\\).\r\n\r\nTotal cost:\r\n\r\n\\(3 \\text{ bags} \\times \\$2.40 = \\$7.20\\).\r\n\r\nFinal answer: $7.20.",
+          "comparison_output": "The customer needs three bags (15 apples ÷ 5 apples per bag).  \r\nEach bag costs $3.00 with a 20 % discount: $3.00 × 0.80 = $2.40.  \r\nTotal cost = 3 bags × $2.40 = $7.20.\r\n\r\nFinal answer: $7.20."
+        },
+        {
+          "model": "openai/gpt-oss-20b",
+          "model_label": "GPT-OSS-20B",
+          "status": "measured",
+          "pair_id": "openai/gpt-oss-20b|MATH-001|treatment|word_deletion|1",
+          "anchor_record_id": "7dad7eb5-9ee8-4095-bc85-2ac308e4d594",
+          "comparison_record_id": "79354cc5-2f40-466a-83fb-7ee919e13c76",
+          "raw_distance": 0.0,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "openai/gpt-oss-20b|MATH-001|control|None|1",
+              "anchor_record_id": "7dad7eb5-9ee8-4095-bc85-2ac308e4d594",
+              "comparison_record_id": "b99131b6-50f0-48fb-b622-457818692601",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "openai/gpt-oss-20b|MATH-001|control|None|2",
+              "anchor_record_id": "7dad7eb5-9ee8-4095-bc85-2ac308e4d594",
+              "comparison_record_id": "2e21ca25-565c-44fc-ac22-4fa5149d077e",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.0,
+          "d_out_char": 0.0,
+          "d_out_token": 0.0,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": "7.20",
+          "comparison_final": "7.20",
+          "scoring_method": "answer_key",
+          "code_signature_compliant": null,
+          "taxonomy": "identical",
+          "anchor_output": "$7.20  \r\nFinal answer: 7.20",
+          "comparison_output": "$7.20  \r\nFinal answer: 7.20"
+        },
+        {
+          "model": "allam-2-7b",
+          "model_label": "ALLaM-2-7B",
+          "status": "measured",
+          "pair_id": "allam-2-7b|MATH-001|treatment|word_deletion|1",
+          "anchor_record_id": "0706a8fd-b7e2-4f96-85c5-a26dbb9d9334",
+          "comparison_record_id": "127ba0dd-669f-4a4f-bcd9-930cd029585f",
+          "raw_distance": 0.09286177158355713,
+          "control_values": {
+            "1": 0.001963019371032715,
+            "2": 0.0
+          },
+          "control_distance": 0.0009815096855163574,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "allam-2-7b|MATH-001|control|None|1",
+              "anchor_record_id": "0706a8fd-b7e2-4f96-85c5-a26dbb9d9334",
+              "comparison_record_id": "3db90d14-fe50-4d1f-a5ec-75eaeb156552",
+              "distance": 0.001963019371032715
+            },
+            {
+              "repeat": 2,
+              "pair_id": "allam-2-7b|MATH-001|control|None|2",
+              "anchor_record_id": "0706a8fd-b7e2-4f96-85c5-a26dbb9d9334",
+              "comparison_record_id": "d1e0bd8c-c8f3-44a5-8048-ef0b9c0a401f",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.09188026189804077,
+          "d_out_char": 0.6012396694214877,
+          "d_out_token": 0.5212765957446808,
+          "answer_changed": true,
+          "anchor_correct": true,
+          "comparison_correct": false,
+          "anchor_final": "thecustomerpays7.20intotal",
+          "comparison_final": "thecustomerpays12.00intotal",
+          "scoring_method": "answer_key",
+          "code_signature_compliant": null,
+          "taxonomy": "correctness_flip_correct_to_incorrect",
+          "anchor_output": "First, let's find the discounted price per bag:\r\n\r\nFinal price per bag after discount: $3.00 - (20% of $3.00)\r\n                                 = $3.00 - (0.20 * $3.00)\r\n                                 = $3.00 - $0.60\r\n                                 = $2.40\r\n\r\nNow, let's find out how many bags the customer buys with 15 apples:\r\n\r\nNumber of bags = Total apples / Apples per bag\r\n                = 15 / 5\r\n                = 3 bags\r\n\r\nNow that we know the customer buys 3 bags, let's calculate the total cost:\r\n\r\nTotal cost = Number of bags * Final price per bag\r\n            = 3 bags * $2.40\r\n            = $7.20\r\n\r\nFinal answer: The customer pays $7.20 in total. ",
+          "comparison_output": "First, let's find the discounted price for one apple bag:\r\n\r\nOriginal price per apple bag: $3.00\r\nDiscount percentage: 20%\r\n\r\nDiscount amount per apple bag: $3.00 * 20% = $3.00 * 0.20 = $0.60\r\n\r\nDiscounted price per apple bag: $3.00 - $0.60 = $2.40\r\n\r\nNow, let's find out how many apple bags the customer buys with 15 apples:\r\n\r\nNumber of apple bags: 15 apples / 5 apples per bag = 3 bags\r\n\r\nTotal cost before tax: 3 bags * $2.40 per bag = $7.20\r\n\r\nSince the customer buys 15 apples, we need to find out how many bags they actually get:\r\n\r\nActual number of bags: 15 apples / 5 apples per bag = 3 bags\r\n\r\nNow, let's calculate the difference between the total cost before tax and the actual cost:\r\n\r\nDifference: $7.20 - ($7.20 / 3) = $7.20 - $2.40 = $4.80\r\n\r\nThe customer pays an extra $4.80 for the 2 extra bags they didn't need:\r\n\r\nExtra cost: $4.80\r\n\r\nFinally, let's find the total cost after tax:\r\n\r\nTotal cost after tax: $7.20 + $4.80 = $12.00\r\n\r\nFinal answer: The customer pays $12.00 in total. "
+        },
+        {
+          "model": "gemini-3.1-flash-lite",
+          "model_label": "Gemini 3.1 Flash-Lite",
+          "status": "measured",
+          "pair_id": "gemini-3.1-flash-lite|MATH-001|treatment|word_deletion|1",
+          "anchor_record_id": "e989c003-8409-456d-8049-ddca6410254f",
+          "comparison_record_id": "984acc5c-6517-4f5b-865c-8bbc8dd694e1",
+          "raw_distance": 0.00038570165634155273,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "gemini-3.1-flash-lite|MATH-001|control|None|1",
+              "anchor_record_id": "e989c003-8409-456d-8049-ddca6410254f",
+              "comparison_record_id": "9febfb5e-b4b8-45f9-9e07-063e4e27a8a6",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "gemini-3.1-flash-lite|MATH-001|control|None|2",
+              "anchor_record_id": "e989c003-8409-456d-8049-ddca6410254f",
+              "comparison_record_id": "60378ae3-e3ac-42bc-b2b9-d6e6a8d3c886",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.00038570165634155273,
+          "d_out_char": 0.02051282051282055,
+          "d_out_token": 0.017857142857142905,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": "7.20",
+          "comparison_final": "7.20",
+          "scoring_method": "answer_key",
+          "code_signature_compliant": null,
+          "taxonomy": "wording_change_only",
+          "anchor_output": "To calculate the total cost:\r\n\r\n1.  **Determine the number of bags:** Since there are 5 apples per bag, 15 apples require $15 / 5 = 3$ bags.\r\n2.  **Calculate the original price:** 3 bags at $3.00 each equals $3 \\times 3 = $9.00.\r\n3.  **Calculate the discount:** A 20% discount on $9.00 is $9.00 \\times 0.20 = $1.80.\r\n4.  **Calculate the final price:** $9.00 - $1.80 = $7.20.\r\n\r\nFinal answer: $7.20",
+          "comparison_output": "To calculate the total cost:\r\n\r\n1.  **Determine the number of bags:** Since there are 5 apples per bag, 15 apples require $15 / 5 = 3$ bags.\r\n2.  **Calculate the original price:** 3 bags at $3.00 each equals $3 \\times 3 = $9.00.\r\n3.  **Apply the discount:** A 20% discount on $9.00 is $9.00 \\times 0.20 = $1.80.\r\n4.  **Calculate the final price:** $9.00 - $1.80 = $7.20.\r\n\r\nFinal answer: $7.20"
+        }
+      ]
+    },
+    {
+      "operator": "synonym",
+      "eligibility": "inapplicable",
+      "eligibility_detail": "inapplicable_or_no_op",
+      "status": "inapplicable",
+      "perturbation_id": null,
+      "role": "candidate",
+      "perturbed_prompt": null,
+      "char_edits": null,
+      "d_in_char": null,
+      "exact_edit": [],
+      "input_length_denominator": null,
+      "d_in_sem": null,
+      "auto_protected_changes": [],
+      "raw_distance": null,
+      "control_distance": null,
+      "excess_distance": null,
+      "per_model": []
+    },
+    {
+      "operator": "word_substitution",
+      "eligibility": "inapplicable",
+      "eligibility_detail": "inapplicable_or_no_op",
+      "status": "inapplicable",
+      "perturbation_id": null,
+      "role": "candidate",
+      "perturbed_prompt": null,
+      "char_edits": null,
+      "d_in_char": null,
+      "exact_edit": [],
+      "input_length_denominator": null,
+      "d_in_sem": null,
+      "auto_protected_changes": [],
+      "raw_distance": null,
+      "control_distance": null,
+      "excess_distance": null,
+      "per_model": []
+    },
+    {
+      "operator": "instruction_reordering",
+      "eligibility": "over_budget",
+      "eligibility_detail": "d_in_char 0.7283 exceeds budget 0.10",
+      "status": "over_budget",
+      "perturbation_id": "MATH-001__instruction_reordering__42__785d18426ccb",
+      "role": "candidate",
+      "perturbed_prompt": "If a customer buys 15 apples on Tuesday, how much do they pay in total? A store sells apples in bags of 5 for $3.00. On Tuesday, they offer a 20% discount on all apple bags.",
+      "char_edits": 126,
+      "d_in_char": 0.728324,
+      "exact_edit": [
+        {
+          "original_offset": 0,
+          "edited_offset": 0,
+          "removed": "",
+          "added": "If a customer buys 15 apples on Tuesday, how much do they pay in total? "
+        },
+        {
+          "original_offset": 101,
+          "edited_offset": 173,
+          "removed": " If a customer buys 15 apples on Tuesday, how much do they pay in total?",
+          "added": ""
+        }
+      ],
+      "input_length_denominator": 173,
+      "d_in_sem": 0.0569838,
+      "auto_protected_changes": [],
+      "raw_distance": null,
+      "control_distance": null,
+      "excess_distance": null,
+      "per_model": []
+    },
+    {
+      "operator": "random_edit",
+      "eligibility": "noise_benchmark",
+      "eligibility_detail": "Noise benchmark only. Preservation: unaudited.",
+      "status": "measured",
+      "perturbation_id": "MATH-001__random_edit__42__881c965b0ddf",
+      "role": "noise_benchmark",
+      "perturbed_prompt": "A store sells apples in bagsof 5 for $3.00. On Tuesday, they offer a 2h% discount on all apple bags. If a customer buys 15 apples on Tuesday, how much do they pay in total?",
+      "char_edits": 2,
+      "d_in_char": 0.011561,
+      "exact_edit": [
+        {
+          "original_offset": 28,
+          "edited_offset": 28,
+          "removed": " ",
+          "added": ""
+        },
+        {
+          "original_offset": 71,
+          "edited_offset": 70,
+          "removed": "0",
+          "added": "h"
+        }
+      ],
+      "input_length_denominator": 173,
+      "d_in_sem": 0.03295197,
+      "auto_protected_changes": [
+        "quantities changed: ['20%'] -> []"
+      ],
+      "raw_distance": 0.08914381265640259,
+      "control_distance": 0.0001963019371032715,
+      "excess_distance": 0.08894751071929932,
+      "per_model": [
+        {
+          "model": "qwen/qwen3.8-27b",
+          "model_label": "Qwen 3.8 27B",
+          "status": "measured",
+          "pair_id": "qwen/qwen3.8-27b|MATH-001|treatment|random_edit|1",
+          "anchor_record_id": "04410e83-86b0-4ba9-b910-a0e3c20a2991",
+          "comparison_record_id": "63216ebe-f7f0-4e51-978e-a1cd3110392d",
+          "raw_distance": 0.08917748928070068,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "qwen/qwen3.8-27b|MATH-001|control|None|1",
+              "anchor_record_id": "04410e83-86b0-4ba9-b910-a0e3c20a2991",
+              "comparison_record_id": "da958b2d-43e7-4567-9207-9263bf06b51e",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "qwen/qwen3.8-27b|MATH-001|control|None|2",
+              "anchor_record_id": "04410e83-86b0-4ba9-b910-a0e3c20a2991",
+              "comparison_record_id": "38b00c7d-6ff9-44ea-b30d-0f34942d3196",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.08917748928070068,
+          "d_out_char": 0.4524847428073234,
+          "d_out_token": 0.6376811594202898,
+          "answer_changed": true,
+          "anchor_correct": true,
+          "comparison_correct": false,
+          "anchor_final": "7.20",
+          "comparison_final": "9-0.18h",
+          "scoring_method": "answer_key",
+          "code_signature_compliant": null,
+          "taxonomy": "correctness_flip_correct_to_incorrect",
+          "anchor_output": "To determine the total cost, we need to calculate the number of bags required and apply the discount.\r\n\r\n1.  **Calculate the number of bags needed:**\r\n    The customer buys 15 apples, and each bag contains 5 apples.\r\n    $$ \\text{Number of bags} = \\frac{15 \\text{ apples}}{5 \\text{ apples/bag}} = 3 \\text{ bags} $$\r\n\r\n2.  **Calculate the original total cost:**\r\n    Each bag costs $\\$3.00$.\r\n    $$ \\text{Original Cost} = 3 \\text{ bags} \\times \\$3.00/\\text{bag} = \\$9.00 $$\r\n\r\n3.  **Apply the discount:**\r\n    The store offers a 20% discount on Tuesday.\r\n    $$ \\text{Discount Amount} = \\$9.00 \\times 0.20 = \\$1.80 $$\r\n    $$ \\text{Final Price} = \\text{Original Cost} - \\text{Discount Amount} $$\r\n    $$ \\text{Final Price} = \\$9.00 - \\$1.80 = \\$7.20 $$\r\n\r\nAlternatively, you can calculate the discounted price per bag:\r\n$$ \\text{Discounted Price per Bag} = \\$3.00 \\times (1 - 0.20) = \\$3.00 \\times 0.80 = \\$2.40 $$\r\n$$ \\text{Total Cost} = 3 \\text{ bags} \\times \\$2.40/\\text{bag} = \\$7.20 $$\r\n\r\nFinal answer: $7.20",
+          "comparison_output": "To determine the total cost, we need to calculate the number of bags purchased, the original price, and then apply the discount.\r\n\r\n**Step 1: Determine the number of bags purchased.**\r\nThe store sells apples in bags of 5. The customer buys 15 apples.\r\n$$ \\text{Number of bags} = \\frac{15 \\text{ apples}}{5 \\text{ apples/bag}} = 3 \\text{ bags} $$\r\n\r\n**Step 2: Calculate the original total price.**\r\nEach bag costs $\\$3.00$.\r\n$$ \\text{Original Total} = 3 \\text{ bags} \\times \\$3.00/\\text{bag} = \\$9.00 $$\r\n\r\n**Step 3: Apply the discount.**\r\nThe discount is $2h\\%$. This means the customer pays $(100 - 2h)\\%$ of the original price.\r\n$$ \\text{Discounted Price} = \\$9.00 \\times \\left(1 - \\frac{2h}{100}\\right) $$\r\n$$ \\text{Discounted Price} = 9 \\times \\left(1 - 0.02h\\right) $$\r\n$$ \\text{Discounted Price} = 9 - 0.18h $$\r\n\r\nAlternatively, calculating the discount amount directly:\r\n$$ \\text{Discount Amount} = \\$9.00 \\times \\frac{2h}{100} = \\$9.00 \\times 0.02h = \\$0.18h $$\r\n$$ \\text{Total Paid} = \\$9.00 - \\$0.18h $$\r\n\r\nSince the variable $h$ is not defined as a specific number in the problem statement, the answer is expressed in terms of $h$.\r\n\r\nFinal answer: 9 - 0.18h"
+        },
+        {
+          "model": "openai/gpt-oss-120b",
+          "model_label": "GPT-OSS-120B",
+          "status": "measured",
+          "pair_id": "openai/gpt-oss-120b|MATH-001|treatment|random_edit|1",
+          "anchor_record_id": "f1b0fe7b-747d-4093-9e8f-7f471d75744c",
+          "comparison_record_id": "6d823708-27e3-49b4-bcf6-4ed2bcf20599",
+          "raw_distance": 0.03543746471405029,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "openai/gpt-oss-120b|MATH-001|control|None|1",
+              "anchor_record_id": "f1b0fe7b-747d-4093-9e8f-7f471d75744c",
+              "comparison_record_id": "628f7e7b-978f-4f6a-becf-ec9c6d5d52af",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "openai/gpt-oss-120b|MATH-001|control|None|2",
+              "anchor_record_id": "f1b0fe7b-747d-4093-9e8f-7f471d75744c",
+              "comparison_record_id": "aebf4a15-3705-4a57-b949-54f8e0d8507e",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.03543746471405029,
+          "d_out_char": 0.26573426573426573,
+          "d_out_token": 0.55,
+          "answer_changed": true,
+          "anchor_correct": true,
+          "comparison_correct": false,
+          "anchor_final": "7.20",
+          "comparison_final": "8.82",
+          "scoring_method": "answer_key",
+          "code_signature_compliant": null,
+          "taxonomy": "correctness_flip_correct_to_incorrect",
+          "anchor_output": "The customer needs three bags (15 apples ÷ 5 apples per bag).  \r\nEach bag costs $3.00, and a 20 % discount reduces the price to:\r\n\r\n\\(3.00 \\times (1 - 0.20) = 3.00 \\times 0.80 = \\$2.40\\).\r\n\r\nTotal cost:\r\n\r\n\\(3 \\text{ bags} \\times \\$2.40 = \\$7.20\\).\r\n\r\nFinal answer: $7.20.",
+          "comparison_output": "The customer needs three bags (15 apples ÷ 5 apples per bag).  \r\nEach bag normally costs \\$3.00, and with a 2 % discount the price per bag is:\r\n\r\n\\[\r\n\\$3.00 \\times (1 - 0.02) = \\$3.00 \\times 0.98 = \\$2.94\r\n\\]\r\n\r\nTotal cost for three bags:\r\n\r\n\\[\r\n3 \\times \\$2.94 = \\$8.82\r\n\\]\r\n\r\nFinal answer: \\$8.82."
+        },
+        {
+          "model": "openai/gpt-oss-20b",
+          "model_label": "GPT-OSS-20B",
+          "status": "measured",
+          "pair_id": "openai/gpt-oss-20b|MATH-001|treatment|random_edit|1",
+          "anchor_record_id": "7dad7eb5-9ee8-4095-bc85-2ac308e4d594",
+          "comparison_record_id": "11bf7330-0f6e-425e-87a7-cc7656af6bfd",
+          "raw_distance": 0.17839395999908447,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "openai/gpt-oss-20b|MATH-001|control|None|1",
+              "anchor_record_id": "7dad7eb5-9ee8-4095-bc85-2ac308e4d594",
+              "comparison_record_id": "b99131b6-50f0-48fb-b622-457818692601",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "openai/gpt-oss-20b|MATH-001|control|None|2",
+              "anchor_record_id": "7dad7eb5-9ee8-4095-bc85-2ac308e4d594",
+              "comparison_record_id": "2e21ca25-565c-44fc-ac22-4fa5149d077e",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.17839395999908447,
+          "d_out_char": 0.23076923076923084,
+          "d_out_token": 0.6666666666666667,
+          "answer_changed": true,
+          "anchor_correct": true,
+          "comparison_correct": false,
+          "anchor_final": "7.20",
+          "comparison_final": "8.82",
+          "scoring_method": "answer_key",
+          "code_signature_compliant": null,
+          "taxonomy": "correctness_flip_correct_to_incorrect",
+          "anchor_output": "$7.20  \r\nFinal answer: 7.20",
+          "comparison_output": "$8.82  \r\nFinal answer: 8.82"
+        },
+        {
+          "model": "allam-2-7b",
+          "model_label": "ALLaM-2-7B",
+          "status": "measured",
+          "pair_id": "allam-2-7b|MATH-001|treatment|random_edit|1",
+          "anchor_record_id": "0706a8fd-b7e2-4f96-85c5-a26dbb9d9334",
+          "comparison_record_id": "48f4db07-188e-45b8-8895-8c91023542bf",
+          "raw_distance": 0.1342560052871704,
+          "control_values": {
+            "1": 0.001963019371032715,
+            "2": 0.0
+          },
+          "control_distance": 0.0009815096855163574,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "allam-2-7b|MATH-001|control|None|1",
+              "anchor_record_id": "0706a8fd-b7e2-4f96-85c5-a26dbb9d9334",
+              "comparison_record_id": "3db90d14-fe50-4d1f-a5ec-75eaeb156552",
+              "distance": 0.001963019371032715
+            },
+            {
+              "repeat": 2,
+              "pair_id": "allam-2-7b|MATH-001|control|None|2",
+              "anchor_record_id": "0706a8fd-b7e2-4f96-85c5-a26dbb9d9334",
+              "comparison_record_id": "d1e0bd8c-c8f3-44a5-8048-ef0b9c0a401f",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.13327449560165405,
+          "d_out_char": 0.6265432098765432,
+          "d_out_token": 0.5797101449275363,
+          "answer_changed": true,
+          "anchor_correct": true,
+          "comparison_correct": false,
+          "anchor_final": "thecustomerpays7.20intotal",
+          "comparison_final": "thecustomerpays8.82intotal",
+          "scoring_method": "answer_key",
+          "code_signature_compliant": null,
+          "taxonomy": "correctness_flip_correct_to_incorrect",
+          "anchor_output": "First, let's find the discounted price per bag:\r\n\r\nFinal price per bag after discount: $3.00 - (20% of $3.00)\r\n                                 = $3.00 - (0.20 * $3.00)\r\n                                 = $3.00 - $0.60\r\n                                 = $2.40\r\n\r\nNow, let's find out how many bags the customer buys with 15 apples:\r\n\r\nNumber of bags = Total apples / Apples per bag\r\n                = 15 / 5\r\n                = 3 bags\r\n\r\nNow that we know the customer buys 3 bags, let's calculate the total cost:\r\n\r\nTotal cost = Number of bags * Final price per bag\r\n            = 3 bags * $2.40\r\n            = $7.20\r\n\r\nFinal answer: The customer pays $7.20 in total. ",
+          "comparison_output": "First, let's find the discounted price per apple:\r\n\r\nOriginal price per apple = $3.00 / 5 = $0.60\r\nDiscount = 2h% of $0.60 = (2 * 0.01) * $0.60 = $0.012\r\nDiscounted price per apple = $0.60 - $0.012 = $0.588\r\n\r\nNow, let's calculate the total cost for 15 apples at the discounted price:\r\n\r\nTotal cost = 15 apples * $0.588/apple = $8.82\r\n\r\nFinal answer: The customer pays $8.82 in total. "
+        },
+        {
+          "model": "gemini-3.1-flash-lite",
+          "model_label": "Gemini 3.1 Flash-Lite",
+          "status": "measured",
+          "pair_id": "gemini-3.1-flash-lite|MATH-001|treatment|random_edit|1",
+          "anchor_record_id": "e989c003-8409-456d-8049-ddca6410254f",
+          "comparison_record_id": "b930d2fc-52c2-4a37-8889-e4c67d8e6f6d",
+          "raw_distance": 0.00845414400100708,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "gemini-3.1-flash-lite|MATH-001|control|None|1",
+              "anchor_record_id": "e989c003-8409-456d-8049-ddca6410254f",
+              "comparison_record_id": "9febfb5e-b4b8-45f9-9e07-063e4e27a8a6",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "gemini-3.1-flash-lite|MATH-001|control|None|2",
+              "anchor_record_id": "e989c003-8409-456d-8049-ddca6410254f",
+              "comparison_record_id": "60378ae3-e3ac-42bc-b2b9-d6e6a8d3c886",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.00845414400100708,
+          "d_out_char": 0.1490825688073394,
+          "d_out_token": 0.19999999999999996,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": "7.20",
+          "comparison_final": "7.20",
+          "scoring_method": "answer_key",
+          "code_signature_compliant": null,
+          "taxonomy": "wording_change_only",
+          "anchor_output": "To calculate the total cost:\r\n\r\n1.  **Determine the number of bags:** Since there are 5 apples per bag, 15 apples require $15 / 5 = 3$ bags.\r\n2.  **Calculate the original price:** 3 bags at $3.00 each equals $3 \\times 3 = $9.00.\r\n3.  **Calculate the discount:** A 20% discount on $9.00 is $9.00 \\times 0.20 = $1.80.\r\n4.  **Calculate the final price:** $9.00 - $1.80 = $7.20.\r\n\r\nFinal answer: $7.20",
+          "comparison_output": "To calculate the total cost:\r\n\r\n1.  **Determine the number of bags:** Since there are 5 apples per bag, 15 apples require $15 / 5 = 3$ bags.\r\n2.  **Calculate the original price:** 3 bags at $3.00 each equals $3 \\times 3 = $9.00.\r\n3.  **Apply the discount:** Assuming \"2h%\" is a typo for \"20%\" (a common discount rate), the discount is $9.00 \\times 0.20 = $1.80.\r\n4.  **Calculate the final price:** $9.00 - $1.80 = $7.20.\r\n\r\nFinal answer: $7.20"
+        }
+      ]
+    }
+  ],
+  "generated_at": "2026-11-25T18:32:11.316674+00:00"
+}

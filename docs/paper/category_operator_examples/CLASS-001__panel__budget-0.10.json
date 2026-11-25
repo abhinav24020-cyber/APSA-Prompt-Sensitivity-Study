@@ -1,0 +1,2009 @@
+{
+  "prompt_id": "CLASS-001",
+  "category": "classification",
+  "original_prompt": "Classify the sentiment of the following product review as Positive, Negative, or Neutral: 'The battery life is acceptable, but the screen scratches easily and customer support was unhelpful.'",
+  "category_identification": {
+    "source": "dataset",
+    "reason": "Product review sentiment classification"
+  },
+  "reference_answer": "Negative",
+  "study_id": "main_v1",
+  "evidence_mode": "retrospective",
+  "selection_rule": {
+    "mode": "budget",
+    "budget": "0.10",
+    "target": null,
+    "tie_breaks": [
+      "largest excess",
+      "fewest character edits",
+      "smallest normalized input distance"
+    ]
+  },
+  "model_scope": {
+    "models": [
+      "qwen/qwen3.8-27b",
+      "openai/gpt-oss-120b",
+      "openai/gpt-oss-20b",
+      "allam-2-7b",
+      "gemini-3.1-flash-lite"
+    ],
+    "label": "fixed panel of 5 models, equal weights"
+  },
+  "status": "selected",
+  "selected": [
+    "capitalization"
+  ],
+  "tie_status": "unique",
+  "tied_on_objective": [],
+  "closest_rivals": [
+    {
+      "operator": "synonym",
+      "char_edits": 8,
+      "d_in_char": 0.041451,
+      "excess_distance": 0.08463729619979858,
+      "excess_gap": 0.010384571552276609,
+      "character_edits_saved": 7
+    }
+  ],
+  "explanation": "capitalization produced the largest control-adjusted change (+0.0950) among 6 eligible, measured edits within budget 0.10. The gap to synonym (+0.0846) was +0.0104. Preservation evidence: not flagged by the retrospective audit (operator audited by a sample of 5 candidates).",
+  "provisional_best": [],
+  "best_achieved_excess": 0.09502186775207519,
+  "tradeoff_frontier": [
+    "capitalization"
+  ],
+  "recommendation": {
+    "operators": [
+      "synonym"
+    ],
+    "source": "category_operator_rankings.csv (classification, budget 0.10)",
+    "budget": "0.10",
+    "category_score": 0.07607083380222321,
+    "coverage": "10/10 complete prompts",
+    "evidence_status": "exploratory (main_v1 discovery ranking)",
+    "rationale": "Replacing an instruction verb (e.g. Classify -> Categorize) changes the cue used to request a label while preserving the label set and evidence.",
+    "note": "",
+    "prompt_status": "measured"
+  },
+  "evidence_notes": [
+    "Exploratory measurement from stored main_v1 outputs."
+  ],
+  "operators": [
+    {
+      "operator": "char_substitution",
+      "eligibility": "eligible",
+      "eligibility_detail": "not flagged by the retrospective audit (every candidate of this operator was audited)",
+      "status": "measured",
+      "perturbation_id": "CLASS-001__char_substitution__42__c2318d40fda3",
+      "role": "candidate",
+      "perturbed_prompt": "Classify the sentiment of the following product review as Positive, Negative, or Neutral: 'The battery life is acceptable, but the screen scratches easily and cu5tomer support was unhelpful.'",
+      "char_edits": 1,
+      "d_in_char": 0.005236,
+      "exact_edit": [
+        {
+          "original_offset": 161,
+          "edited_offset": 161,
+          "removed": "s",
+          "added": "5"
+        }
+      ],
+      "input_length_denominator": 191,
+      "d_in_sem": 0.05398921,
+      "auto_protected_changes": [
+        "quoted text changed"
+      ],
+      "raw_distance": 0.04458715915679932,
+      "control_distance": 0.0,
+      "excess_distance": 0.04458715915679932,
+      "per_model": [
+        {
+          "model": "qwen/qwen3.8-27b",
+          "model_label": "Qwen 3.8 27B",
+          "status": "measured",
+          "pair_id": "qwen/qwen3.8-27b|CLASS-001|treatment|char_substitution|1",
+          "anchor_record_id": "3b6f0116-f19e-4391-8a83-353c34d3b319",
+          "comparison_record_id": "b490affb-5927-4fc3-8b0f-b8dadab94b99",
+          "raw_distance": 0.009480118751525879,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "qwen/qwen3.8-27b|CLASS-001|control|None|1",
+              "anchor_record_id": "3b6f0116-f19e-4391-8a83-353c34d3b319",
+              "comparison_record_id": "4e39386f-cdf6-4e50-a283-1e7eb9050e51",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "qwen/qwen3.8-27b|CLASS-001|control|None|2",
+              "anchor_record_id": "3b6f0116-f19e-4391-8a83-353c34d3b319",
+              "comparison_record_id": "98cf6a6c-7be2-4e72-8c85-651f2b78a7a8",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.009480118751525879,
+          "d_out_char": 0.13507109004739337,
+          "d_out_token": 0.1454545454545455,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": "negative",
+          "comparison_final": "negative",
+          "scoring_method": "answer_key",
+          "code_signature_compliant": null,
+          "taxonomy": "wording_change_only",
+          "anchor_output": "The review contains a mix of sentiments. The phrase \"battery life is acceptable\" is mildly positive or neutral, but it is outweighed by the explicit negative criticisms: \"screen scratches easily\" and \"customer support was unhelpful.\" Since the majority of the specific points raised are complaints about product quality and service, the overall sentiment is negative.\r\n\r\nFinal answer: Negative",
+          "comparison_output": "The review contains a mix of sentiments. The phrase \"battery life is acceptable\" is mildly positive or neutral, but it is outweighed by the explicit negative statements: \"screen scratches easily\" (a product defect) and \"customer support was unhelpful\" (a service failure). Since the majority of the specific points raised are complaints about quality and service, the overall sentiment is negative.\r\n\r\nFinal answer: Negative"
+        },
+        {
+          "model": "openai/gpt-oss-120b",
+          "model_label": "GPT-OSS-120B",
+          "status": "measured",
+          "pair_id": "openai/gpt-oss-120b|CLASS-001|treatment|char_substitution|1",
+          "anchor_record_id": "72b7e5b8-e040-4986-8039-6a09da2e5900",
+          "comparison_record_id": "bf2f0572-6e83-4f43-8836-3cc37e0587ad",
+          "raw_distance": 0.09192204475402832,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "openai/gpt-oss-120b|CLASS-001|control|None|1",
+              "anchor_record_id": "72b7e5b8-e040-4986-8039-6a09da2e5900",
+              "comparison_record_id": "0fb3e569-4820-4b58-a261-da49fa9cddbc",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "openai/gpt-oss-120b|CLASS-001|control|None|2",
+              "anchor_record_id": "72b7e5b8-e040-4986-8039-6a09da2e5900",
+              "comparison_record_id": "d138ec98-c6ed-4721-b21f-5cab40c380e4",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.09192204475402832,
+          "d_out_char": 0.3125,
+          "d_out_token": 0.0,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": "negative",
+          "comparison_final": "negative",
+          "scoring_method": "answer_key",
+          "code_signature_compliant": null,
+          "taxonomy": "content_change_same_answer",
+          "anchor_output": "Negative\r\n\r\nFinal answer: Negative",
+          "comparison_output": "Final answer: Negative"
+        },
+        {
+          "model": "openai/gpt-oss-20b",
+          "model_label": "GPT-OSS-20B",
+          "status": "measured",
+          "pair_id": "openai/gpt-oss-20b|CLASS-001|treatment|char_substitution|1",
+          "anchor_record_id": "184aa270-11aa-4962-84ac-dc21416de39c",
+          "comparison_record_id": "8d55b6ee-fad0-4772-98ab-4f18eaa3782e",
+          "raw_distance": 0.0,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "openai/gpt-oss-20b|CLASS-001|control|None|1",
+              "anchor_record_id": "184aa270-11aa-4962-84ac-dc21416de39c",
+              "comparison_record_id": "714b21d5-c676-4f76-bcf8-0fb10d509ea6",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "openai/gpt-oss-20b|CLASS-001|control|None|2",
+              "anchor_record_id": "184aa270-11aa-4962-84ac-dc21416de39c",
+              "comparison_record_id": "b8833dba-cecc-4c55-b1ba-0b1cc26971a9",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.0,
+          "d_out_char": 0.0,
+          "d_out_token": 0.0,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": "negative",
+          "comparison_final": "negative",
+          "scoring_method": "answer_key",
+          "code_signature_compliant": null,
+          "taxonomy": "identical",
+          "anchor_output": "Negative\r\n\r\nFinal answer: Negative",
+          "comparison_output": "Negative\r\n\r\nFinal answer: Negative"
+        },
+        {
+          "model": "allam-2-7b",
+          "model_label": "ALLaM-2-7B",
+          "status": "measured",
+          "pair_id": "allam-2-7b|CLASS-001|treatment|char_substitution|1",
+          "anchor_record_id": "850cd311-d07c-449f-ab21-10857ba70ecf",
+          "comparison_record_id": "908fa37c-a32d-49e7-a79a-5fbd26b762f3",
+          "raw_distance": 0.06321704387664795,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "allam-2-7b|CLASS-001|control|None|1",
+              "anchor_record_id": "850cd311-d07c-449f-ab21-10857ba70ecf",
+              "comparison_record_id": "11a8939d-808c-4fec-8770-46df15b37703",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "allam-2-7b|CLASS-001|control|None|2",
+              "anchor_record_id": "850cd311-d07c-449f-ab21-10857ba70ecf",
+              "comparison_record_id": "ebf007c3-ce9d-414c-b0ca-830b4329cf89",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.06321704387664795,
+          "d_out_char": 0.0938967136150235,
+          "d_out_token": 0.20454545454545459,
+          "answer_changed": true,
+          "anchor_correct": false,
+          "comparison_correct": false,
+          "anchor_final": "negativecodeimporttextblobreviewthebatterylifeisacceptablebutthescreenscratcheseasilyandcustomersupportwasunhelpfulsentimenttextblobtextblobreviewsentimentifsentimentpolarity0sentimentlabelnegativeeli",
+          "comparison_final": "negativecodeimporttextblobreviewthebatterylifeisacceptablebutthescreenscratcheseasilyandcu5tomersupportwasunhelpfulsentimenttextblobtextblobreviewsentimentifsentimentpolarity0sentimentlabelpositiveeli",
+          "scoring_method": "answer_key",
+          "code_signature_compliant": null,
+          "taxonomy": "final_answer_change_same_correctness",
+          "anchor_output": "Final answer: Negative\r\n\r\nCode:\r\nimport textblob\r\n\r\nreview = \"The battery life is acceptable, but the screen scratches easily and customer support was unhelpful.\"\r\nsentiment = textblob.TextBlob(review).sentiment\r\n\r\nif sentiment.polarity < 0:\r\n    sentiment_label = \"Negative\"\r\nelif sentiment.polarity == 0:\r\n    sentiment_label = \"Neutral\"\r\nelse:\r\n    sentiment_label = \"Positive\"\r\n\r\nprint(\"Sentiment label:\", sentiment_label) ",
+          "comparison_output": "Final answer: Negative\r\n\r\nCode:\r\nimport textblob\r\n\r\nreview = \"The battery life is acceptable, but the screen scratches easily and cu5tomer support was unhelpful.\"\r\nsentiment = textblob.TextBlob(review).sentiment\r\n\r\nif sentiment.polarity > 0:\r\n    sentiment_label = \"Positive\"\r\nelif sentiment.polarity < 0:\r\n    sentiment_label = \"Negative\"\r\nelse:\r\n    sentiment_label = \"Neutral\"\r\n\r\nprint(\"The sentiment of the review is:\", sentiment_label) "
+        },
+        {
+          "model": "gemini-3.1-flash-lite",
+          "model_label": "Gemini 3.1 Flash-Lite",
+          "status": "measured",
+          "pair_id": "gemini-3.1-flash-lite|CLASS-001|treatment|char_substitution|1",
+          "anchor_record_id": "56545dba-7280-4a47-9938-28a77a979264",
+          "comparison_record_id": "1b067c27-36ee-4f6c-b7c7-4bfb6d1be964",
+          "raw_distance": 0.058316588401794434,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "gemini-3.1-flash-lite|CLASS-001|control|None|1",
+              "anchor_record_id": "56545dba-7280-4a47-9938-28a77a979264",
+              "comparison_record_id": "fd6a6cac-d835-4c06-9291-db9c85e1d968",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "gemini-3.1-flash-lite|CLASS-001|control|None|2",
+              "anchor_record_id": "56545dba-7280-4a47-9938-28a77a979264",
+              "comparison_record_id": "b21ed1bf-93e9-484f-a59f-1a29085b9010",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.058316588401794434,
+          "d_out_char": 0.3046875,
+          "d_out_token": 0.5581395348837209,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": "negative",
+          "comparison_final": "negative",
+          "scoring_method": "answer_key",
+          "code_signature_compliant": null,
+          "taxonomy": "content_change_same_answer",
+          "anchor_output": "The review mentions a neutral aspect (\"acceptable\" battery life) but highlights two significant negative experiences (screen quality and customer support). Therefore, the overall sentiment is negative.\r\n\r\nFinal answer: Negative",
+          "comparison_output": "The review mentions a minor positive point (\"battery life is acceptable\") but highlights two significant negative issues (\"screen scratches easily\" and \"customer support was unhelpful\"). Therefore, the overall sentiment is negative.\r\n\r\nFinal answer: Negative"
+        }
+      ]
+    },
+    {
+      "operator": "capitalization",
+      "eligibility": "eligible",
+      "eligibility_detail": "not flagged by the retrospective audit (operator audited by a sample of 5 candidates)",
+      "status": "measured",
+      "perturbation_id": "CLASS-001__capitalization__42__cf32ac720cf0",
+      "role": "candidate",
+      "perturbed_prompt": "classify the sentiment of the following product review as Positive, Negative, or Neutral: 'The battery life is acceptable, but the screen scratches easily and customer support was unhelpful.'",
+      "char_edits": 1,
+      "d_in_char": 0.005236,
+      "exact_edit": [
+        {
+          "original_offset": 0,
+          "edited_offset": 0,
+          "removed": "C",
+          "added": "c"
+        }
+      ],
+      "input_length_denominator": 191,
+      "d_in_sem": 0.0,
+      "auto_protected_changes": [],
+      "raw_distance": 0.09502186775207519,
+      "control_distance": 0.0,
+      "excess_distance": 0.09502186775207519,
+      "per_model": [
+        {
+          "model": "qwen/qwen3.8-27b",
+          "model_label": "Qwen 3.8 27B",
+          "status": "measured",
+          "pair_id": "qwen/qwen3.8-27b|CLASS-001|treatment|capitalization|1",
+          "anchor_record_id": "3b6f0116-f19e-4391-8a83-353c34d3b319",
+          "comparison_record_id": "8df3cb7b-a089-49c6-ad25-83cbe420d1e7",
+          "raw_distance": 0.08028334379196167,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "qwen/qwen3.8-27b|CLASS-001|control|None|1",
+              "anchor_record_id": "3b6f0116-f19e-4391-8a83-353c34d3b319",
+              "comparison_record_id": "4e39386f-cdf6-4e50-a283-1e7eb9050e51",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "qwen/qwen3.8-27b|CLASS-001|control|None|2",
+              "anchor_record_id": "3b6f0116-f19e-4391-8a83-353c34d3b319",
+              "comparison_record_id": "98cf6a6c-7be2-4e72-8c85-651f2b78a7a8",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.08028334379196167,
+          "d_out_char": 0.33168316831683176,
+          "d_out_token": 0.453125,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": "negative",
+          "comparison_final": "negative",
+          "scoring_method": "answer_key",
+          "code_signature_compliant": null,
+          "taxonomy": "content_change_same_answer",
+          "anchor_output": "The review contains a mix of sentiments. The phrase \"battery life is acceptable\" is mildly positive or neutral, but it is outweighed by the explicit negative criticisms: \"screen scratches easily\" and \"customer support was unhelpful.\" Since the majority of the specific points raised are complaints about product quality and service, the overall sentiment is negative.\r\n\r\nFinal answer: Negative",
+          "comparison_output": "The review contains a mix of sentiments. The phrase \"battery life is acceptable\" is mildly positive or neutral, but it is outweighed by the explicit negative statements: \"screen scratches easily\" (a product defect) and \"customer support was unhelpful\" (a service failure). The conjunction \"but\" signals that the negative aspects are the primary focus of the reviewer's experience.\r\n\r\nFinal answer: Negative"
+        },
+        {
+          "model": "openai/gpt-oss-120b",
+          "model_label": "GPT-OSS-120B",
+          "status": "measured",
+          "pair_id": "openai/gpt-oss-120b|CLASS-001|treatment|capitalization|1",
+          "anchor_record_id": "72b7e5b8-e040-4986-8039-6a09da2e5900",
+          "comparison_record_id": "61be0f1b-483b-4f6e-b4db-373bb0b4268d",
+          "raw_distance": 0.0,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "openai/gpt-oss-120b|CLASS-001|control|None|1",
+              "anchor_record_id": "72b7e5b8-e040-4986-8039-6a09da2e5900",
+              "comparison_record_id": "0fb3e569-4820-4b58-a261-da49fa9cddbc",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "openai/gpt-oss-120b|CLASS-001|control|None|2",
+              "anchor_record_id": "72b7e5b8-e040-4986-8039-6a09da2e5900",
+              "comparison_record_id": "d138ec98-c6ed-4721-b21f-5cab40c380e4",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.0,
+          "d_out_char": 0.0,
+          "d_out_token": 0.0,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": "negative",
+          "comparison_final": "negative",
+          "scoring_method": "answer_key",
+          "code_signature_compliant": null,
+          "taxonomy": "identical",
+          "anchor_output": "Negative\r\n\r\nFinal answer: Negative",
+          "comparison_output": "Negative\r\n\r\nFinal answer: Negative"
+        },
+        {
+          "model": "openai/gpt-oss-20b",
+          "model_label": "GPT-OSS-20B",
+          "status": "measured",
+          "pair_id": "openai/gpt-oss-20b|CLASS-001|treatment|capitalization|1",
+          "anchor_record_id": "184aa270-11aa-4962-84ac-dc21416de39c",
+          "comparison_record_id": "fb75a536-1ca8-4822-b35b-bf4fff24efcd",
+          "raw_distance": 0.0,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "openai/gpt-oss-20b|CLASS-001|control|None|1",
+              "anchor_record_id": "184aa270-11aa-4962-84ac-dc21416de39c",
+              "comparison_record_id": "714b21d5-c676-4f76-bcf8-0fb10d509ea6",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "openai/gpt-oss-20b|CLASS-001|control|None|2",
+              "anchor_record_id": "184aa270-11aa-4962-84ac-dc21416de39c",
+              "comparison_record_id": "b8833dba-cecc-4c55-b1ba-0b1cc26971a9",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.0,
+          "d_out_char": 0.0,
+          "d_out_token": 0.0,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": "negative",
+          "comparison_final": "negative",
+          "scoring_method": "answer_key",
+          "code_signature_compliant": null,
+          "taxonomy": "identical",
+          "anchor_output": "Negative\r\n\r\nFinal answer: Negative",
+          "comparison_output": "Negative\r\n\r\nFinal answer: Negative"
+        },
+        {
+          "model": "allam-2-7b",
+          "model_label": "ALLaM-2-7B",
+          "status": "measured",
+          "pair_id": "allam-2-7b|CLASS-001|treatment|capitalization|1",
+          "anchor_record_id": "850cd311-d07c-449f-ab21-10857ba70ecf",
+          "comparison_record_id": "8d6f409f-8813-42a2-880e-23ea1c24b233",
+          "raw_distance": 0.3948259949684143,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "allam-2-7b|CLASS-001|control|None|1",
+              "anchor_record_id": "850cd311-d07c-449f-ab21-10857ba70ecf",
+              "comparison_record_id": "11a8939d-808c-4fec-8770-46df15b37703",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "allam-2-7b|CLASS-001|control|None|2",
+              "anchor_record_id": "850cd311-d07c-449f-ab21-10857ba70ecf",
+              "comparison_record_id": "ebf007c3-ce9d-414c-b0ca-830b4329cf89",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.3948259949684143,
+          "d_out_char": 0.7572815533980582,
+          "d_out_token": 0.8333333333333334,
+          "answer_changed": true,
+          "anchor_correct": false,
+          "comparison_correct": true,
+          "anchor_final": "negativecodeimporttextblobreviewthebatterylifeisacceptablebutthescreenscratcheseasilyandcustomersupportwasunhelpfulsentimenttextblobtextblobreviewsentimentifsentimentpolarity0sentimentlabelnegativeeli",
+          "comparison_final": "negativethesentimentofthereviewcanbeclassifiedasnegativeduetothementionofissueswithbatterylifescreenandcustomersupport",
+          "scoring_method": "answer_key",
+          "code_signature_compliant": null,
+          "taxonomy": "correctness_flip_incorrect_to_correct",
+          "anchor_output": "Final answer: Negative\r\n\r\nCode:\r\nimport textblob\r\n\r\nreview = \"The battery life is acceptable, but the screen scratches easily and customer support was unhelpful.\"\r\nsentiment = textblob.TextBlob(review).sentiment\r\n\r\nif sentiment.polarity < 0:\r\n    sentiment_label = \"Negative\"\r\nelif sentiment.polarity == 0:\r\n    sentiment_label = \"Neutral\"\r\nelse:\r\n    sentiment_label = \"Positive\"\r\n\r\nprint(\"Sentiment label:\", sentiment_label) ",
+          "comparison_output": "Final answer: Negative\r\n\r\nThe sentiment of the review can be classified as negative due to the mention of issues with battery life, screen, and customer support. "
+        },
+        {
+          "model": "gemini-3.1-flash-lite",
+          "model_label": "Gemini 3.1 Flash-Lite",
+          "status": "measured",
+          "pair_id": "gemini-3.1-flash-lite|CLASS-001|treatment|capitalization|1",
+          "anchor_record_id": "56545dba-7280-4a47-9938-28a77a979264",
+          "comparison_record_id": "08990916-8c54-4548-a17e-e0328aa7ddf0",
+          "raw_distance": 0.0,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "gemini-3.1-flash-lite|CLASS-001|control|None|1",
+              "anchor_record_id": "56545dba-7280-4a47-9938-28a77a979264",
+              "comparison_record_id": "fd6a6cac-d835-4c06-9291-db9c85e1d968",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "gemini-3.1-flash-lite|CLASS-001|control|None|2",
+              "anchor_record_id": "56545dba-7280-4a47-9938-28a77a979264",
+              "comparison_record_id": "b21ed1bf-93e9-484f-a59f-1a29085b9010",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.0,
+          "d_out_char": 0.0,
+          "d_out_token": 0.0,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": "negative",
+          "comparison_final": "negative",
+          "scoring_method": "answer_key",
+          "code_signature_compliant": null,
+          "taxonomy": "identical",
+          "anchor_output": "The review mentions a neutral aspect (\"acceptable\" battery life) but highlights two significant negative experiences (screen quality and customer support). Therefore, the overall sentiment is negative.\r\n\r\nFinal answer: Negative",
+          "comparison_output": "The review mentions a neutral aspect (\"acceptable\" battery life) but highlights two significant negative experiences (screen quality and customer support). Therefore, the overall sentiment is negative.\r\n\r\nFinal answer: Negative"
+        }
+      ]
+    },
+    {
+      "operator": "punctuation",
+      "eligibility": "eligible",
+      "eligibility_detail": "not flagged by the retrospective audit (operator audited by a sample of 5 candidates)",
+      "status": "measured",
+      "perturbation_id": "CLASS-001__punctuation__42__eb041edd7df2",
+      "role": "candidate",
+      "perturbed_prompt": "Classify the sentiment of the following product review as Positive, Negative, or Neutral: 'The battery life is acceptable, but the screen scratches easily and customer support was unhelpful.'.",
+      "char_edits": 1,
+      "d_in_char": 0.005208,
+      "exact_edit": [
+        {
+          "original_offset": 191,
+          "edited_offset": 191,
+          "removed": "",
+          "added": "."
+        }
+      ],
+      "input_length_denominator": 192,
+      "d_in_sem": 0.0034733,
+      "auto_protected_changes": [],
+      "raw_distance": 0.015435075759887696,
+      "control_distance": 0.0,
+      "excess_distance": 0.015435075759887696,
+      "per_model": [
+        {
+          "model": "qwen/qwen3.8-27b",
+          "model_label": "Qwen 3.8 27B",
+          "status": "measured",
+          "pair_id": "qwen/qwen3.8-27b|CLASS-001|treatment|punctuation|1",
+          "anchor_record_id": "3b6f0116-f19e-4391-8a83-353c34d3b319",
+          "comparison_record_id": "8d4d3b06-c7d8-46ee-b651-d4ccfba3a38c",
+          "raw_distance": 0.009480118751525879,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "qwen/qwen3.8-27b|CLASS-001|control|None|1",
+              "anchor_record_id": "3b6f0116-f19e-4391-8a83-353c34d3b319",
+              "comparison_record_id": "4e39386f-cdf6-4e50-a283-1e7eb9050e51",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "qwen/qwen3.8-27b|CLASS-001|control|None|2",
+              "anchor_record_id": "3b6f0116-f19e-4391-8a83-353c34d3b319",
+              "comparison_record_id": "98cf6a6c-7be2-4e72-8c85-651f2b78a7a8",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.009480118751525879,
+          "d_out_char": 0.13507109004739337,
+          "d_out_token": 0.1454545454545455,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": "negative",
+          "comparison_final": "negative",
+          "scoring_method": "answer_key",
+          "code_signature_compliant": null,
+          "taxonomy": "wording_change_only",
+          "anchor_output": "The review contains a mix of sentiments. The phrase \"battery life is acceptable\" is mildly positive or neutral, but it is outweighed by the explicit negative criticisms: \"screen scratches easily\" and \"customer support was unhelpful.\" Since the majority of the specific points raised are complaints about product quality and service, the overall sentiment is negative.\r\n\r\nFinal answer: Negative",
+          "comparison_output": "The review contains a mix of sentiments. The phrase \"battery life is acceptable\" is mildly positive or neutral, but it is outweighed by the explicit negative statements: \"screen scratches easily\" (a product defect) and \"customer support was unhelpful\" (a service failure). Since the majority of the specific points raised are complaints about quality and service, the overall sentiment is negative.\r\n\r\nFinal answer: Negative"
+        },
+        {
+          "model": "openai/gpt-oss-120b",
+          "model_label": "GPT-OSS-120B",
+          "status": "measured",
+          "pair_id": "openai/gpt-oss-120b|CLASS-001|treatment|punctuation|1",
+          "anchor_record_id": "72b7e5b8-e040-4986-8039-6a09da2e5900",
+          "comparison_record_id": "86efef23-7359-4113-ade6-993a94742fb9",
+          "raw_distance": 0.0,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "openai/gpt-oss-120b|CLASS-001|control|None|1",
+              "anchor_record_id": "72b7e5b8-e040-4986-8039-6a09da2e5900",
+              "comparison_record_id": "0fb3e569-4820-4b58-a261-da49fa9cddbc",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "openai/gpt-oss-120b|CLASS-001|control|None|2",
+              "anchor_record_id": "72b7e5b8-e040-4986-8039-6a09da2e5900",
+              "comparison_record_id": "d138ec98-c6ed-4721-b21f-5cab40c380e4",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.0,
+          "d_out_char": 0.0,
+          "d_out_token": 0.0,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": "negative",
+          "comparison_final": "negative",
+          "scoring_method": "answer_key",
+          "code_signature_compliant": null,
+          "taxonomy": "identical",
+          "anchor_output": "Negative\r\n\r\nFinal answer: Negative",
+          "comparison_output": "Negative\r\n\r\nFinal answer: Negative"
+        },
+        {
+          "model": "openai/gpt-oss-20b",
+          "model_label": "GPT-OSS-20B",
+          "status": "measured",
+          "pair_id": "openai/gpt-oss-20b|CLASS-001|treatment|punctuation|1",
+          "anchor_record_id": "184aa270-11aa-4962-84ac-dc21416de39c",
+          "comparison_record_id": "4e293108-16ef-4784-ab28-acec1b020dce",
+          "raw_distance": 0.0,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "openai/gpt-oss-20b|CLASS-001|control|None|1",
+              "anchor_record_id": "184aa270-11aa-4962-84ac-dc21416de39c",
+              "comparison_record_id": "714b21d5-c676-4f76-bcf8-0fb10d509ea6",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "openai/gpt-oss-20b|CLASS-001|control|None|2",
+              "anchor_record_id": "184aa270-11aa-4962-84ac-dc21416de39c",
+              "comparison_record_id": "b8833dba-cecc-4c55-b1ba-0b1cc26971a9",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.0,
+          "d_out_char": 0.0,
+          "d_out_token": 0.0,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": "negative",
+          "comparison_final": "negative",
+          "scoring_method": "answer_key",
+          "code_signature_compliant": null,
+          "taxonomy": "identical",
+          "anchor_output": "Negative\r\n\r\nFinal answer: Negative",
+          "comparison_output": "Negative\r\n\r\nFinal answer: Negative"
+        },
+        {
+          "model": "allam-2-7b",
+          "model_label": "ALLaM-2-7B",
+          "status": "measured",
+          "pair_id": "allam-2-7b|CLASS-001|treatment|punctuation|1",
+          "anchor_record_id": "850cd311-d07c-449f-ab21-10857ba70ecf",
+          "comparison_record_id": "65f9670e-fb71-41cb-8f61-e4c6b16b03d2",
+          "raw_distance": 0.02501434087753296,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "allam-2-7b|CLASS-001|control|None|1",
+              "anchor_record_id": "850cd311-d07c-449f-ab21-10857ba70ecf",
+              "comparison_record_id": "11a8939d-808c-4fec-8770-46df15b37703",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "allam-2-7b|CLASS-001|control|None|2",
+              "anchor_record_id": "850cd311-d07c-449f-ab21-10857ba70ecf",
+              "comparison_record_id": "ebf007c3-ce9d-414c-b0ca-830b4329cf89",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.02501434087753296,
+          "d_out_char": 0.24090909090909096,
+          "d_out_token": 0.5,
+          "answer_changed": true,
+          "anchor_correct": false,
+          "comparison_correct": false,
+          "anchor_final": "negativecodeimporttextblobreviewthebatterylifeisacceptablebutthescreenscratcheseasilyandcustomersupportwasunhelpfulsentimenttextblobtextblobreviewsentimentifsentimentpolarity0sentimentlabelnegativeeli",
+          "comparison_final": "negativecodeimporttextblobreviewtextthebatterylifeisacceptablebutthescreenscratcheseasilyandcustomersupportwasunhelpfulblobtextblobtextblobreviewtextsentimentblobsentimentpolarityifsentiment0sentiment",
+          "scoring_method": "answer_key",
+          "code_signature_compliant": null,
+          "taxonomy": "final_answer_change_same_correctness",
+          "anchor_output": "Final answer: Negative\r\n\r\nCode:\r\nimport textblob\r\n\r\nreview = \"The battery life is acceptable, but the screen scratches easily and customer support was unhelpful.\"\r\nsentiment = textblob.TextBlob(review).sentiment\r\n\r\nif sentiment.polarity < 0:\r\n    sentiment_label = \"Negative\"\r\nelif sentiment.polarity == 0:\r\n    sentiment_label = \"Neutral\"\r\nelse:\r\n    sentiment_label = \"Positive\"\r\n\r\nprint(\"Sentiment label:\", sentiment_label) ",
+          "comparison_output": "Final answer: Negative\r\n\r\nCode:\r\nimport textblob\r\n\r\nreview_text = 'The battery life is acceptable, but the screen scratches easily and customer support was unhelpful.'\r\nblob = textblob.TextBlob(review_text)\r\nsentiment = blob.sentiment.polarity\r\n\r\nif sentiment > 0:\r\n    sentiment_class = 'Positive'\r\nelif sentiment == 0:\r\n    sentiment_class = 'Neutral'\r\nelse:\r\n    sentiment_class = 'Negative'\r\n\r\nprint('The sentiment of the review is:', sentiment_class) "
+        },
+        {
+          "model": "gemini-3.1-flash-lite",
+          "model_label": "Gemini 3.1 Flash-Lite",
+          "status": "measured",
+          "pair_id": "gemini-3.1-flash-lite|CLASS-001|treatment|punctuation|1",
+          "anchor_record_id": "56545dba-7280-4a47-9938-28a77a979264",
+          "comparison_record_id": "48096551-745c-4d00-ba65-1a9a023ef953",
+          "raw_distance": 0.04268091917037964,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "gemini-3.1-flash-lite|CLASS-001|control|None|1",
+              "anchor_record_id": "56545dba-7280-4a47-9938-28a77a979264",
+              "comparison_record_id": "fd6a6cac-d835-4c06-9291-db9c85e1d968",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "gemini-3.1-flash-lite|CLASS-001|control|None|2",
+              "anchor_record_id": "56545dba-7280-4a47-9938-28a77a979264",
+              "comparison_record_id": "b21ed1bf-93e9-484f-a59f-1a29085b9010",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.04268091917037964,
+          "d_out_char": 0.1088709677419355,
+          "d_out_token": 0.18181818181818177,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": "negative",
+          "comparison_final": "negative",
+          "scoring_method": "answer_key",
+          "code_signature_compliant": null,
+          "taxonomy": "wording_change_only",
+          "anchor_output": "The review mentions a neutral aspect (\"acceptable\" battery life) but highlights two significant negative experiences (screen quality and customer support). Therefore, the overall sentiment is negative.\r\n\r\nFinal answer: Negative",
+          "comparison_output": "The review mentions a neutral aspect (\"acceptable\" battery life) but highlights two significant negative experiences (\"screen scratches easily\" and \"unhelpful\" customer support). Therefore, the overall sentiment is negative.\r\n\r\nFinal answer: Negative"
+        }
+      ]
+    },
+    {
+      "operator": "whitespace",
+      "eligibility": "over_budget",
+      "eligibility_detail": "d_in_char 0.1239 exceeds budget 0.10",
+      "status": "over_budget",
+      "perturbation_id": "CLASS-001__whitespace__42__bf2fc1dacc2a",
+      "role": "candidate",
+      "perturbed_prompt": "Classify  the  sentiment  of  the  following  product  review  as  Positive,  Negative,  or  Neutral:  'The  battery  life  is  acceptable,  but  the  screen  scratches  easily  and  customer  support  was  unhelpful.'",
+      "char_edits": 27,
+      "d_in_char": 0.123853,
+      "exact_edit": [
+        {
+          "original_offset": 9,
+          "edited_offset": 9,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 12,
+          "edited_offset": 13,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 23,
+          "edited_offset": 25,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 25,
+          "edited_offset": 28,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 29,
+          "edited_offset": 33,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 40,
+          "edited_offset": 45,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 48,
+          "edited_offset": 54,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 55,
+          "edited_offset": 62,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 57,
+          "edited_offset": 65,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 68,
+          "edited_offset": 77,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 78,
+          "edited_offset": 88,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 80,
+          "edited_offset": 91,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 90,
+          "edited_offset": 102,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 94,
+          "edited_offset": 107,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 103,
+          "edited_offset": 117,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 108,
+          "edited_offset": 123,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 110,
+          "edited_offset": 126,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 123,
+          "edited_offset": 140,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 127,
+          "edited_offset": 145,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 130,
+          "edited_offset": 149,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 137,
+          "edited_offset": 157,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 148,
+          "edited_offset": 169,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 155,
+          "edited_offset": 177,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 158,
+          "edited_offset": 181,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 168,
+          "edited_offset": 192,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 176,
+          "edited_offset": 201,
+          "removed": "",
+          "added": " "
+        },
+        {
+          "original_offset": 179,
+          "edited_offset": 205,
+          "removed": "",
+          "added": " "
+        }
+      ],
+      "input_length_denominator": 218,
+      "d_in_sem": 0.0,
+      "auto_protected_changes": [],
+      "raw_distance": null,
+      "control_distance": null,
+      "excess_distance": null,
+      "per_model": []
+    },
+    {
+      "operator": "word_insertion",
+      "eligibility": "eligible",
+      "eligibility_detail": "not flagged by the retrospective audit (operator audited by a sample of 5 candidates)",
+      "status": "measured",
+      "perturbation_id": "CLASS-001__word_insertion__42__b20f2c8ff102",
+      "role": "candidate",
+      "perturbed_prompt": "Carefully Classify the sentiment of the following product review as Positive, Negative, or Neutral: 'The battery life is acceptable, but the screen scratches easily and customer support was unhelpful.'",
+      "char_edits": 10,
+      "d_in_char": 0.049751,
+      "exact_edit": [
+        {
+          "original_offset": 0,
+          "edited_offset": 0,
+          "removed": "",
+          "added": "Carefully "
+        }
+      ],
+      "input_length_denominator": 201,
+      "d_in_sem": 0.00941715,
+      "auto_protected_changes": [],
+      "raw_distance": 0.04735950231552124,
+      "control_distance": 0.0,
+      "excess_distance": 0.04735950231552124,
+      "per_model": [
+        {
+          "model": "qwen/qwen3.8-27b",
+          "model_label": "Qwen 3.8 27B",
+          "status": "measured",
+          "pair_id": "qwen/qwen3.8-27b|CLASS-001|treatment|word_insertion|1",
+          "anchor_record_id": "3b6f0116-f19e-4391-8a83-353c34d3b319",
+          "comparison_record_id": "3388ca32-5585-45a4-86ac-44b9d155fd57",
+          "raw_distance": 0.0293845534324646,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "qwen/qwen3.8-27b|CLASS-001|control|None|1",
+              "anchor_record_id": "3b6f0116-f19e-4391-8a83-353c34d3b319",
+              "comparison_record_id": "4e39386f-cdf6-4e50-a283-1e7eb9050e51",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "qwen/qwen3.8-27b|CLASS-001|control|None|2",
+              "anchor_record_id": "3b6f0116-f19e-4391-8a83-353c34d3b319",
+              "comparison_record_id": "98cf6a6c-7be2-4e72-8c85-651f2b78a7a8",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.0293845534324646,
+          "d_out_char": 0.4350180505415162,
+          "d_out_token": 0.5625,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": "negative",
+          "comparison_final": "negative",
+          "scoring_method": "answer_key",
+          "code_signature_compliant": null,
+          "taxonomy": "wording_change_only",
+          "anchor_output": "The review contains a mix of sentiments. The phrase \"battery life is acceptable\" is mildly positive or neutral, but it is outweighed by the explicit negative criticisms: \"screen scratches easily\" and \"customer support was unhelpful.\" Since the majority of the specific points raised are complaints about product quality and service, the overall sentiment is negative.\r\n\r\nFinal answer: Negative",
+          "comparison_output": "The review contains a mix of sentiments. The phrase \"battery life is acceptable\" is mildly positive or neutral, indicating that this aspect meets basic expectations. However, the review includes two distinct negative points: \"screen scratches easily\" (a product quality issue) and \"customer support was unhelpful\" (a service issue). In sentiment analysis, the presence of specific complaints about product durability and service typically outweighs a lukewarm comment about battery life, leading to an overall negative impression.\r\n\r\nFinal answer: Negative"
+        },
+        {
+          "model": "openai/gpt-oss-120b",
+          "model_label": "GPT-OSS-120B",
+          "status": "measured",
+          "pair_id": "openai/gpt-oss-120b|CLASS-001|treatment|word_insertion|1",
+          "anchor_record_id": "72b7e5b8-e040-4986-8039-6a09da2e5900",
+          "comparison_record_id": "65f3fffe-fa94-4053-bc05-45cc6227d43c",
+          "raw_distance": 0.0,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "openai/gpt-oss-120b|CLASS-001|control|None|1",
+              "anchor_record_id": "72b7e5b8-e040-4986-8039-6a09da2e5900",
+              "comparison_record_id": "0fb3e569-4820-4b58-a261-da49fa9cddbc",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "openai/gpt-oss-120b|CLASS-001|control|None|2",
+              "anchor_record_id": "72b7e5b8-e040-4986-8039-6a09da2e5900",
+              "comparison_record_id": "d138ec98-c6ed-4721-b21f-5cab40c380e4",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.0,
+          "d_out_char": 0.0,
+          "d_out_token": 0.0,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": "negative",
+          "comparison_final": "negative",
+          "scoring_method": "answer_key",
+          "code_signature_compliant": null,
+          "taxonomy": "identical",
+          "anchor_output": "Negative\r\n\r\nFinal answer: Negative",
+          "comparison_output": "Negative\r\n\r\nFinal answer: Negative"
+        },
+        {
+          "model": "openai/gpt-oss-20b",
+          "model_label": "GPT-OSS-20B",
+          "status": "measured",
+          "pair_id": "openai/gpt-oss-20b|CLASS-001|treatment|word_insertion|1",
+          "anchor_record_id": "184aa270-11aa-4962-84ac-dc21416de39c",
+          "comparison_record_id": "eae32c95-adde-4037-b565-3a0852b6ba32",
+          "raw_distance": 0.0,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "openai/gpt-oss-20b|CLASS-001|control|None|1",
+              "anchor_record_id": "184aa270-11aa-4962-84ac-dc21416de39c",
+              "comparison_record_id": "714b21d5-c676-4f76-bcf8-0fb10d509ea6",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "openai/gpt-oss-20b|CLASS-001|control|None|2",
+              "anchor_record_id": "184aa270-11aa-4962-84ac-dc21416de39c",
+              "comparison_record_id": "b8833dba-cecc-4c55-b1ba-0b1cc26971a9",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.0,
+          "d_out_char": 0.0,
+          "d_out_token": 0.0,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": "negative",
+          "comparison_final": "negative",
+          "scoring_method": "answer_key",
+          "code_signature_compliant": null,
+          "taxonomy": "identical",
+          "anchor_output": "Negative\r\n\r\nFinal answer: Negative",
+          "comparison_output": "Negative\r\n\r\nFinal answer: Negative"
+        },
+        {
+          "model": "allam-2-7b",
+          "model_label": "ALLaM-2-7B",
+          "status": "measured",
+          "pair_id": "allam-2-7b|CLASS-001|treatment|word_insertion|1",
+          "anchor_record_id": "850cd311-d07c-449f-ab21-10857ba70ecf",
+          "comparison_record_id": "5f2947aa-30f3-4074-b7d1-05394ff149de",
+          "raw_distance": 0.09184181690216064,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "allam-2-7b|CLASS-001|control|None|1",
+              "anchor_record_id": "850cd311-d07c-449f-ab21-10857ba70ecf",
+              "comparison_record_id": "11a8939d-808c-4fec-8770-46df15b37703",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "allam-2-7b|CLASS-001|control|None|2",
+              "anchor_record_id": "850cd311-d07c-449f-ab21-10857ba70ecf",
+              "comparison_record_id": "ebf007c3-ce9d-414c-b0ca-830b4329cf89",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.09184181690216064,
+          "d_out_char": 0.18803418803418803,
+          "d_out_token": 0.33333333333333337,
+          "answer_changed": true,
+          "anchor_correct": false,
+          "comparison_correct": false,
+          "anchor_final": "negativecodeimporttextblobreviewthebatterylifeisacceptablebutthescreenscratcheseasilyandcustomersupportwasunhelpfulsentimenttextblobtextblobreviewsentimentifsentimentpolarity0sentimentlabelnegativeeli",
+          "comparison_final": "neutralpythoncodetoclassifysentimentpythonimporttextblobreviewthebatterylifeisacceptablebutthescreenscratcheseasilyandcustomersupportwasunhelpfulsentimenttextblobtextblobreviewsentimentifsentimentpola",
+          "scoring_method": "answer_key",
+          "code_signature_compliant": null,
+          "taxonomy": "final_answer_change_same_correctness",
+          "anchor_output": "Final answer: Negative\r\n\r\nCode:\r\nimport textblob\r\n\r\nreview = \"The battery life is acceptable, but the screen scratches easily and customer support was unhelpful.\"\r\nsentiment = textblob.TextBlob(review).sentiment\r\n\r\nif sentiment.polarity < 0:\r\n    sentiment_label = \"Negative\"\r\nelif sentiment.polarity == 0:\r\n    sentiment_label = \"Neutral\"\r\nelse:\r\n    sentiment_label = \"Positive\"\r\n\r\nprint(\"Sentiment label:\", sentiment_label) ",
+          "comparison_output": "Final answer: Neutral\r\n\r\nPython code to classify sentiment:\r\n```python\r\nimport textblob\r\n\r\nreview = \"The battery life is acceptable, but the screen scratches easily and customer support was unhelpful.\"\r\nsentiment = textblob.TextBlob(review).sentiment\r\n\r\nif sentiment.polarity > 0:\r\n    sentiment_label = \"Positive\"\r\nelif sentiment.polarity < 0:\r\n    sentiment_label = \"Negative\"\r\nelse:\r\n    sentiment_label = \"Neutral\"\r\n\r\nprint(\"The sentiment of the review is:\", sentiment_label)\r\n``` "
+        },
+        {
+          "model": "gemini-3.1-flash-lite",
+          "model_label": "Gemini 3.1 Flash-Lite",
+          "status": "measured",
+          "pair_id": "gemini-3.1-flash-lite|CLASS-001|treatment|word_insertion|1",
+          "anchor_record_id": "56545dba-7280-4a47-9938-28a77a979264",
+          "comparison_record_id": "0396f0a8-180c-4541-bb96-08faeec8137e",
+          "raw_distance": 0.11557114124298096,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "gemini-3.1-flash-lite|CLASS-001|control|None|1",
+              "anchor_record_id": "56545dba-7280-4a47-9938-28a77a979264",
+              "comparison_record_id": "fd6a6cac-d835-4c06-9291-db9c85e1d968",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "gemini-3.1-flash-lite|CLASS-001|control|None|2",
+              "anchor_record_id": "56545dba-7280-4a47-9938-28a77a979264",
+              "comparison_record_id": "b21ed1bf-93e9-484f-a59f-1a29085b9010",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.11557114124298096,
+          "d_out_char": 0.4872727272727273,
+          "d_out_token": 0.6595744680851063,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": "negative",
+          "comparison_final": "negative",
+          "scoring_method": "answer_key",
+          "code_signature_compliant": null,
+          "taxonomy": "content_change_same_answer",
+          "anchor_output": "The review mentions a neutral aspect (\"acceptable\" battery life) but highlights two significant negative experiences (screen quality and customer support). Therefore, the overall sentiment is negative.\r\n\r\nFinal answer: Negative",
+          "comparison_output": "The review mentions that the battery life is \"acceptable,\" but highlights two significant drawbacks: the screen scratches easily and customer support was unhelpful. These negative aspects outweigh the neutral/mildly positive comment about the battery.\r\n\r\nFinal answer: Negative"
+        }
+      ]
+    },
+    {
+      "operator": "word_deletion",
+      "eligibility": "eligible",
+      "eligibility_detail": "not flagged by the retrospective audit (every candidate of this operator was audited)",
+      "status": "measured",
+      "perturbation_id": "CLASS-001__word_deletion__42__d43ca2bd3ef9",
+      "role": "candidate",
+      "perturbed_prompt": "Classify sentiment of the following product review as Positive, Negative, or Neutral: 'The battery life is acceptable, but the screen scratches easily and customer support was unhelpful.'",
+      "char_edits": 4,
+      "d_in_char": 0.020942,
+      "exact_edit": [
+        {
+          "original_offset": 8,
+          "edited_offset": 8,
+          "removed": " the",
+          "added": ""
+        }
+      ],
+      "input_length_denominator": 191,
+      "d_in_sem": 0.00593153,
+      "auto_protected_changes": [],
+      "raw_distance": 0.04732381105422974,
+      "control_distance": 0.0,
+      "excess_distance": 0.04732381105422974,
+      "per_model": [
+        {
+          "model": "qwen/qwen3.8-27b",
+          "model_label": "Qwen 3.8 27B",
+          "status": "measured",
+          "pair_id": "qwen/qwen3.8-27b|CLASS-001|treatment|word_deletion|1",
+          "anchor_record_id": "3b6f0116-f19e-4391-8a83-353c34d3b319",
+          "comparison_record_id": "7184909c-a359-42ae-b33d-2dea4770630c",
+          "raw_distance": 0.0,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "qwen/qwen3.8-27b|CLASS-001|control|None|1",
+              "anchor_record_id": "3b6f0116-f19e-4391-8a83-353c34d3b319",
+              "comparison_record_id": "4e39386f-cdf6-4e50-a283-1e7eb9050e51",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "qwen/qwen3.8-27b|CLASS-001|control|None|2",
+              "anchor_record_id": "3b6f0116-f19e-4391-8a83-353c34d3b319",
+              "comparison_record_id": "98cf6a6c-7be2-4e72-8c85-651f2b78a7a8",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.0,
+          "d_out_char": 0.0,
+          "d_out_token": 0.0,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": "negative",
+          "comparison_final": "negative",
+          "scoring_method": "answer_key",
+          "code_signature_compliant": null,
+          "taxonomy": "identical",
+          "anchor_output": "The review contains a mix of sentiments. The phrase \"battery life is acceptable\" is mildly positive or neutral, but it is outweighed by the explicit negative criticisms: \"screen scratches easily\" and \"customer support was unhelpful.\" Since the majority of the specific points raised are complaints about product quality and service, the overall sentiment is negative.\r\n\r\nFinal answer: Negative",
+          "comparison_output": "The review contains a mix of sentiments. The phrase \"battery life is acceptable\" is mildly positive or neutral, but it is outweighed by the explicit negative criticisms: \"screen scratches easily\" and \"customer support was unhelpful.\" Since the majority of the specific points raised are complaints about product quality and service, the overall sentiment is negative.\r\n\r\nFinal answer: Negative"
+        },
+        {
+          "model": "openai/gpt-oss-120b",
+          "model_label": "GPT-OSS-120B",
+          "status": "measured",
+          "pair_id": "openai/gpt-oss-120b|CLASS-001|treatment|word_deletion|1",
+          "anchor_record_id": "72b7e5b8-e040-4986-8039-6a09da2e5900",
+          "comparison_record_id": "5f8a1654-18ea-40c0-8aff-b1e10d98524a",
+          "raw_distance": 0.0,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "openai/gpt-oss-120b|CLASS-001|control|None|1",
+              "anchor_record_id": "72b7e5b8-e040-4986-8039-6a09da2e5900",
+              "comparison_record_id": "0fb3e569-4820-4b58-a261-da49fa9cddbc",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "openai/gpt-oss-120b|CLASS-001|control|None|2",
+              "anchor_record_id": "72b7e5b8-e040-4986-8039-6a09da2e5900",
+              "comparison_record_id": "d138ec98-c6ed-4721-b21f-5cab40c380e4",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.0,
+          "d_out_char": 0.0,
+          "d_out_token": 0.0,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": "negative",
+          "comparison_final": "negative",
+          "scoring_method": "answer_key",
+          "code_signature_compliant": null,
+          "taxonomy": "identical",
+          "anchor_output": "Negative\r\n\r\nFinal answer: Negative",
+          "comparison_output": "Negative\r\n\r\nFinal answer: Negative"
+        },
+        {
+          "model": "openai/gpt-oss-20b",
+          "model_label": "GPT-OSS-20B",
+          "status": "measured",
+          "pair_id": "openai/gpt-oss-20b|CLASS-001|treatment|word_deletion|1",
+          "anchor_record_id": "184aa270-11aa-4962-84ac-dc21416de39c",
+          "comparison_record_id": "a78924fe-bd80-435c-b177-106c49803c43",
+          "raw_distance": 0.0,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "openai/gpt-oss-20b|CLASS-001|control|None|1",
+              "anchor_record_id": "184aa270-11aa-4962-84ac-dc21416de39c",
+              "comparison_record_id": "714b21d5-c676-4f76-bcf8-0fb10d509ea6",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "openai/gpt-oss-20b|CLASS-001|control|None|2",
+              "anchor_record_id": "184aa270-11aa-4962-84ac-dc21416de39c",
+              "comparison_record_id": "b8833dba-cecc-4c55-b1ba-0b1cc26971a9",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.0,
+          "d_out_char": 0.0,
+          "d_out_token": 0.0,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": "negative",
+          "comparison_final": "negative",
+          "scoring_method": "answer_key",
+          "code_signature_compliant": null,
+          "taxonomy": "identical",
+          "anchor_output": "Negative\r\n\r\nFinal answer: Negative",
+          "comparison_output": "Negative\r\n\r\nFinal answer: Negative"
+        },
+        {
+          "model": "allam-2-7b",
+          "model_label": "ALLaM-2-7B",
+          "status": "measured",
+          "pair_id": "allam-2-7b|CLASS-001|treatment|word_deletion|1",
+          "anchor_record_id": "850cd311-d07c-449f-ab21-10857ba70ecf",
+          "comparison_record_id": "624ea57e-f426-40b3-a322-ae85d51bd028",
+          "raw_distance": 0.2280014157295227,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "allam-2-7b|CLASS-001|control|None|1",
+              "anchor_record_id": "850cd311-d07c-449f-ab21-10857ba70ecf",
+              "comparison_record_id": "11a8939d-808c-4fec-8770-46df15b37703",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "allam-2-7b|CLASS-001|control|None|2",
+              "anchor_record_id": "850cd311-d07c-449f-ab21-10857ba70ecf",
+              "comparison_record_id": "ebf007c3-ce9d-414c-b0ca-830b4329cf89",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.2280014157295227,
+          "d_out_char": 0.46601941747572817,
+          "d_out_token": 0.5961538461538461,
+          "answer_changed": true,
+          "anchor_correct": false,
+          "comparison_correct": false,
+          "anchor_final": "negativecodeimporttextblobreviewthebatterylifeisacceptablebutthescreenscratcheseasilyandcustomersupportwasunhelpfulsentimenttextblobtextblobreviewsentimentifsentimentpolarity0sentimentlabelnegativeeli",
+          "comparison_final": "negativecodereviewthebatterylifeisacceptablebutthescreenscratcheseasilyandcustomersupportwasunhelpfulsentimentnegativeifunhelpfulinrevieworscratcheseasilyinreviewelseneutralifacceptableinreviewelsepos",
+          "scoring_method": "answer_key",
+          "code_signature_compliant": null,
+          "taxonomy": "final_answer_change_same_correctness",
+          "anchor_output": "Final answer: Negative\r\n\r\nCode:\r\nimport textblob\r\n\r\nreview = \"The battery life is acceptable, but the screen scratches easily and customer support was unhelpful.\"\r\nsentiment = textblob.TextBlob(review).sentiment\r\n\r\nif sentiment.polarity < 0:\r\n    sentiment_label = \"Negative\"\r\nelif sentiment.polarity == 0:\r\n    sentiment_label = \"Neutral\"\r\nelse:\r\n    sentiment_label = \"Positive\"\r\n\r\nprint(\"Sentiment label:\", sentiment_label) ",
+          "comparison_output": "Final answer: Negative\r\n\r\nCode:\r\nreview = 'The battery life is acceptable, but the screen scratches easily and customer support was unhelpful.'\r\nsentiment = 'Negative' if 'unhelpful' in review or 'scratches easily' in review else 'Neutral' if 'acceptable' in review else 'Positive'\r\nprint(sentiment) "
+        },
+        {
+          "model": "gemini-3.1-flash-lite",
+          "model_label": "Gemini 3.1 Flash-Lite",
+          "status": "measured",
+          "pair_id": "gemini-3.1-flash-lite|CLASS-001|treatment|word_deletion|1",
+          "anchor_record_id": "56545dba-7280-4a47-9938-28a77a979264",
+          "comparison_record_id": "3b182e45-2ba8-4f0a-8d27-b1eb6993a2ce",
+          "raw_distance": 0.008617639541625977,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "gemini-3.1-flash-lite|CLASS-001|control|None|1",
+              "anchor_record_id": "56545dba-7280-4a47-9938-28a77a979264",
+              "comparison_record_id": "fd6a6cac-d835-4c06-9291-db9c85e1d968",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "gemini-3.1-flash-lite|CLASS-001|control|None|2",
+              "anchor_record_id": "56545dba-7280-4a47-9938-28a77a979264",
+              "comparison_record_id": "b21ed1bf-93e9-484f-a59f-1a29085b9010",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.008617639541625977,
+          "d_out_char": 0.03862660944206009,
+          "d_out_token": 0.09677419354838712,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": "negative",
+          "comparison_final": "negative",
+          "scoring_method": "answer_key",
+          "code_signature_compliant": null,
+          "taxonomy": "wording_change_only",
+          "anchor_output": "The review mentions a neutral aspect (\"acceptable\" battery life) but highlights two significant negative experiences (screen quality and customer support). Therefore, the overall sentiment is negative.\r\n\r\nFinal answer: Negative",
+          "comparison_output": "The review mentions a neutral aspect (\"acceptable\" battery life) but highlights two significant negative experiences (screen durability and poor customer support). Therefore, the overall sentiment is negative.\r\n\r\nFinal answer: Negative"
+        }
+      ]
+    },
+    {
+      "operator": "synonym",
+      "eligibility": "eligible",
+      "eligibility_detail": "not flagged by the retrospective audit (every candidate of this operator was audited)",
+      "status": "measured",
+      "perturbation_id": "CLASS-001__synonym_replacement__42__5e6fce534877",
+      "role": "candidate",
+      "perturbed_prompt": "Categorize the sentiment of the following product review as Positive, Negative, or Neutral: 'The battery life is acceptable, but the screen scratches easily and customer support was unhelpful.'",
+      "char_edits": 8,
+      "d_in_char": 0.041451,
+      "exact_edit": [
+        {
+          "original_offset": 1,
+          "edited_offset": 1,
+          "removed": "l",
+          "added": ""
+        },
+        {
+          "original_offset": 3,
+          "edited_offset": 2,
+          "removed": "ss",
+          "added": "tegor"
+        },
+        {
+          "original_offset": 6,
+          "edited_offset": 8,
+          "removed": "fy",
+          "added": "ze"
+        }
+      ],
+      "input_length_denominator": 193,
+      "d_in_sem": 0.01262086,
+      "auto_protected_changes": [],
+      "raw_distance": 0.08463729619979858,
+      "control_distance": 0.0,
+      "excess_distance": 0.08463729619979858,
+      "per_model": [
+        {
+          "model": "qwen/qwen3.8-27b",
+          "model_label": "Qwen 3.8 27B",
+          "status": "measured",
+          "pair_id": "qwen/qwen3.8-27b|CLASS-001|treatment|synonym|1",
+          "anchor_record_id": "3b6f0116-f19e-4391-8a83-353c34d3b319",
+          "comparison_record_id": "998f9db3-1c2a-49fa-9366-530ceaa7bfb9",
+          "raw_distance": 0.0,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "qwen/qwen3.8-27b|CLASS-001|control|None|1",
+              "anchor_record_id": "3b6f0116-f19e-4391-8a83-353c34d3b319",
+              "comparison_record_id": "4e39386f-cdf6-4e50-a283-1e7eb9050e51",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "qwen/qwen3.8-27b|CLASS-001|control|None|2",
+              "anchor_record_id": "3b6f0116-f19e-4391-8a83-353c34d3b319",
+              "comparison_record_id": "98cf6a6c-7be2-4e72-8c85-651f2b78a7a8",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.0,
+          "d_out_char": 0.0,
+          "d_out_token": 0.0,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": "negative",
+          "comparison_final": "negative",
+          "scoring_method": "answer_key",
+          "code_signature_compliant": null,
+          "taxonomy": "identical",
+          "anchor_output": "The review contains a mix of sentiments. The phrase \"battery life is acceptable\" is mildly positive or neutral, but it is outweighed by the explicit negative criticisms: \"screen scratches easily\" and \"customer support was unhelpful.\" Since the majority of the specific points raised are complaints about product quality and service, the overall sentiment is negative.\r\n\r\nFinal answer: Negative",
+          "comparison_output": "The review contains a mix of sentiments. The phrase \"battery life is acceptable\" is mildly positive or neutral, but it is outweighed by the explicit negative criticisms: \"screen scratches easily\" and \"customer support was unhelpful.\" Since the majority of the specific points raised are complaints about product quality and service, the overall sentiment is negative.\r\n\r\nFinal answer: Negative"
+        },
+        {
+          "model": "openai/gpt-oss-120b",
+          "model_label": "GPT-OSS-120B",
+          "status": "measured",
+          "pair_id": "openai/gpt-oss-120b|CLASS-001|treatment|synonym|1",
+          "anchor_record_id": "72b7e5b8-e040-4986-8039-6a09da2e5900",
+          "comparison_record_id": "d2af0f6a-900c-456f-bf4e-05d123c8ddde",
+          "raw_distance": 1.1920928955078125e-07,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "openai/gpt-oss-120b|CLASS-001|control|None|1",
+              "anchor_record_id": "72b7e5b8-e040-4986-8039-6a09da2e5900",
+              "comparison_record_id": "0fb3e569-4820-4b58-a261-da49fa9cddbc",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "openai/gpt-oss-120b|CLASS-001|control|None|2",
+              "anchor_record_id": "72b7e5b8-e040-4986-8039-6a09da2e5900",
+              "comparison_record_id": "d138ec98-c6ed-4721-b21f-5cab40c380e4",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 1.1920928955078125e-07,
+          "d_out_char": 0.06060606060606055,
+          "d_out_token": 0.0,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": "negative",
+          "comparison_final": "negative",
+          "scoring_method": "answer_key",
+          "code_signature_compliant": null,
+          "taxonomy": "wording_change_only",
+          "anchor_output": "Negative\r\n\r\nFinal answer: Negative",
+          "comparison_output": "Negative  \r\nFinal answer: Negative"
+        },
+        {
+          "model": "openai/gpt-oss-20b",
+          "model_label": "GPT-OSS-20B",
+          "status": "measured",
+          "pair_id": "openai/gpt-oss-20b|CLASS-001|treatment|synonym|1",
+          "anchor_record_id": "184aa270-11aa-4962-84ac-dc21416de39c",
+          "comparison_record_id": "be5c68e7-8612-4a16-9ad6-aa9480dd82bb",
+          "raw_distance": 0.0,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "openai/gpt-oss-20b|CLASS-001|control|None|1",
+              "anchor_record_id": "184aa270-11aa-4962-84ac-dc21416de39c",
+              "comparison_record_id": "714b21d5-c676-4f76-bcf8-0fb10d509ea6",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "openai/gpt-oss-20b|CLASS-001|control|None|2",
+              "anchor_record_id": "184aa270-11aa-4962-84ac-dc21416de39c",
+              "comparison_record_id": "b8833dba-cecc-4c55-b1ba-0b1cc26971a9",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.0,
+          "d_out_char": 0.0,
+          "d_out_token": 0.0,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": "negative",
+          "comparison_final": "negative",
+          "scoring_method": "answer_key",
+          "code_signature_compliant": null,
+          "taxonomy": "identical",
+          "anchor_output": "Negative\r\n\r\nFinal answer: Negative",
+          "comparison_output": "Negative\r\n\r\nFinal answer: Negative"
+        },
+        {
+          "model": "allam-2-7b",
+          "model_label": "ALLaM-2-7B",
+          "status": "measured",
+          "pair_id": "allam-2-7b|CLASS-001|treatment|synonym|1",
+          "anchor_record_id": "850cd311-d07c-449f-ab21-10857ba70ecf",
+          "comparison_record_id": "e7d1a643-02d7-49a2-9f36-136036a9994a",
+          "raw_distance": 0.4031636118888855,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "allam-2-7b|CLASS-001|control|None|1",
+              "anchor_record_id": "850cd311-d07c-449f-ab21-10857ba70ecf",
+              "comparison_record_id": "11a8939d-808c-4fec-8770-46df15b37703",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "allam-2-7b|CLASS-001|control|None|2",
+              "anchor_record_id": "850cd311-d07c-449f-ab21-10857ba70ecf",
+              "comparison_record_id": "ebf007c3-ce9d-414c-b0ca-830b4329cf89",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.4031636118888855,
+          "d_out_char": 0.7621359223300971,
+          "d_out_token": 0.8076923076923077,
+          "answer_changed": true,
+          "anchor_correct": false,
+          "comparison_correct": true,
+          "anchor_final": "negativecodeimporttextblobreviewthebatterylifeisacceptablebutthescreenscratcheseasilyandcustomersupportwasunhelpfulsentimenttextblobtextblobreviewsentimentifsentimentpolarity0sentimentlabelnegativeeli",
+          "comparison_final": "negativethesentimentofthereviewiscategorizedasnegativeduetothementionedissueswithbatterylifescreenandcustomersupport",
+          "scoring_method": "answer_key",
+          "code_signature_compliant": null,
+          "taxonomy": "correctness_flip_incorrect_to_correct",
+          "anchor_output": "Final answer: Negative\r\n\r\nCode:\r\nimport textblob\r\n\r\nreview = \"The battery life is acceptable, but the screen scratches easily and customer support was unhelpful.\"\r\nsentiment = textblob.TextBlob(review).sentiment\r\n\r\nif sentiment.polarity < 0:\r\n    sentiment_label = \"Negative\"\r\nelif sentiment.polarity == 0:\r\n    sentiment_label = \"Neutral\"\r\nelse:\r\n    sentiment_label = \"Positive\"\r\n\r\nprint(\"Sentiment label:\", sentiment_label) ",
+          "comparison_output": "Final answer: Negative\r\n\r\nThe sentiment of the review is categorized as negative due to the mentioned issues with battery life, screen, and customer support. "
+        },
+        {
+          "model": "gemini-3.1-flash-lite",
+          "model_label": "Gemini 3.1 Flash-Lite",
+          "status": "measured",
+          "pair_id": "gemini-3.1-flash-lite|CLASS-001|treatment|synonym|1",
+          "anchor_record_id": "56545dba-7280-4a47-9938-28a77a979264",
+          "comparison_record_id": "2872148f-6061-42e2-8460-7db97d203c5a",
+          "raw_distance": 0.02002274990081787,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "gemini-3.1-flash-lite|CLASS-001|control|None|1",
+              "anchor_record_id": "56545dba-7280-4a47-9938-28a77a979264",
+              "comparison_record_id": "fd6a6cac-d835-4c06-9291-db9c85e1d968",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "gemini-3.1-flash-lite|CLASS-001|control|None|2",
+              "anchor_record_id": "56545dba-7280-4a47-9938-28a77a979264",
+              "comparison_record_id": "b21ed1bf-93e9-484f-a59f-1a29085b9010",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.02002274990081787,
+          "d_out_char": 0.05777777777777782,
+          "d_out_token": 0.09999999999999998,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": "negative",
+          "comparison_final": "negative",
+          "scoring_method": "answer_key",
+          "code_signature_compliant": null,
+          "taxonomy": "wording_change_only",
+          "anchor_output": "The review mentions a neutral aspect (\"acceptable\" battery life) but highlights two significant negative experiences (screen quality and customer support). Therefore, the overall sentiment is negative.\r\n\r\nFinal answer: Negative",
+          "comparison_output": "The review mentions a neutral aspect (battery life) but highlights two significant negative experiences (screen quality and customer support). Therefore, the overall sentiment is negative.\r\n\r\nFinal answer: Negative"
+        }
+      ]
+    },
+    {
+      "operator": "word_substitution",
+      "eligibility": "inapplicable",
+      "eligibility_detail": "inapplicable_or_no_op",
+      "status": "inapplicable",
+      "perturbation_id": null,
+      "role": "candidate",
+      "perturbed_prompt": null,
+      "char_edits": null,
+      "d_in_char": null,
+      "exact_edit": [],
+      "input_length_denominator": null,
+      "d_in_sem": null,
+      "auto_protected_changes": [],
+      "raw_distance": null,
+      "control_distance": null,
+      "excess_distance": null,
+      "per_model": []
+    },
+    {
+      "operator": "instruction_reordering",
+      "eligibility": "inapplicable",
+      "eligibility_detail": "inapplicable_or_no_op",
+      "status": "inapplicable",
+      "perturbation_id": null,
+      "role": "candidate",
+      "perturbed_prompt": null,
+      "char_edits": null,
+      "d_in_char": null,
+      "exact_edit": [],
+      "input_length_denominator": null,
+      "d_in_sem": null,
+      "auto_protected_changes": [],
+      "raw_distance": null,
+      "control_distance": null,
+      "excess_distance": null,
+      "per_model": []
+    },
+    {
+      "operator": "random_edit",
+      "eligibility": "noise_benchmark",
+      "eligibility_detail": "Noise benchmark only. Preservation: unaudited.",
+      "status": "measured",
+      "perturbation_id": "CLASS-001__random_edit__42__425547588d2a",
+      "role": "noise_benchmark",
+      "perturbed_prompt": "Classify the sentiment of th following product review as Positive, Negative, or Neutral: 'The battery life is acceptable, but the screen scratches easily and customer support was unhelpful.i",
+      "char_edits": 2,
+      "d_in_char": 0.010471,
+      "exact_edit": [
+        {
+          "original_offset": 28,
+          "edited_offset": 28,
+          "removed": "e",
+          "added": ""
+        },
+        {
+          "original_offset": 190,
+          "edited_offset": 189,
+          "removed": "'",
+          "added": "i"
+        }
+      ],
+      "input_length_denominator": 191,
+      "d_in_sem": 0.01686028,
+      "auto_protected_changes": [
+        "quoted text changed"
+      ],
+      "raw_distance": 0.1782629370689392,
+      "control_distance": 0.0,
+      "excess_distance": 0.1782629370689392,
+      "per_model": [
+        {
+          "model": "qwen/qwen3.8-27b",
+          "model_label": "Qwen 3.8 27B",
+          "status": "measured",
+          "pair_id": "qwen/qwen3.8-27b|CLASS-001|treatment|random_edit|1",
+          "anchor_record_id": "3b6f0116-f19e-4391-8a83-353c34d3b319",
+          "comparison_record_id": "10a2b648-bc88-4d88-96ef-e41e03ac1247",
+          "raw_distance": 0.009290635585784912,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "qwen/qwen3.8-27b|CLASS-001|control|None|1",
+              "anchor_record_id": "3b6f0116-f19e-4391-8a83-353c34d3b319",
+              "comparison_record_id": "4e39386f-cdf6-4e50-a283-1e7eb9050e51",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "qwen/qwen3.8-27b|CLASS-001|control|None|2",
+              "anchor_record_id": "3b6f0116-f19e-4391-8a83-353c34d3b319",
+              "comparison_record_id": "98cf6a6c-7be2-4e72-8c85-651f2b78a7a8",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.009290635585784912,
+          "d_out_char": 0.15980629539951574,
+          "d_out_token": 0.1636363636363637,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": "negative",
+          "comparison_final": "negative",
+          "scoring_method": "answer_key",
+          "code_signature_compliant": null,
+          "taxonomy": "wording_change_only",
+          "anchor_output": "The review contains a mix of sentiments. The phrase \"battery life is acceptable\" is mildly positive or neutral, but it is outweighed by the explicit negative criticisms: \"screen scratches easily\" and \"customer support was unhelpful.\" Since the majority of the specific points raised are complaints about product quality and service, the overall sentiment is negative.\r\n\r\nFinal answer: Negative",
+          "comparison_output": "The review contains a mix of sentiments. The phrase \"battery life is acceptable\" is mildly positive or neutral, but it is outweighed by the negative statements: \"screen scratches easily\" (a product defect) and \"customer support was unhelpful\" (a service failure). Since the majority of the specific points raised are complaints about quality and service, the overall sentiment is negative.\r\n\r\nFinal answer: Negative"
+        },
+        {
+          "model": "openai/gpt-oss-120b",
+          "model_label": "GPT-OSS-120B",
+          "status": "measured",
+          "pair_id": "openai/gpt-oss-120b|CLASS-001|treatment|random_edit|1",
+          "anchor_record_id": "72b7e5b8-e040-4986-8039-6a09da2e5900",
+          "comparison_record_id": "dd8bd5f6-0ee1-42ea-92d9-08ff12dba311",
+          "raw_distance": 1.1920928955078125e-07,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "openai/gpt-oss-120b|CLASS-001|control|None|1",
+              "anchor_record_id": "72b7e5b8-e040-4986-8039-6a09da2e5900",
+              "comparison_record_id": "0fb3e569-4820-4b58-a261-da49fa9cddbc",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "openai/gpt-oss-120b|CLASS-001|control|None|2",
+              "anchor_record_id": "72b7e5b8-e040-4986-8039-6a09da2e5900",
+              "comparison_record_id": "d138ec98-c6ed-4721-b21f-5cab40c380e4",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 1.1920928955078125e-07,
+          "d_out_char": 0.06060606060606055,
+          "d_out_token": 0.0,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": "negative",
+          "comparison_final": "negative",
+          "scoring_method": "answer_key",
+          "code_signature_compliant": null,
+          "taxonomy": "wording_change_only",
+          "anchor_output": "Negative\r\n\r\nFinal answer: Negative",
+          "comparison_output": "Negative  \r\nFinal answer: Negative"
+        },
+        {
+          "model": "openai/gpt-oss-20b",
+          "model_label": "GPT-OSS-20B",
+          "status": "measured",
+          "pair_id": "openai/gpt-oss-20b|CLASS-001|treatment|random_edit|1",
+          "anchor_record_id": "184aa270-11aa-4962-84ac-dc21416de39c",
+          "comparison_record_id": "03f83b55-d510-4892-8678-f0d8cdbc639d",
+          "raw_distance": 0.0,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "openai/gpt-oss-20b|CLASS-001|control|None|1",
+              "anchor_record_id": "184aa270-11aa-4962-84ac-dc21416de39c",
+              "comparison_record_id": "714b21d5-c676-4f76-bcf8-0fb10d509ea6",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "openai/gpt-oss-20b|CLASS-001|control|None|2",
+              "anchor_record_id": "184aa270-11aa-4962-84ac-dc21416de39c",
+              "comparison_record_id": "b8833dba-cecc-4c55-b1ba-0b1cc26971a9",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.0,
+          "d_out_char": 0.0,
+          "d_out_token": 0.0,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": "negative",
+          "comparison_final": "negative",
+          "scoring_method": "answer_key",
+          "code_signature_compliant": null,
+          "taxonomy": "identical",
+          "anchor_output": "Negative\r\n\r\nFinal answer: Negative",
+          "comparison_output": "Negative\r\n\r\nFinal answer: Negative"
+        },
+        {
+          "model": "allam-2-7b",
+          "model_label": "ALLaM-2-7B",
+          "status": "measured",
+          "pair_id": "allam-2-7b|CLASS-001|treatment|random_edit|1",
+          "anchor_record_id": "850cd311-d07c-449f-ab21-10857ba70ecf",
+          "comparison_record_id": "bd4bdde7-cd95-4a2f-9821-7ed008831fc0",
+          "raw_distance": 0.7589519023895264,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "allam-2-7b|CLASS-001|control|None|1",
+              "anchor_record_id": "850cd311-d07c-449f-ab21-10857ba70ecf",
+              "comparison_record_id": "11a8939d-808c-4fec-8770-46df15b37703",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "allam-2-7b|CLASS-001|control|None|2",
+              "anchor_record_id": "850cd311-d07c-449f-ab21-10857ba70ecf",
+              "comparison_record_id": "ebf007c3-ce9d-414c-b0ca-830b4329cf89",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.7589519023895264,
+          "d_out_char": 0.9223300970873787,
+          "d_out_token": 0.9230769230769231,
+          "answer_changed": true,
+          "anchor_correct": false,
+          "comparison_correct": true,
+          "anchor_final": "negativecodeimporttextblobreviewthebatterylifeisacceptablebutthescreenscratcheseasilyandcustomersupportwasunhelpfulsentimenttextblobtextblobreviewsentimentifsentimentpolarity0sentimentlabelnegativeeli",
+          "comparison_final": "negative",
+          "scoring_method": "answer_key",
+          "code_signature_compliant": null,
+          "taxonomy": "correctness_flip_incorrect_to_correct",
+          "anchor_output": "Final answer: Negative\r\n\r\nCode:\r\nimport textblob\r\n\r\nreview = \"The battery life is acceptable, but the screen scratches easily and customer support was unhelpful.\"\r\nsentiment = textblob.TextBlob(review).sentiment\r\n\r\nif sentiment.polarity < 0:\r\n    sentiment_label = \"Negative\"\r\nelif sentiment.polarity == 0:\r\n    sentiment_label = \"Neutral\"\r\nelse:\r\n    sentiment_label = \"Positive\"\r\n\r\nprint(\"Sentiment label:\", sentiment_label) ",
+          "comparison_output": "Negative\r\n\r\nFinal answer: Negative "
+        },
+        {
+          "model": "gemini-3.1-flash-lite",
+          "model_label": "Gemini 3.1 Flash-Lite",
+          "status": "measured",
+          "pair_id": "gemini-3.1-flash-lite|CLASS-001|treatment|random_edit|1",
+          "anchor_record_id": "56545dba-7280-4a47-9938-28a77a979264",
+          "comparison_record_id": "26005f6a-c2f2-4a4f-85c6-a374dcc79032",
+          "raw_distance": 0.12307202816009521,
+          "control_values": {
+            "1": 0.0,
+            "2": 0.0
+          },
+          "control_distance": 0.0,
+          "control_records": [
+            {
+              "repeat": 1,
+              "pair_id": "gemini-3.1-flash-lite|CLASS-001|control|None|1",
+              "anchor_record_id": "56545dba-7280-4a47-9938-28a77a979264",
+              "comparison_record_id": "fd6a6cac-d835-4c06-9291-db9c85e1d968",
+              "distance": 0.0
+            },
+            {
+              "repeat": 2,
+              "pair_id": "gemini-3.1-flash-lite|CLASS-001|control|None|2",
+              "anchor_record_id": "56545dba-7280-4a47-9938-28a77a979264",
+              "comparison_record_id": "b21ed1bf-93e9-484f-a59f-1a29085b9010",
+              "distance": 0.0
+            }
+          ],
+          "excess_distance": 0.12307202816009521,
+          "d_out_char": 0.47388059701492535,
+          "d_out_token": 0.6304347826086957,
+          "answer_changed": false,
+          "anchor_correct": true,
+          "comparison_correct": true,
+          "anchor_final": "negative",
+          "comparison_final": "negative",
+          "scoring_method": "answer_key",
+          "code_signature_compliant": null,
+          "taxonomy": "content_change_same_answer",
+          "anchor_output": "The review mentions a neutral aspect (\"acceptable\" battery life) but highlights two significant negative experiences (screen quality and customer support). Therefore, the overall sentiment is negative.\r\n\r\nFinal answer: Negative",
+          "comparison_output": "The review mentions an \"acceptable\" battery life, but highlights significant issues with product durability (screen scratches) and poor service (unhelpful customer support). These negative aspects outweigh the neutral comment about the battery.\r\n\r\nFinal answer: Negative"
+        }
+      ]
+    }
+  ],
+  "generated_at": "2026-11-25T18:32:11.297761+00:00"
+}
